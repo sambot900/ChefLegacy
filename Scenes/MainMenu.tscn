@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://bgw4ktkqk66wt"]
+
+[ext_resource type="Texture2D" uid="uid://c4p0rx6ssl3mn" path="res://Sprites/MainMenu/bg6.png" id="1_81pvu"]
+[ext_resource type="Texture2D" uid="uid://corfp05v6isl0" path="res://Sprites/MainMenu/button2.png" id="2_ondun"]
+[ext_resource type="Texture2D" uid="uid://b1lkif0suvgtj" path="res://Sprites/MainMenu/button2_hover.png" id="3_fkux5"]
+[ext_resource type="Texture2D" uid="uid://c05syyla58wr1" path="res://Sprites/MainMenu/button_options.png" id="4_onnty"]
+
+[sub_resource type="GDScript" id="GDScript_lf3rp"]
+script/source = "extends Node2D
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	# Connect to the signal emitted by the StartButton in the MainMenu scene
+	var start_button = get_node(\"StartButton\")
+	if start_button:
+		start_button.pressed.connect(Callable(self, \"_on_StartButton_pressed\"))
+
+# Method to handle the start button pressed event
+func _on_StartButton_pressed():
+	# Load the Round scene
+	var round_scene = load(\"res://Scenes/Round.tscn\")
+	if round_scene == null:
+		print(\"Failed to load the Round scene. Check the file path.\")
+		return
+
+	var round_instance = round_scene.instantiate()
+
+	# Add the Round scene as a child of the current scene
+	get_tree().get_root().add_child(round_instance)
+
+	# Optionally, remove the MainMenu scene if it's no longer needed
+	queue_free()
+
+# Add _process function if needed and prefix the delta parameter with an underscore
+func _process(_delta):
+	pass
+"
+
+[node name="MainMenu" type="Node2D"]
+script = SubResource("GDScript_lf3rp")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("1_81pvu")
+expand_mode = 2
+
+[node name="StartButton" type="TouchScreenButton" parent="."]
+position = Vector2(480, 516)
+scale = Vector2(0.60955, 0.622093)
+texture_normal = ExtResource("2_ondun")
+texture_pressed = ExtResource("3_fkux5")
+
+[node name="ButtonOptions" type="Sprite2D" parent="."]
+position = Vector2(1074, 70)
+scale = Vector2(0.656667, 0.656667)
+texture = ExtResource("4_onnty")
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

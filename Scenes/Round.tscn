@@ -1,0 +1,330 @@
+[gd_scene load_steps=26 format=3 uid="uid://cbv1f35u47dq3"]
+
+[ext_resource type="Script" path="res://Scripts/Round.gd" id="1_5467h"]
+[ext_resource type="Texture2D" uid="uid://yrsm0dtwtepc" path="res://Sprites/Round/invis_button_153sq.png" id="2_77xp3"]
+[ext_resource type="Texture2D" uid="uid://bisoa47wmubkg" path="res://Sprites/Round/bgbg7.png" id="4_dy0uc"]
+[ext_resource type="Texture2D" uid="uid://b7enfa6fckj44" path="res://Sprites/blk.jpg" id="5_v0dw4"]
+[ext_resource type="Texture2D" uid="uid://b5oxls0ttc1rn" path="res://Sprites/wht.jpg" id="6_uptow"]
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="7_bskx4"]
+[ext_resource type="Texture2D" uid="uid://dmle1j61k3tpm" path="res://Sprites/Avatars/Boom/ss-boom.png" id="7_oet8f"]
+[ext_resource type="Texture2D" uid="uid://cywhvg8ma5nu5" path="res://Sprites/Avatars/Boom/ss-boom-idle.png" id="8_x75xx"]
+[ext_resource type="Texture2D" uid="uid://ddn7yp67u32to" path="res://Sprites/Round/counter_bottom.png" id="9_5hipp"]
+[ext_resource type="Texture2D" uid="uid://d2viiy6vlt5gg" path="res://Sprites/Round/island1.png" id="10_vp4d5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rsov3"]
+size = Vector2(150, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mqkqv"]
+atlas = ExtResource("7_oet8f")
+region = Rect2(1504, 0, 188, 397)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o54wp"]
+atlas = ExtResource("7_oet8f")
+region = Rect2(1316, 0, 188, 397)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8wf3b"]
+atlas = ExtResource("7_oet8f")
+region = Rect2(1128, 0, 188, 397)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xmcy"]
+atlas = ExtResource("7_oet8f")
+region = Rect2(940, 0, 188, 397)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b6w74"]
+atlas = ExtResource("7_oet8f")
+region = Rect2(752, 0, 188, 397)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fqrtd"]
+atlas = ExtResource("7_oet8f")
+region = Rect2(564, 0, 188, 397)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yv35o"]
+atlas = ExtResource("7_oet8f")
+region = Rect2(376, 0, 188, 397)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80psw"]
+atlas = ExtResource("7_oet8f")
+region = Rect2(188, 0, 188, 397)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6r3ya"]
+atlas = ExtResource("7_oet8f")
+region = Rect2(0, 0, 188, 397)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oxu7q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mqkqv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o54wp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8wf3b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2xmcy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b6w74")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fqrtd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yv35o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_80psw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6r3ya")
+}],
+"loop": true,
+"name": &"L-walk",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_x75xx")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_5scld"]
+resource_name = "PanCamera"
+length = 1.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RoundCamera:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(0.517633, 0.933037),
+"update": 0,
+"values": [Vector2(520, 324), Vector2(850, 324)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("White BG:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hbte0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("White BG:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uoo1i"]
+_data = {
+"PanCamera": SubResource("Animation_5scld"),
+"RESET": SubResource("Animation_hbte0")
+}
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_v4t1i"]
+vertices = PackedVector2Array(1031, 408, 1242, 469, 611, 471, 657, 411, 607, 210, 673, 269, 1246, 209, 1020, 268)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(3, 2, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(7, 6, 1, 0)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(597, 201, 1257, 199, 1252, 479, 602, 482), PackedVector2Array(668, 401, 1020, 398, 1011, 278, 682, 279)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+
+[node name="Round" type="Node2D"]
+script = ExtResource("1_5467h")
+metadata/_edit_horizontal_guides_ = [648.0]
+metadata/_edit_vertical_guides_ = [1152.0]
+
+[node name="CMDs" type="Node2D" parent="."]
+
+[node name="c_dd-left" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(611, 95)
+scale = Vector2(0.509804, 0.810458)
+texture_normal = ExtResource("2_77xp3")
+shape = SubResource("RectangleShape2D_rsov3")
+
+[node name="c_dd-right" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(692, 96)
+scale = Vector2(0.51634, 0.810457)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_ms-left" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(917, 135)
+scale = Vector2(0.405229, 0.562091)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_ms-right" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(986, 137)
+scale = Vector2(0.405228, 0.522876)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_s-left" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(1078, 144)
+scale = Vector2(0.535947, 0.581699)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_s-right" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(1164, 141)
+scale = Vector2(0.542484, 0.601307)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_ts-1" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(1255, 289)
+scale = Vector2(0.66013, 0.503268)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_ts-2" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(1255, 370)
+scale = Vector2(0.653595, 0.490196)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_ts-3" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(1256, 451)
+scale = Vector2(0.640523, 0.490196)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_fs-1" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(678, 512)
+scale = Vector2(0.48366, 0.738562)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_fs-2" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(757, 512)
+scale = Vector2(0.477124, 0.732026)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_fs-3" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(836, 512)
+scale = Vector2(0.477124, 0.738562)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_f-left" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(937, 503)
+scale = Vector2(0.503268, 0.679739)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_f-right" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(1022, 503)
+scale = Vector2(0.496732, 0.679739)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_t" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(698, 317)
+scale = Vector2(0.555556, 0.496732)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_bob" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(876, 317)
+scale = Vector2(0.718954, 0.496732)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_o1" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(348, 162)
+scale = Vector2(1.33987, 0.640523)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_o2" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(348, 272)
+scale = Vector2(1.29412, 0.712418)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_o3" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(344, 390)
+scale = Vector2(1.37255, 0.660131)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="c_o4" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(348, 502)
+scale = Vector2(1.32026, 0.620915)
+texture_normal = ExtResource("2_77xp3")
+
+[node name="Black BG" type="TextureRect" parent="."]
+visible = false
+z_index = -100
+y_sort_enabled = true
+offset_left = -56.0
+offset_right = 1864.0
+offset_bottom = 648.0
+pivot_offset = Vector2(899, -56)
+texture = ExtResource("5_v0dw4")
+
+[node name="Main BG" type="TextureRect" parent="."]
+offset_left = -56.0
+offset_top = 27.0
+offset_right = 1864.0
+offset_bottom = 625.0
+texture = ExtResource("4_dy0uc")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="White BG" type="TextureRect" parent="."]
+visible = false
+z_index = 100
+y_sort_enabled = true
+offset_left = -56.0
+offset_right = 1864.0
+offset_bottom = 648.0
+pivot_offset = Vector2(899, -56)
+texture = ExtResource("6_uptow")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+z_index = 1
+position = Vector2(635.96, 330.515)
+scale = Vector2(1, 1.00001)
+script = ExtResource("7_bskx4")
+metadata/_edit_group_ = true
+
+[node name="anim" type="AnimatedSprite2D" parent="Player"]
+scale = Vector2(0.640957, 0.640957)
+sprite_frames = SubResource("SpriteFrames_oxu7q")
+animation = &"idle"
+
+[node name="NavAg" type="NavigationAgent2D" parent="Player"]
+path_desired_distance = 1.0
+target_desired_distance = 1.0
+
+[node name="CounterBottom" type="Sprite2D" parent="."]
+z_index = 5
+position = Vector2(848, 556.637)
+scale = Vector2(0.556218, 0.5505)
+texture = ExtResource("9_5hipp")
+
+[node name="RoundCamera" type="Camera2D" parent="."]
+position = Vector2(520, 324)
+scale = Vector2(400, 400)
+
+[node name="CameraAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_uoo1i")
+}
+speed_scale = 0.555
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_v4t1i")
+
+[node name="Island1" type="Sprite2D" parent="."]
+z_index = 3
+position = Vector2(848, 340)
+scale = Vector2(0.571689, 0.571689)
+texture = ExtResource("10_vp4d5")
+
+[connection signal="navigation_finished" from="Player/NavAg" to="Player" method="_on_nav_ag_navigation_finished"]
+[connection signal="target_reached" from="Player/NavAg" to="Player" method="_on_nav_ag_target_reached"]

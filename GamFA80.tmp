@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://blt1l50lro4x3"]
+
+[ext_resource type="Script" path="res://Game.gd" id="1_8sy44"]
+[ext_resource type="Texture2D" uid="uid://corfp05v6isl0" path="res://Sprites/button2.png" id="1_r8owq"]
+[ext_resource type="Script" path="res://MainMenu.gd" id="2_lgc7d"]
+[ext_resource type="Texture2D" uid="uid://ce03x36gguw00" path="res://Sprites/bg5(1).png" id="3_4ky8r"]
+[ext_resource type="Script" path="res://Round.gd" id="5_mik1t"]
+[ext_resource type="Texture2D" uid="uid://cq3b5yg8b0kvy" path="res://Sprites/lvl1.png" id="6_0l1mp"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_8sy44")
+
+[node name="MainMenu" type="Node2D" parent="."]
+script = ExtResource("2_lgc7d")
+
+[node name="PlayButton" type="TouchScreenButton" parent="MainMenu"]
+position = Vector2(470, 518)
+scale = Vector2(0.65, 0.65)
+texture_normal = ExtResource("1_r8owq")
+
+[node name="TextureRect" type="TextureRect" parent="MainMenu"]
+z_index = -1
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("3_4ky8r")
+expand_mode = 2
+
+[node name="Round" type="Node2D" parent="."]
+script = ExtResource("5_mik1t")
+
+[node name="TextureRect" type="TextureRect" parent="Round"]
+offset_right = 1153.0
+offset_bottom = 647.0
+texture = ExtResource("6_0l1mp")
+expand_mode = 2
+
+[connection signal="pressed" from="MainMenu/PlayButton" to="Round" method="_on_touch_screen_button_pressed"]
