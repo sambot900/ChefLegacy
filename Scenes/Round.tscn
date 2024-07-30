@@ -286,6 +286,7 @@ pivot_offset = Vector2(899, -56)
 texture = ExtResource("6_uptow")
 
 [node name="Player" type="CharacterBody2D" parent="."]
+visible = false
 z_index = 1
 position = Vector2(635.96, 330.515)
 scale = Vector2(1, 1.00001)
