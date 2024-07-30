@@ -7,6 +7,8 @@ var command_queue = []
 var command_array
 var current_command = null
 var finished = false
+var lock_right = false
+var lock_left = false
 
 @onready var agent: NavigationAgent2D = $NavAg
 
@@ -77,108 +79,127 @@ func _on_c_dd_left_pressed():
 
 func _on_c_dd_right_pressed():
 	print("c_dd_right pressed at global position: ", global_position)
-	enqueue_command([Vector2(728, 241)])
+	enqueue_command([Vector2(702, 241),Vector2(745, 241)])
 
 func _on_c_ms_left_pressed():
 	print("c_ms_left pressed at global position: ", global_position)
-	enqueue_command([Vector2(160, -30)])
+	enqueue_command([Vector2(920, 241),Vector2(973, 241)])
 
 func _on_c_ms_right_pressed():
 	print("c_ms_right pressed at global position: ", global_position)
-	enqueue_command([Vector2(220, -30)])
+	enqueue_command([Vector2(989, 241),Vector2(1042, 241)])
 
 func _on_c_s_left_pressed():
 	print("c_s_left pressed at global position: ", global_position)
-	enqueue_command([Vector2(340, -10)])
+	enqueue_command([Vector2(1078, 250),Vector2(1147, 250)])
 
 func _on_c_s_right_pressed():
 	print("c_s_right pressed at global position: ", global_position)
-	enqueue_command([Vector2(420, -10)])
+	enqueue_command([Vector2(1176, 250),Vector2(1232, 250)])
 
 func _on_c_ts_1_pressed():
 	print("c_ts_1 pressed at global position: ", global_position)
-	enqueue_command([Vector2(440, 100)])
+	enqueue_command([Vector2(1222, 325)])
 
 func _on_c_ts_2_pressed():
 	print("c_ts_2 pressed at global position: ", global_position)
-	enqueue_command([Vector2(440, 170)])
+	enqueue_command([Vector2(1222, 402)])
 
 func _on_c_ts_3_pressed():
 	print("c_ts_3 pressed at global position: ", global_position)
-	enqueue_command([Vector2(440, 250)])
+	enqueue_command([Vector2(1222, 468)])
 
 func _on_c_f_left_pressed():
 	print("c_f_left pressed at global position: ", global_position)
-	enqueue_command([Vector2(220, 250)])
+	enqueue_command([Vector2(971, 468),Vector2(1000, 468)])
 
 func _on_c_f_right_pressed():
 	print("c_f_right pressed at global position: ", global_position)
-	enqueue_command([Vector2(275, 250)])
+	enqueue_command([Vector2(1068, 468),Vector2(1029, 468)])
 
 func _on_c_fs_3_pressed():
 	print("c_fs_3 pressed at global position: ", global_position)
-	enqueue_command([Vector2(100, 250)])
+	enqueue_command([Vector2(898, 468),Vector2(842, 468)])
 
 func _on_c_fs_2_pressed():
 	print("c_fs_2 pressed at global position: ", global_position)
-	enqueue_command([Vector2(20, 250)])
+	enqueue_command([Vector2(815, 468),Vector2(778, 468)])
 
 func _on_c_fs_1_pressed():
 	print("c_fs_1 pressed at global position: ", global_position)
-	enqueue_command([Vector2(-75, 250)])
+	enqueue_command([Vector2(730, 468),Vector2(698, 468)])
 
 func _on_c_t_pressed():
 	print("c_t pressed at global position: ", global_position)
-	enqueue_command([Vector2(-130, 100)])
+	enqueue_command([Vector2(766, 437),Vector2(738, 437),Vector2(706, 437),Vector2(658, 367),Vector2(658, 326),Vector2(706, 257),Vector2(736, 257),Vector2(769, 257)])
 
 func _on_c_bob_pressed():
 	print("c_bob pressed at global position: ", global_position)
-	enqueue_command([Vector2(140, -30)])
+	enqueue_command([Vector2(972, 437),Vector2(933, 437),Vector2(897, 437),Vector2(0, 367),Vector2(1033, 392),Vector2(1029, 357),Vector2(1026, 317),Vector2(936, 267),Vector2(889, 267)])
 
 func _on_c_o1_pressed():
 	print("c_o1 pressed at global position: ", global_position)
-	enqueue_command([Vector2(-80, 30)])
+	enqueue_command([Vector2(621, 230)])
 
 func _on_c_o2_pressed():
 	print("c_o2 pressed at global position: ", global_position)
-	enqueue_command([Vector2(-10, -10)])
+	enqueue_command([Vector2(621, 325)])
 
 func _on_c_o3_pressed():
 	print("c_o3 pressed at global position: ", global_position)
-	enqueue_command([Vector2(30, -30)])
+	enqueue_command([Vector2(621, 431)])
 
 func _on_c_o4_pressed():
 	print("c_o4 pressed at global position: ", global_position)
-	enqueue_command([Vector2(-30, 30)])
+	enqueue_command([Vector2(621, 470)])
 
 
 func _physics_process(delta):
+	
+# Z-sort
+	if global_position.y > 372:
+		z_index = 4
+	else:
+		z_index = 1
+	
+# Assign command from queue
 	if finished and command_queue.size() > 0:
 		command_array = command_queue.pop_front()
-		var shortest_distance = INF
-		var closest_command = null
-		for command in command_array:
-			var distance = global_position.distance_to(command)
-			if distance < shortest_distance:
-				shortest_distance = distance
-				closest_command = command
-		current_command = closest_command
-		print("closest command: ", current_command)
+		if command_array.size() > 1:
+			var shortest_distance = INF
+			var closest_command = null
+			for command in command_array:
+				var distance = global_position.distance_to(command)
+				if distance < shortest_distance:
+					shortest_distance = distance
+					closest_command = command
+			current_command = closest_command
+		else:
+			print("only one cmd")
+			current_command = command_array[0]
+# Avatar Orientation
+		if current_command.x > 1220 and current_command.y > 320:
+			animated_sprite.flip_h = true
+		elif current_command.x > 1220 and current_command.y < 320:
+			animated_sprite.flip_h = false	
+		elif (global_position.x - current_command.x) > 10:
+				print("moving left")
+				animated_sprite.flip_h = false
+		elif (current_command.x - global_position.x) > 10:
+				print("moving right")
+				animated_sprite.flip_h = true
+		# print("closest command: ", current_command)
 		agent.target_position = current_command
 		finished = false
+# Idle stance
 	elif finished and command_queue.size() == 0:
 		animated_sprite.play("idle")
 	
+# Locomotion
 	if not finished:
 		animated_sprite.play("L-walk")
 		var direction = (agent.get_next_path_position() - global_position).normalized()
 		velocity = velocity.lerp(direction * speed, accel * delta)
-		
-		if direction.x > 0:
-			animated_sprite.flip_h = true
-		elif direction.x < 0:
-			animated_sprite.flip_h = false
-		
 		move_and_slide()
 
 

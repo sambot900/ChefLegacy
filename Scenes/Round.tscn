@@ -143,9 +143,9 @@ _data = {
 }
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_v4t1i"]
-vertices = PackedVector2Array(1031, 408, 1242, 469, 611, 471, 657, 411, 607, 210, 673, 269, 1246, 209, 1020, 268)
+vertices = PackedVector2Array(1031, 408, 1242, 469, 611, 471, 658, 411, 607, 210, 663, 274, 1246, 209, 1020, 268)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(3, 2, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(7, 6, 1, 0)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(597, 201, 1257, 199, 1252, 479, 602, 482), PackedVector2Array(668, 401, 1020, 398, 1011, 278, 682, 279)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(597, 201, 1257, 199, 1252, 479, 602, 482), PackedVector2Array(668, 401, 1020, 398, 1011, 278, 673, 284)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
 [node name="Round" type="Node2D"]
