@@ -4,6 +4,7 @@ extends CharacterBody2D
 @export var accel = 20
 
 var command_queue = []
+var command_array
 var current_command = null
 var finished = false
 
@@ -57,17 +58,17 @@ func _ready():
 	print("Round node ready")
 
 func enqueue_command(target_pos_array: Array):
-	for target_pos in target_pos_array:
-		if command_queue.size() > 0 and command_queue[-1] != target_pos:
-			command_queue.append(target_pos)
-			print("Command enqueued: ", target_pos)
-			print("Current queue: ", command_queue)
-		elif command_queue.size() == 0:
-			print("Adding: ", target_pos)
-			command_queue.append(target_pos)
-			print("Current queue: ", command_queue)
-		else:
-			print("Dupe")
+	if command_queue.size() > 0 and command_queue[-1] != target_pos_array:
+		command_queue.append(target_pos_array)
+		print("Command enqueued: ", target_pos_array)
+		print("Current queue: ", command_queue)
+	elif command_queue.size() == 0:
+		print("Adding: ", target_pos_array)
+		command_queue.append(target_pos_array)
+		print("Current queue: ", command_queue)
+	else:
+		print("Dupe")
+
 
 func _on_c_dd_left_pressed():
 	print("c_dd_left pressed at global position: ", global_position)
@@ -153,7 +154,7 @@ func _on_c_o4_pressed():
 
 func _physics_process(delta):
 	if finished and command_queue.size() > 0:
-		var command_array = command_queue.pop_front()
+		command_array = command_queue.pop_front()
 		var shortest_distance = INF
 		var closest_command = null
 		for command in command_array:
@@ -162,6 +163,7 @@ func _physics_process(delta):
 				shortest_distance = distance
 				closest_command = command
 		current_command = closest_command
+		print("closest command: ", current_command)
 		agent.target_position = current_command
 		finished = false
 	elif finished and command_queue.size() == 0:
