@@ -56,106 +56,115 @@ func _ready():
 	c_o4.pressed.connect(self._on_c_o4_pressed)
 	print("Round node ready")
 
-func enqueue_command(target_pos: Vector2):
-	if command_queue.size() > 0 and command_queue[-1] != target_pos:
-		command_queue.append(target_pos)
-		print("Command enqueued: ", target_pos)
-		print("Current queue: ", command_queue)
-	elif command_queue.size() == 0:
-		print("Adding: ", target_pos)
-		command_queue.append(target_pos)
-		print("Current queue: ", command_queue)
-	else:
-		print("Dupe")
+func enqueue_command(target_pos_array: Array):
+	for target_pos in target_pos_array:
+		if command_queue.size() > 0 and command_queue[-1] != target_pos:
+			command_queue.append(target_pos)
+			print("Command enqueued: ", target_pos)
+			print("Current queue: ", command_queue)
+		elif command_queue.size() == 0:
+			print("Adding: ", target_pos)
+			command_queue.append(target_pos)
+			print("Current queue: ", command_queue)
+		else:
+			print("Dupe")
 
 func _on_c_dd_left_pressed():
 	print("c_dd_left pressed at global position: ", global_position)
-	enqueue_command(Vector2(654, 259))
+	enqueue_command([Vector2(640, 241), Vector2(678, 241)])
+
 
 func _on_c_dd_right_pressed():
 	print("c_dd_right pressed at global position: ", global_position)
-	enqueue_command(Vector2(728, 241))
+	enqueue_command([Vector2(728, 241)])
 
 func _on_c_ms_left_pressed():
 	print("c_ms_left pressed at global position: ", global_position)
-	enqueue_command(Vector2(160, -30))
+	enqueue_command([Vector2(160, -30)])
 
 func _on_c_ms_right_pressed():
 	print("c_ms_right pressed at global position: ", global_position)
-	enqueue_command(Vector2(220, -30))
+	enqueue_command([Vector2(220, -30)])
 
 func _on_c_s_left_pressed():
 	print("c_s_left pressed at global position: ", global_position)
-	enqueue_command(Vector2(340, -10))
+	enqueue_command([Vector2(340, -10)])
 
 func _on_c_s_right_pressed():
 	print("c_s_right pressed at global position: ", global_position)
-	enqueue_command(Vector2(420, -10))
+	enqueue_command([Vector2(420, -10)])
 
 func _on_c_ts_1_pressed():
 	print("c_ts_1 pressed at global position: ", global_position)
-	enqueue_command(Vector2(440, 100))
+	enqueue_command([Vector2(440, 100)])
 
 func _on_c_ts_2_pressed():
 	print("c_ts_2 pressed at global position: ", global_position)
-	enqueue_command(Vector2(440, 170))
+	enqueue_command([Vector2(440, 170)])
 
 func _on_c_ts_3_pressed():
 	print("c_ts_3 pressed at global position: ", global_position)
-	enqueue_command(Vector2(440, 250))
+	enqueue_command([Vector2(440, 250)])
 
 func _on_c_f_left_pressed():
 	print("c_f_left pressed at global position: ", global_position)
-	enqueue_command(Vector2(220, 250))
+	enqueue_command([Vector2(220, 250)])
 
 func _on_c_f_right_pressed():
 	print("c_f_right pressed at global position: ", global_position)
-	enqueue_command(Vector2(275, 250))
+	enqueue_command([Vector2(275, 250)])
 
 func _on_c_fs_3_pressed():
 	print("c_fs_3 pressed at global position: ", global_position)
-	enqueue_command(Vector2(100, 250))
-	
+	enqueue_command([Vector2(100, 250)])
+
 func _on_c_fs_2_pressed():
 	print("c_fs_2 pressed at global position: ", global_position)
-	enqueue_command(Vector2(20, 250))
-	
+	enqueue_command([Vector2(20, 250)])
+
 func _on_c_fs_1_pressed():
 	print("c_fs_1 pressed at global position: ", global_position)
-	enqueue_command(Vector2(-75, 250))
+	enqueue_command([Vector2(-75, 250)])
 
 func _on_c_t_pressed():
 	print("c_t pressed at global position: ", global_position)
-	enqueue_command(Vector2(-130, 100))
+	enqueue_command([Vector2(-130, 100)])
 
 func _on_c_bob_pressed():
 	print("c_bob pressed at global position: ", global_position)
-	enqueue_command(Vector2(140, -30))
-	
+	enqueue_command([Vector2(140, -30)])
+
 func _on_c_o1_pressed():
 	print("c_o1 pressed at global position: ", global_position)
-	enqueue_command(Vector2(-80, 30))
-	
+	enqueue_command([Vector2(-80, 30)])
+
 func _on_c_o2_pressed():
 	print("c_o2 pressed at global position: ", global_position)
-	enqueue_command(Vector2(-10, -10))
-	
+	enqueue_command([Vector2(-10, -10)])
+
 func _on_c_o3_pressed():
 	print("c_o3 pressed at global position: ", global_position)
-	enqueue_command(Vector2(30, -30))
-	
+	enqueue_command([Vector2(30, -30)])
+
 func _on_c_o4_pressed():
 	print("c_o4 pressed at global position: ", global_position)
-	enqueue_command(Vector2(-30, 30))
+	enqueue_command([Vector2(-30, 30)])
+
 
 func _physics_process(delta):
-
-	
-	if finished == true and command_queue.size() > 0:
-		current_command = command_queue.pop_front()
+	if finished and command_queue.size() > 0:
+		var command_array = command_queue.pop_front()
+		var shortest_distance = INF
+		var closest_command = null
+		for command in command_array:
+			var distance = global_position.distance_to(command)
+			if distance < shortest_distance:
+				shortest_distance = distance
+				closest_command = command
+		current_command = closest_command
 		agent.target_position = current_command
 		finished = false
-	elif finished == true and command_queue.size() == 0:
+	elif finished and command_queue.size() == 0:
 		animated_sprite.play("idle")
 	
 	if not finished:
@@ -164,7 +173,7 @@ func _physics_process(delta):
 		velocity = velocity.lerp(direction * speed, accel * delta)
 		
 		if direction.x > 0:
-				animated_sprite.flip_h = true
+			animated_sprite.flip_h = true
 		elif direction.x < 0:
 			animated_sprite.flip_h = false
 		
@@ -173,6 +182,7 @@ func _physics_process(delta):
 
 func _on_nav_ag_navigation_finished():
 	finished = true
+
 
 
 func _on_nav_ag_target_reached():
