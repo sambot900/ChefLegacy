@@ -7,8 +7,10 @@ var command_queue = []
 var command_array
 var current_command = null
 var finished = false
-var lock_right = false
-var lock_left = false
+var orientation_edge_case_r = false
+var orientation_edge_case_l = false
+var edge_case_exists = false
+var orientation_lock = false
 
 @onready var agent: NavigationAgent2D = $NavAg
 
@@ -95,7 +97,7 @@ func _on_c_s_left_pressed():
 
 func _on_c_s_right_pressed():
 	print("c_s_right pressed at global position: ", global_position)
-	enqueue_command([Vector2(1176, 250),Vector2(1232, 250)])
+	enqueue_command([Vector2(1176, 250),Vector2(1220, 250)])
 
 func _on_c_ts_1_pressed():
 	print("c_ts_1 pressed at global position: ", global_position)
@@ -177,28 +179,45 @@ func _physics_process(delta):
 		else:
 			print("only one cmd")
 			current_command = command_array[0]
-# Avatar Orientation
-		if current_command.x > 1220 and current_command.y > 320:
-			animated_sprite.flip_h = true
-		elif current_command.x > 1220 and current_command.y < 320:
-			animated_sprite.flip_h = false	
-		elif (global_position.x - current_command.x) > 10:
-				print("moving left")
-				animated_sprite.flip_h = false
-		elif (current_command.x - global_position.x) > 10:
-				print("moving right")
-				animated_sprite.flip_h = true
-		# print("closest command: ", current_command)
 		agent.target_position = current_command
+		
+# Orientation Edge Case Determination
+		orientation_edge_case_r = false
+		orientation_edge_case_l = false
+		edge_case_exists = false
+		
+		if (global_position.x > 1220) and (current_command.x > 1220 and current_command.y > 255) and (orientation_edge_case_r == false):
+			orientation_edge_case_r = true
+		elif (global_position.x < 625) and (current_command.x < 625) and (orientation_edge_case_l == false):
+			orientation_edge_case_l = true
+
+		if (orientation_edge_case_r or orientation_edge_case_l):
+			edge_case_exists = true
+		
 		finished = false
+		
 # Idle stance
 	elif finished and command_queue.size() == 0:
 		animated_sprite.play("idle")
 	
-# Locomotion
+# Locomotion & Orientation
 	if not finished:
 		animated_sprite.play("L-walk")
 		var direction = (agent.get_next_path_position() - global_position).normalized()
+
+# Orientation Common Case
+		if not edge_case_exists:
+			if global_position.distance_to(current_command) > 10:
+				orientation_lock = false
+			elif global_position.distance_to(current_command) < 10:
+				orientation_lock = true
+
+		if orientation_lock == false:
+			if direction.x > 0:
+				animated_sprite.flip_h = true
+			elif direction.x < 0:
+				animated_sprite.flip_h = false
+		
 		velocity = velocity.lerp(direction * speed, accel * delta)
 		move_and_slide()
 
