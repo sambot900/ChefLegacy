@@ -9,7 +9,6 @@ var current_command = null
 var finished = false
 var orientation_edge_case_r = false
 var orientation_edge_case_l = false
-var edge_case_exists = false
 var orientation_lock = false
 
 @onready var agent: NavigationAgent2D = $NavAg
@@ -157,42 +156,14 @@ func _on_c_o4_pressed():
 
 
 func _physics_process(delta):
-	
-# Z-sort
-	if global_position.y > 372:
-		z_index = 4
-	else:
-		z_index = 1
+	z_sort()
 	
 # Assign command from queue
 	if finished and command_queue.size() > 0:
-		command_array = command_queue.pop_front()
-		if command_array.size() > 1:
-			var shortest_distance = INF
-			var closest_command = null
-			for command in command_array:
-				var distance = global_position.distance_to(command)
-				if distance < shortest_distance:
-					shortest_distance = distance
-					closest_command = command
-			current_command = closest_command
-		else:
-			print("only one cmd")
-			current_command = command_array[0]
+		current_command = command_seek()
 		agent.target_position = current_command
 		
-# Orientation Edge Case Determination
-		orientation_edge_case_r = false
-		orientation_edge_case_l = false
-		edge_case_exists = false
-		
-		if (global_position.x > 1220) and (current_command.x > 1220 and current_command.y > 255) and (orientation_edge_case_r == false):
-			orientation_edge_case_r = true
-		elif (global_position.x < 625) and (current_command.x < 625) and (orientation_edge_case_l == false):
-			orientation_edge_case_l = true
-
-		if (orientation_edge_case_r or orientation_edge_case_l):
-			edge_case_exists = true
+		orientation_edge_case()
 		
 		finished = false
 		
@@ -206,17 +177,7 @@ func _physics_process(delta):
 		var direction = (agent.get_next_path_position() - global_position).normalized()
 
 # Orientation Common Case
-		if not edge_case_exists:
-			if global_position.distance_to(current_command) > 10:
-				orientation_lock = false
-			elif global_position.distance_to(current_command) < 10:
-				orientation_lock = true
-
-		if orientation_lock == false:
-			if direction.x > 0:
-				animated_sprite.flip_h = true
-			elif direction.x < 0:
-				animated_sprite.flip_h = false
+		orientation_common_case(direction)
 		
 		velocity = velocity.lerp(direction * speed, accel * delta)
 		move_and_slide()
@@ -225,7 +186,60 @@ func _physics_process(delta):
 func _on_nav_ag_navigation_finished():
 	finished = true
 
-
-
 func _on_nav_ag_target_reached():
 	pass
+
+func edge_case_exists():
+# Check for left or right edge case
+	if (orientation_edge_case_r or orientation_edge_case_l):
+		return true
+	else:
+		return false
+
+func command_seek():
+# Get next command in queue
+	command_array = command_queue.pop_front()
+# Find shortest distance destination
+	if command_array.size() > 1:
+		var shortest_distance = INF
+		var closest_command = null
+		for command in command_array:
+			var distance = global_position.distance_to(command)
+			if distance < shortest_distance:
+				shortest_distance = distance
+				closest_command = command
+		return closest_command
+# If only one destination available from command
+	else:
+		return command_array[0]
+
+func z_sort():
+	if global_position.y > 372:
+		z_index = 4
+	else:
+		z_index = 1
+
+func orientation_edge_case():
+# Reset edge case detection for each command
+	orientation_edge_case_r = false
+	orientation_edge_case_l = false
+	
+	if (global_position.x > 1220) and (current_command.x > 1220 and current_command.y > 255) and (orientation_edge_case_r == false):
+		orientation_edge_case_r = true
+	elif (global_position.x < 625) and (current_command.x < 625) and (orientation_edge_case_l == false):
+		orientation_edge_case_l = true
+
+func orientation_common_case(direction):
+# Prevent last second jitters as destination is reached
+	if not edge_case_exists():
+		if global_position.distance_to(current_command) > 10:
+			orientation_lock = false
+		elif global_position.distance_to(current_command) < 10:
+			orientation_lock = true
+			
+# Change orientation depending on which way avatar is moving
+	if orientation_lock == false:
+		if direction.x > 0:
+			animated_sprite.flip_h = true
+		elif direction.x < 0:
+			animated_sprite.flip_h = false

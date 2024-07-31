@@ -298,7 +298,7 @@ sprite_frames = SubResource("SpriteFrames_oxu7q")
 animation = &"idle"
 
 [node name="NavAg" type="NavigationAgent2D" parent="Player"]
-path_desired_distance = 3.0
+path_desired_distance = 4.0
 target_desired_distance = 1.0
 
 [node name="CounterBottom" type="Sprite2D" parent="."]

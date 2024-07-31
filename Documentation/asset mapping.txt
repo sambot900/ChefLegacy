@@ -1,0 +1,61 @@
+var PH = 
+var OH = 
+
+--
+
+ingredient_sprite_burger["raw_beef_patty1"] = load("res://Sprites/Burger/Ingredients/raw_beef_patty.png")
+
+raw_patty1
+raw_patty2
+cooked_patty1
+cooked_patty2
+cheese1
+cheese2
+bacon1
+bacon2
+lettuce1
+lettuce2
+bun1
+bun2
+frozen_fries1
+frozen_fries2
+frozen_onion_rings1
+frozen_onion_rings2
+frozen_chicken_fingers1
+frozen_chicken_fingers2
+cooked_fries1
+cooked_fries2
+cooked_onion_rings1
+cooked_onion_rings2
+cooked_chicken_fingers1
+cooked_chicken_fingers2
+
+--
+
+interactable_sprite_burger[drink_dispenser1] = load("res://Sprites/Burger/Interactables/drink_dispenser1")
+
+drink_dispenser1
+drink_dispenser2
+meat_supply1
+meat_supply2
+stove1
+stove2
+topping_cheese1
+topping_cheese2
+topping_bacon1
+topping_bacon2
+topping_lettuce1
+topping_lettuce2
+fryer1
+fryer2
+box_o_buns1
+box_o_buns2
+
+--
+
+drink_dispenser1_left[] = Sprite2d.new()
+drink_dispenser1_right[] = Sprite2d.new()
+
+on
+unladen
+laden
