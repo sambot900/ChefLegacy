@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
+#region *Global Declarations
 @export var speed = 300
 @export var accel = 20
-
 var command_queue = []
 var command_array
 var current_command = null
@@ -10,9 +10,10 @@ var finished = false
 var orientation_edge_case_r = false
 var orientation_edge_case_l = false
 var orientation_lock = false
+#endregion
 
+#region *Onready Declarations
 @onready var agent: NavigationAgent2D = $NavAg
-
 @onready var c_dd_left: TouchScreenButton = $"../CMDs/c_dd-left"
 @onready var c_dd_right: TouchScreenButton = $"../CMDs/c_dd-right"
 @onready var c_ms_right: TouchScreenButton = $"../CMDs/c_ms-right"
@@ -33,8 +34,8 @@ var orientation_lock = false
 @onready var c_o2: TouchScreenButton = $"../CMDs/c_o2"
 @onready var c_o3: TouchScreenButton = $"../CMDs/c_o3"
 @onready var c_o4: TouchScreenButton = $"../CMDs/c_o4"
-
 @onready var animated_sprite: AnimatedSprite2D = $anim
+#endregion
 
 func _ready():
 	finished = true
@@ -72,6 +73,7 @@ func enqueue_command(target_pos_array: Array):
 	else:
 		print("Dupe")
 
+#region *OnPress Movement Command Functions
 
 func _on_c_dd_left_pressed():
 	print("c_dd_left pressed at global position: ", global_position)
@@ -153,7 +155,7 @@ func _on_c_o3_pressed():
 func _on_c_o4_pressed():
 	print("c_o4 pressed at global position: ", global_position)
 	enqueue_command([Vector2(621, 470)])
-
+#endregion
 
 func _physics_process(delta):
 	z_sort()
@@ -181,7 +183,6 @@ func _physics_process(delta):
 		
 		velocity = velocity.lerp(direction * speed, accel * delta)
 		move_and_slide()
-
 
 func _on_nav_ag_navigation_finished():
 	finished = true
