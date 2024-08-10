@@ -84,19 +84,19 @@ func _on_c_dd_right_pressed():
 
 func _on_c_ms_left_pressed():
 	print("c_ms_left pressed at global position: ", global_position)
-	enqueue_command([Vector2(567, 17),Vector2(568, 7)])
+	enqueue_command([Vector2(567, 17),Vector2(568, -9)])
 
 func _on_c_ms_right_pressed():
 	print("c_ms_right pressed at global position: ", global_position)
-	enqueue_command([Vector2(649, 29),Vector2(648, 19)])
+	enqueue_command([Vector2(649, 29),Vector2(648, -9)])
 
 func _on_c_s_left_pressed():
 	print("c_s_left pressed at global position: ", global_position)
-	enqueue_command([Vector2(360, 2),Vector2(361, -9)])
+	enqueue_command([Vector2(300, -9),Vector2(350, -9),Vector2(399, -9)])
 
 func _on_c_s_right_pressed():
 	print("c_s_right pressed at global position: ", global_position)
-	enqueue_command([Vector2(488, 17),Vector2(487, -9)])
+	enqueue_command([Vector2(373, -9),Vector2(476, -9),Vector2(526, -9)])
 
 func _on_c_ts_1_pressed():
 	print("c_ts_1 pressed at global position: ", global_position)

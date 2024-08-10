@@ -306,6 +306,7 @@ libraries = {
 speed_scale = 0.555
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 position = Vector2(48, -214)
 navigation_polygon = SubResource("NavigationPolygon_v4t1i")
 
