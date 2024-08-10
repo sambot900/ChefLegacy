@@ -1,0 +1,53 @@
+avatar movement orientation solutions:
+
+var orientation_edge_case_r = false
+var orientation_edge_case_l = false
+var clear_edge_cases = false
+var edge_case_exists = false
+
+
+
+	# GENERAL CASES:
+if not finished:
+	if not edge_case_exists:
+		if global_position.distance(current_command) > 10:
+			orientation_lock = false
+		elif global_position.distance(current_command) =< 10:
+			orientation_lock = true
+
+	if orientation_lock == false:
+		if direction.x > 0:
+			flip_horiz = true
+		elif direction.x < 0:
+			flip_horiz = false
+
+
+elif finished:
+	orientation_edge_case_r = false
+	orientation_edge_case_l = false
+	edge_case_exists = false
+		
+	if (global_position in right_region) and (current_command in right_region) and (orientation_edge_case_r == false):
+		orientation_edge_case_r = true
+	elif (global_position in left_region) and (current_command in left_region) and (orientation_edge_case_l == false):
+		orientation_edge_case_l = true
+
+	if (orientation_edge_case_r or orientation_edge_case_l):
+		edge_case_exists = true
+
+
+
+
+legacy 
+
+# Avatar Orientation
+		if current_command.x > 1220 and current_command.y > 320:
+			animated_sprite.flip_h = true
+		elif current_command.x > 1220 and current_command.y < 320:
+			animated_sprite.flip_h = false	
+		elif (global_position.x - current_command.x) > 10:
+				print("moving left")
+				animated_sprite.flip_h = false
+		elif (current_command.x - global_position.x) > 10:
+				print("moving right")
+				animated_sprite.flip_h = true

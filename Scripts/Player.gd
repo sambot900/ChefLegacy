@@ -84,55 +84,63 @@ func _on_c_dd_right_pressed():
 
 func _on_c_ms_left_pressed():
 	print("c_ms_left pressed at global position: ", global_position)
-	enqueue_command([Vector2(567, 17),Vector2(568, -9)])
+	enqueue_command([Vector2(600, -10),Vector2(568, -9)])
 
 func _on_c_ms_right_pressed():
 	print("c_ms_right pressed at global position: ", global_position)
-	enqueue_command([Vector2(649, 29),Vector2(648, -9)])
+	enqueue_command([Vector2(645, -9)])
 
 func _on_c_s_left_pressed():
 	print("c_s_left pressed at global position: ", global_position)
-	enqueue_command([Vector2(300, -9),Vector2(350, -9),Vector2(399, -9)])
+	enqueue_command([Vector2(290, -9),Vector2(335, -9),Vector2(400, -9)])
 
 func _on_c_s_right_pressed():
 	print("c_s_right pressed at global position: ", global_position)
-	enqueue_command([Vector2(373, -9),Vector2(476, -9),Vector2(526, -9)])
+	enqueue_command([Vector2(435, -9),Vector2(480, -9),Vector2(502, -9)])
 
 func _on_c_ts_1_pressed():
 	print("c_ts_1 pressed at global position: ", global_position)
-	enqueue_command([Vector2(387, 160),Vector2(389, 112),Vector2(306, 155)])
+	var top = [Vector2(317, 55),Vector2(352, 55),Vector2(380, 55)]
+	var left = [Vector2(316, 145),Vector2(316, 123),Vector2(316, 140)]
+	var bottom = [Vector2(317, 180),Vector2(352, 180),Vector2(380, 180)]
+	enqueue_command(top + left + bottom)
 
 func _on_c_ts_2_pressed():
 	print("c_ts_2 pressed at global position: ", global_position)
-	enqueue_command([Vector2(470, 160),Vector2(470, 112)])
+	var top = [Vector2(436, 55),Vector2(469, 55),Vector2(408, 55)]
+	var bottom = [Vector2(436, 180),Vector2(469, 180),Vector2(408, 180)]
+	enqueue_command(top + bottom)
 
 func _on_c_ts_3_pressed():
 	print("c_ts_3 pressed at global position: ", global_position)
-	enqueue_command([Vector2(564, 160),Vector2(561, 112),Vector2(649, 157)])
+	var top = [Vector2(527, 55),Vector2(558, 55),Vector2(490, 55)]
+	var right = [Vector2(630, 100),Vector2(630, 130),Vector2(630, 150)]
+	var bottom = [Vector2(531, 180),Vector2(530, 180),Vector2(529, 180)]
+	enqueue_command(top + right + bottom)
 
 func _on_c_f_left_pressed():
 	print("c_f_left pressed at global position: ", global_position)
-	enqueue_command([Vector2(643, 187),Vector2(720, 198)])
+	enqueue_command([Vector2(653, 187),Vector2(720, 198)])
 
 func _on_c_f_right_pressed():
 	print("c_f_right pressed at global position: ", global_position)
-	enqueue_command([Vector2(643, 255),Vector2(720, 254)])
+	enqueue_command([Vector2(653, 255),Vector2(720, 254)])
 
 func _on_c_fs_1_pressed():
 	print("c_fs_1 pressed at global position: ", global_position)
-	enqueue_command([Vector2(653, 354)])
+	enqueue_command([Vector2(653, 300)])
 	
 func _on_c_fs_2_pressed():
 	print("c_fs_2 pressed at global position: ", global_position)
-	enqueue_command([Vector2(653, 425)])
+	enqueue_command([Vector2(653, 360)])
 
 func _on_c_t_pressed():
 	print("c_t pressed at global position: ", global_position)
-	enqueue_command([Vector2(454,414),Vector2(513,380),Vector2(451,353)])
+	enqueue_command([Vector2(653,434),Vector2(653,450),Vector2(653,474)])
 
 func _on_c_bob_pressed():
 	print("c_bob pressed at global position: ", global_position)
-	enqueue_command([Vector2(632, 75)])
+	enqueue_command([Vector2(653,84)])
 
 func _on_c_o1_pressed():
 	print("c_o1 pressed at global position: ", global_position)
@@ -213,7 +221,9 @@ func z_sort():
 		z_index = 11
 	elif global_position.y > 168 and global_position.y < 384:
 		z_index = 9
-	elif global_position.y < 180:
+	elif global_position.y < 160:
+		z_index = 4
+	else:
 		z_index = 1
 
 func orientation_edge_case():
@@ -221,12 +231,24 @@ func orientation_edge_case():
 	orientation_edge_case_r = false
 	orientation_edge_case_l = false
 	
-	if (global_position.x > 706) and (current_command.x > 706 and current_command.y < 392) and (orientation_edge_case_r == false):
-		orientation_edge_case_r = true
-		print("edge case R")
-	elif (global_position.x < 282) and (current_command.x < 282) and (orientation_edge_case_l == false):
-		orientation_edge_case_l = true
-		print("edge case L")
+	# If target destination is above BOX OF BUNS
+	if current_command.y < 64:
+		if (global_position.x > 610) and (current_command.x > 611) and (orientation_edge_case_r == false):
+			orientation_edge_case_r = false
+			print("edge case VOID R3")
+	# If target destination is below
+	elif current_command.y < 122:
+		if (global_position.x > 620 and global_position.y > 41) and (current_command.x > 652 and current_command.y > 652) and (orientation_edge_case_r == false):
+			orientation_edge_case_r = true
+			print("edge case VOID R4")
+	elif current_command.y > 121:
+		if ((global_position.x > 610 and global_position.y > 121) and (current_command.x > 611)) and (orientation_edge_case_r == false):
+			orientation_edge_case_r = true
+			print("edge case R")
+		if (global_position.x > 515 and (global_position.x < 622)) and (current_command.x > 515 and (current_command.x < 622)) and (orientation_edge_case_l == false):
+			orientation_edge_case_l = true
+			print("edge case L")
+	
 
 func orientation_common_case(direction):
 # Prevent last second jitters as destination is reached
