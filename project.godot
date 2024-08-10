@@ -10,17 +10,21 @@ config_version=5
 
 [application]
 
-config/name="Chef Legacy"
+config/name="Chef Legacy v0.2"
 run/main_scene="res://Scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
 
+window/size/viewport_width=648
+window/size/viewport_height=1152
 window/size/no_focus=true
-window/size/window_width_override=1152
-window/size/window_height_override=648
-window/stretch/mode="canvas_items"
+window/size/window_width_override=648
+window/size/window_height_override=1152
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
 window/snap/snap_2d_vertices_to_pixel=true
 
 [input_devices]
