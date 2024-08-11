@@ -115,7 +115,7 @@ func _on_c_ts_3_pressed():
 	print("c_ts_3 pressed at global position: ", global_position)
 	var top = [Vector2(527, 55),Vector2(558, 55),Vector2(490, 55)]
 	var right = [Vector2(630, 100),Vector2(630, 130),Vector2(630, 150)]
-	var bottom = [Vector2(531, 180),Vector2(530, 180),Vector2(529, 180)]
+	var bottom = [Vector2(525, 180),Vector2(530, 180),Vector2(527, 180)]
 	enqueue_command(top + right + bottom)
 
 func _on_c_f_left_pressed():

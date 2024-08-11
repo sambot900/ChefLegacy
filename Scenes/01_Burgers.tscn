@@ -308,6 +308,7 @@ libraries = {
 speed_scale = 0.555
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 position = Vector2(48, -214)
 navigation_polygon = SubResource("NavigationPolygon_v4t1i")
 
@@ -338,6 +339,7 @@ texture = ExtResource("15_e1nox")
 offset = Vector2(-110, -172)
 
 [node name="TOPPING STATION" type="Node2D" parent="."]
+visible = false
 position = Vector2(-24, 1)
 
 [node name="TsBoardCheese" type="Sprite2D" parent="TOPPING STATION"]

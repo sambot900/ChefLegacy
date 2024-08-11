@@ -41,15 +41,21 @@ func _process(_delta):
 script = SubResource("GDScript_lf3rp")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-offset_right = 648.0
-offset_bottom = 1152.0
+offset_left = -272.0
+offset_top = -152.0
+offset_right = 744.0
+offset_bottom = 1655.0
 texture = ExtResource("1_hs148")
 expand_mode = 1
-metadata/_edit_lock_ = true
+stretch_mode = 4
 
 [node name="StartButton" type="TouchScreenButton" parent="."]
+position = Vector2(52, 1010)
+scale = Vector2(0.702178, 0.71698)
+texture_normal = ExtResource("2_wsixp")
+
+[node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(198, 801)
 scale = Vector2(0.632242, 0.64557)
-texture_normal = ExtResource("2_wsixp")
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
