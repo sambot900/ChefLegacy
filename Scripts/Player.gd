@@ -114,7 +114,7 @@ func _on_c_ts_2_pressed():
 func _on_c_ts_3_pressed():
 	print("c_ts_3 pressed at global position: ", global_position)
 	var top = [Vector2(527, 55),Vector2(558, 55),Vector2(490, 55)]
-	var right = [Vector2(630, 100),Vector2(630, 130),Vector2(630, 150)]
+	var right = [Vector2(610, 100),Vector2(610, 130),Vector2(610, 150)]
 	var bottom = [Vector2(525, 180),Vector2(530, 180),Vector2(527, 180)]
 	enqueue_command(top + right + bottom)
 
@@ -232,18 +232,21 @@ func orientation_edge_case():
 	orientation_edge_case_l = false
 	
 	# If target destination is above BOX OF BUNS
-	if current_command.y < 64:
+	if current_command.y < 38:
 		if (global_position.x > 610) and (current_command.x > 611) and (orientation_edge_case_r == false):
 			orientation_edge_case_r = false
 			print("edge case VOID R3")
 	# If target destination is below
 	elif current_command.y < 122:
-		if (global_position.x > 620 and global_position.y > 41) and (current_command.x > 652 and current_command.y > 652) and (orientation_edge_case_r == false):
-			orientation_edge_case_r = true
+		if (global_position.x > 620) and (current_command.x > 652 and current_command.y > 38) and (orientation_edge_case_r == false):
+			orientation_force_right()
 			print("edge case VOID R4")
 	elif current_command.y > 121:
+		if (global_position.x > 620) and (current_command.x > 652 and current_command.y > 80) and (orientation_edge_case_r == false):
+			orientation_force_right()
+			print("R5")
 		if ((global_position.x > 610 and global_position.y > 121) and (current_command.x > 611)) and (orientation_edge_case_r == false):
-			orientation_edge_case_r = true
+			orientation_force_right()
 			print("edge case R")
 		if (global_position.x > 515 and (global_position.x < 622)) and (current_command.x > 515 and (current_command.x < 622)) and (orientation_edge_case_l == false):
 			orientation_edge_case_l = true
@@ -264,3 +267,7 @@ func orientation_common_case(direction):
 			animated_sprite.flip_h = true
 		elif direction.x < 0:
 			animated_sprite.flip_h = false
+			
+func orientation_force_right():
+	animated_sprite.flip_h = true
+	orientation_edge_case_r = true
