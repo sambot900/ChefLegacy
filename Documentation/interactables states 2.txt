@@ -1,0 +1,10 @@
+Action:
+1. pick up
+2. swap
+3. turn on
+4. set down
+5. serve
+
+pick up:
+-one hand empty
+-item is there to pick up

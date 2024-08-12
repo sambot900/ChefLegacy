@@ -61,14 +61,14 @@ func _ready():
 	c_o2.pressed.connect(self._on_c_o2_pressed)
 	c_o3.pressed.connect(self._on_c_o3_pressed)
 	c_o4.pressed.connect(self._on_c_o4_pressed)
-	print("Round node ready")
+	#print("Round node ready")
 
 func enqueue_command(target_pos_array: Array):
 	if command_queue.size() > 0 and command_queue[-1] != target_pos_array:
 		command_queue.append(target_pos_array)
 	elif command_queue.size() == 0:
 		command_queue.append(target_pos_array)
-		print("Current queue: ", command_queue)
+		#print("Current queue: ", command_queue)
 	else:
 		pass
 
@@ -83,7 +83,9 @@ func _on_c_dd_left_pressed():
 	# -----------------------------------------
 	var travel_distance_left = x_mid-x_range
 	var travel_distance_right = x_mid+x_range
-	enqueue_command([Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)])
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("dd_left: ",coords)
+	enqueue_command(coords)
 
 func _on_c_dd_right_pressed():
 	# -----------------------------------------
@@ -94,7 +96,9 @@ func _on_c_dd_right_pressed():
 	# -----------------------------------------
 	var travel_distance_left = x_mid-reach
 	var travel_distance_right = x_mid+reach
-	enqueue_command([Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)])
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("dd_right: ",coords)
+	enqueue_command(coords)
 
 func _on_c_ms_left_pressed():
 	# -----------------------------------------
@@ -105,7 +109,9 @@ func _on_c_ms_left_pressed():
 	# -----------------------------------------
 	var travel_distance_left = x_mid-reach
 	var travel_distance_right = x_mid+reach
-	enqueue_command([Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)])
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("ms_left: ",coords)
+	enqueue_command(coords)
 
 func _on_c_ms_right_pressed():
 	# -----------------------------------------
@@ -116,7 +122,9 @@ func _on_c_ms_right_pressed():
 	# -----------------------------------------
 	var travel_distance_left = x_mid-reach
 	var travel_distance_right = x_mid+reach
-	enqueue_command([Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)])
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("ms_right: ",coords)
+	enqueue_command(coords)
 
 func _on_c_s_left_pressed():
 	# -----------------------------------------
@@ -127,7 +135,9 @@ func _on_c_s_left_pressed():
 	# -----------------------------------------
 	var travel_distance_left = x_mid-reach
 	var travel_distance_right = x_mid+reach
-	enqueue_command([Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)])
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("s_left: ",coords)
+	enqueue_command(coords)
 
 func _on_c_s_right_pressed():
 	# -----------------------------------------
@@ -138,7 +148,9 @@ func _on_c_s_right_pressed():
 	# -----------------------------------------
 	var travel_distance_left = x_mid-reach
 	var travel_distance_right = x_mid+reach
-	enqueue_command([Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)])
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("s_right: ",coords)
+	enqueue_command(coords)
 
 func _on_c_ts_1_pressed():
 	# -----------------------------------------
@@ -158,7 +170,9 @@ func _on_c_ts_1_pressed():
 	var top = [Vector2(travel_distance_left, y_common),Vector2(x_mid, y_common),Vector2(travel_distance_right, y_common)]
 	var left = [Vector2(x_common, travel_distance_up),Vector2(x_common, y_mid),Vector2(x_common, travel_distance_down)]
 	var bottom = [Vector2(travel_distance_left, y_common2),Vector2(x_mid, y_common2),Vector2(travel_distance_right, y_common2)]
-	enqueue_command(top + left + bottom)
+	var coords = (top + left + bottom)
+	print("ts_1: ",coords)
+	enqueue_command(coords)
 
 func _on_c_ts_2_pressed():
 	# -----------------------------------------
@@ -174,7 +188,9 @@ func _on_c_ts_2_pressed():
 	
 	var top = [Vector2(travel_distance_left, y_common),Vector2(x_mid, y_common),Vector2(travel_distance_right, y_common)]
 	var bottom = [Vector2(travel_distance_left, y_common2),Vector2(x_mid, y_common2),Vector2(travel_distance_right, y_common2)]
-	enqueue_command(top + bottom)
+	var coords = (top + bottom)
+	print("ts_2: ",coords)
+	enqueue_command(coords)
 
 func _on_c_ts_3_pressed():
 	# -----------------------------------------
@@ -194,7 +210,9 @@ func _on_c_ts_3_pressed():
 	var top = [Vector2(travel_distance_left, y_common),Vector2(x_mid, y_common),Vector2(travel_distance_right, y_common)]
 	var right = [Vector2(x_common, travel_distance_up),Vector2(x_common, y_mid),Vector2(x_common, y_mid+6)]
 	var bottom = [Vector2(travel_distance_left, y_common2),Vector2(x_mid, y_common2),Vector2(travel_distance_right, y_common2)]
-	enqueue_command(top + right + bottom)
+	var coords = (top + right + bottom)
+	print("ts_3: ",coords)
+	enqueue_command(coords)
 
 func _on_c_f_left_pressed():
 	# -----------------------------------------
@@ -205,8 +223,9 @@ func _on_c_f_left_pressed():
 	# -----------------------------------------
 	var travel_distance_up = y_mid-reach
 	var travel_distance_down = y_mid+reach
-	enqueue_command([Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)])
-
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("f_left: ",coords)
+	enqueue_command(coords)
 
 func _on_c_f_right_pressed():
 	# -----------------------------------------
@@ -217,7 +236,9 @@ func _on_c_f_right_pressed():
 	# -----------------------------------------
 	var travel_distance_up = y_mid-reach
 	var travel_distance_down = y_mid+reach
-	enqueue_command([Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)])
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("f_right: ",coords)
+	enqueue_command(coords)
 
 func _on_c_fs_1_pressed():
 	# -----------------------------------------
@@ -228,8 +249,10 @@ func _on_c_fs_1_pressed():
 	# -----------------------------------------
 	var travel_distance_up = y_mid-reach
 	var travel_distance_down = y_mid+reach
-	enqueue_command([Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)])
-	
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("fs_1: ",coords)
+	enqueue_command(coords)
+
 func _on_c_fs_2_pressed():
 	# -----------------------------------------
 	# ADJUSTMENTS
@@ -239,7 +262,9 @@ func _on_c_fs_2_pressed():
 	# -----------------------------------------
 	var travel_distance_up = y_mid-reach
 	var travel_distance_down = y_mid+reach
-	enqueue_command([Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)])
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("fs_2: ",coords)
+	enqueue_command(coords)
 
 func _on_c_t_pressed():
 	# -----------------------------------------
@@ -250,8 +275,10 @@ func _on_c_t_pressed():
 	# -----------------------------------------
 	var travel_distance_up = y_mid-reach
 	var travel_distance_down = y_mid+reach
-	enqueue_command([Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)])
-	
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("t: ",coords)
+	enqueue_command(coords)
+
 func _on_c_t2_pressed():
 	# -----------------------------------------
 	# ADJUSTMENTS
@@ -261,7 +288,9 @@ func _on_c_t2_pressed():
 	# -----------------------------------------
 	var travel_distance_up = y_mid-reach
 	var travel_distance_down = y_mid+reach
-	enqueue_command([Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)])
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("t2: ",coords)
+	enqueue_command(coords)
 
 func _on_c_bob_pressed():
 	# -----------------------------------------
@@ -272,43 +301,48 @@ func _on_c_bob_pressed():
 	# -----------------------------------------
 	var travel_distance_up = y_mid-reach
 	var travel_distance_down = y_mid+reach
-	enqueue_command([Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)])
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("bob: ",coords)
+	enqueue_command(coords)
 
 func _on_c_o1_pressed():
-	print("c_o1", global_position)
-	enqueue_command([Vector2(292, 572)])
+	var coords = [Vector2(292, 572)]
+	print("o1: ",coords)
+	enqueue_command(coords)
 
 func _on_c_o2_pressed():
-	print("c_o2", global_position)
-	enqueue_command([Vector2(424, 572)])
+	var coords = [Vector2(424, 572)]
+	print("o2: ",coords)
+	enqueue_command(coords)
 
 func _on_c_o3_pressed():
-	print("c_o3", global_position)
-	enqueue_command([Vector2(558, 572)])
+	var coords = [Vector2(558, 572)]
+	print("o3: ",coords)
+	enqueue_command(coords)
 
 func _on_c_o4_pressed():
-	print("c_o4", global_position)
-	enqueue_command([Vector2(686, 572)])
+	var coords = [Vector2(686, 572)]
+	print("o4: ",coords)
+	enqueue_command(coords)
 #endregion
 
 func _physics_process(delta):
 	z_sort()
 	
-	if finished:
-		if current_command != null:
-			reached_interactable.emit(current_command)
-	
 # Assign command from queue
 	if finished and command_queue.size() > 0:
+		if current_command != null:
+			reached_interactable.emit(current_command)
 		current_command = command_seek()
 		orientation_edge_case()
 		agent.target_position = current_command
-		print("CMD CHOSEN: ",current_command)
-		
 		finished = false
 		
 # Idle stance
 	elif finished and command_queue.size() == 0:
+		if current_command != null:
+			reached_interactable.emit(current_command)
+		current_command = null;
 		animated_sprite.play("idle")
 	
 # Locomotion & Orientation
@@ -373,7 +407,7 @@ func orientation_edge_case():
 	if current_command.y < 38:
 		if (global_position.x > 598) and (current_command.x < 653) and (orientation_edge_case_r == false):
 			orientation_edge_case_r = false
-			print("edge case R2 VOID")
+			#print("edge case R2 VOID")
 	# ---------------------------------------------------------------------------------------------------------
 	# R3
 	# You are in general right... your command is anywhere under the "top-right area"
@@ -382,7 +416,7 @@ func orientation_edge_case():
 	elif current_command.y < 122:
 		if (global_position.x > 598) and (current_command.x > 652 and current_command.y > 37) and (orientation_edge_case_r == false):
 			orientation_edge_case_r = true
-			print("edge case R3")
+			#print("edge case R3")
 	# ---------------------------------------------------------------------------------------------------------
 	# R4
 	# If you're command is below the topping station
@@ -391,14 +425,14 @@ func orientation_edge_case():
 		if (global_position.x > 620) and (current_command.x > 652 and current_command.y > 80) and (orientation_edge_case_r == false):
 			orientation_edge_case_r = true
 			# LOCK RIGHT
-			print("edge case R4")
+			#print("edge case R4")
 	# ---------------------------------------------------------------------------------------------------------
 	# R1
 	# If you're command is below the topping station
 	# You in in general right and below the topping station... your command is general right
 		if ((global_position.x > 610 and global_position.y > 121) and (current_command.x > global_position.x)) and (orientation_edge_case_r == false):
 			orientation_edge_case_r = true
-			print("edge case R1")
+			#print("edge case R1")
 
 func orientation_common_case(direction):
 # Prevent last second jitters as destination is reached

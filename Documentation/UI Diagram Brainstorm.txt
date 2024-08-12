@@ -1,0 +1,65 @@
+UI:
+---
+
+-Start menu
+	-general settings button
+		-profile (save)
+		-audio settings
+	-start button
+		-if new user: New user screen
+			-Name and Avatar Selection
+		-if profile exists and verified not corrupted:
+			-load into current restraunt on the current level with saved avatar and player name
+			-all restraunt unlocks and progress are saved in local storage
+			
+New User Screen:
+-After name and avatar are selected and player selects confirmation button,
+ the screen fades to white, and then fades back to a title screen.
+-Music starts and storyboard images are displayed. Storyboard is progressed
+ with user click input. Input is only accepted to skip after the images
+ has fully rendered and is not fading in or experiencing a transition.
+-When storyboard is elapsed, our controller moves to level zero.
+
+Level Zero:
+-Level zero starts by viewing the restraunt with the player avatar visible
+ in the kitchen. The user is only able to click the round start button
+ which is being highlighted in some way. (guided tutorial action)
+ Instructions are present on the screen to select round start.
+-User selects the round start. Relevant round start audio and animation.
+-Customer immediately approaches the counter. There is no game clock in
+ round zero. The customer orders a simple burger.
+-User is instructed to pick up a raw beef patty. Once complete,
+ the user is instructed to click the stove, where the patty is placed.
+ The patty is cooked, and the user is instructed to click the stove again
+ to remove the patty from the burner. The avatar now holds the cooked patty.
+-The user is instructed to click on a bin of hamburger buns. The avatar
+ navigates to the bin and an assembled burger appears in the avatar's
+ hand.
+-Through a few more customers, level zero shows the user how to serve
+ drinks and sides as well.
+-With the final customer served, a "round win" animation occurs and the user
+ is brought to a round summary score screen. This screen includes:
+	1. money made
+	1b. bonus money from multiplier
+		*Rounds can have one of many multipliers, or no multipliers.
+	2. number of customers served
+	3. combos performed
+	4. power-ups used
+-The user advances past the summary score screen by clicking continue.
+-A visual transition brings us back to the restraunt. We lock the user into
+ exploring new equipment. We force them to buy an upgrade to their drinks
+ dispenser. (User is forced to select expedited shipping for extra charge)
+-The tutorial ceases after the drink dispenser is purchased and the user is
+ free to browse upgrades
+
+
+
+Round Multipliers:
+Positive mutlipliers:
+1. Customers Served
+2. Money made
+3. Combos performed
+Negative Multipliers:
+1. Minimus burned food
+2. Minimus mad customers
+3. Minimus thrown away food

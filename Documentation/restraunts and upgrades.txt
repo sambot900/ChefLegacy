@@ -1,0 +1,107 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+1. Burger Joint:
+Beef Patty (standard) 1 > (prime) 2
+NONE > Plant-based Patty 1 > 2
+Buns 1 (plain) > 2 (sesame) > 3 (brioche)
+Drink Dispenser 1 (cola & orange with 1-platform) > (1-platform) 2 > (faster 2-platform) 3
+Sides (fries, onion rings, chicken fingers) 1 > 2
+Topping lettuce 1 > 2
+Topping bacon 1 > 2
+Topping cheese 1 > 2
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+2. Donut Shoppe:
+*Take pre-shaped dough and put in oven. Then add frosting/toppings.
+Circular Donuts 1 > 2
+NONE > Filling Donut 1 > 2
+Sprinkles 1 > 2 (island item, instant add)
+Drink Dispenser 1 (coffee/orange juice 1-platform) > 2-platform > fast 2-platform
+Sides (cupcake, macaroons, cookie) 1 > 2
+Topping chocolate frosting 1 > 2
+Topping strawberry frosting 1 > 2
+Topping vanilla frosting 1 > 2
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+3. Little Italy:
+*Noodles cook on range, then add sauce or topping or both.
+Spaghetti 1 > 2
+NONE > Penne 1 > 2
+Sauces (red/white) 1 > 2 (island item, instant add)
+Drink Dispenser (green/red italian soda) 1-plat > fast 1-plat > fast 2-plat
+Sides (breadsticks, salad, cheesecake slice) 1 > 2
+Topping Parmesean 1 > 2
+Topping Sausage 1 > 2 
+Topping Basil 1 > 2
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+4. Ramen:
+*Ingedients all go in pot (noodles, protein, veg) and is ready to add egg (instant). Veg must be cut before adding to 
+pot.
+Pork (protein) 1 > 2
+Tofu (protein) 1 > 2
+Beef (protein) 1 > 2
+Noodles 1 > 2 > 3
+Egg (island item, instant add)
+Topping Carrots (veg) 1 > 2
+Topping Cabbage (veg) 1 > 2
+Topping Onions (veg) 1 > 2
+Drink Dispenser 1 (cola,pear mocktail) 2-plat > fast 2-plat
+Sides (dumpling,pork buns,poke bowl)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+5. Ice Cream:
+*This round is a bit different, and might get boring quicker than a normal restaurant. It might be best to make this a special restaurant where a character asks
+you to help them with their restaurant because your reputation is bigger by this time. You will work the restaurant like a normal new restaurant and the owner
+will be your assistant.
+
+*Player takes pre-packaged (separate vanilla, chocolate, strawberry machines) ice cream ingredients and puts them in a machine. The machine spins and works for 
+a bit, then a light comes on, indciating the ice cream is the right consistency. The player will need to turn off the machine and open the lid before the ice 
+cream is over-churned.
+
+*Player takes vessel (sugar cone, waffle cone, dish) and then takes it to the corresponding flavored machine to load the vessel. The ice cream is added to the
+vessel instantly. The player can then take the cone to the mix-ins station, managed by your assistant. (chocolate chips, cookies, nuts)
+
+*Chocolate sauce must go on last if ordered (island item, instant add)
+
+*Ice cream melts once dispensed, so the player will need to give it to the customer in a certain amount of time. Must throw away if past time limit.
+
+Ice Cream Ingredients 1 > 2
+Cones and Cups 1 > 2
+Chocolate sauce 1 > 2 (island item, instant add)
+Shake Dispenser (vanilla/chocolate) 1-platform > 2-platform > fast 2-platform
+Chocolate Chips 1 > Chocolate Shavings 2
+Cookie 1 > 2
+Nuts 1 > 2
+Sides (cookie bar,brownie,bon bon)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+6. Taco <name>'s:
+
+*Protein is cooked, Secondaries next, then Tortilla, then sauce, then Finisher.
+
+*Invalid action to add protein to a tortilla without secondary ingredient.
+
+Beef 1 > 2
+Chicken 1 > 2
+N/A > Pork 1 > 2
+Taco/Burrito Tortilla 1 > 2
+Secondary Ingredient Rice & Beans 1 > 2
+Finishers (cilantro,jalepenos,olives) 1 > 2 (island item, instant add)
+Topping Red Sauce
+Topping Green Sauce
+Topping Cheese Sauce
+Drink Dispenser (lemonade,red drink)
+Sides (churro,tortilla chips,street corn)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Heat Pit Barbeque:
+
+*
+
+Ribs 1 > 2
+Briscuit 1 > 2
+Drink dispenser (coke,clear)
+Sides (mashed potatoes,coleslaw,mac n cheese) 
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sushi:
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,241 @@
+~ENTITY INTERACTION SCENARIOS~
+=============== ====================================================================================
+Definitions:
+---------------------------------------------------------------------------------------------------
+# Avatar object slots:
+PH = Primary Hand
+OH = Off Hand
+
+# When object slot is empty... PH = E
+E = Empty slot
+
+# Special object sets:
+Raw Beef Patty =  Raw Beef Patty 1 || Raw Beef Patty 2
+Cooked Patty = Cooked Patty 1 || Cooked Patty 2
+Bun = Bun 1 || Bun 2
+Frozen Side = Frozen Fries 1 || Frozen Fries 2 || Frozen Onion Rings 1 || Frozen Onion Rings 2 || Frozen Chicken 1 || Frozen Chicken 2
+Cooked Side = Cooked Fries 1 || Cooked Fries 2 || Cooked Onion Rings 1 || Cooked Onion Rings 2 || Cooked Chicken 1 || Cooked Chicken 2
+Uncookable Object = Anything except Raw Beef Patty
+Laden = Space occupied with any object/stack
+
+* Any integer following an object name references its quality level, where each quality is a different sprite image. Some objects of different quality are present in-game at the same time, whereas others replace the lesser quality object when upgraded.
+
+* Negation of Raw Beef Patty includes the empty set, whereas Uncookable Object must be an object.
+
+* Condition: "Always" means any avatar state will produce the same result for the entity interaction.
+
+* Scenario: "All" means there is only one entity state, and therefore only avatar state affects result.
+
+* "resource" means we are referencing the entity in the scenario. For example, in all stove scenarios, the resource is always the stove.
+
+* "object" always references the object/stack in a laden resource. Example, for a stove, it could be a raw, cooked or burnt patty.
+
+* "[resource object]" refers to the object produced by a resource. Cannot be a stack. (Cheese topping station has a [resource object] of Cheese, rather than a stack containing Cheese.)
+
+* "compound object" is an object made of individual ingredients. Example: Burger made of Bun and Cooked Beef Patty
+
+* "stack" refers to when multiple objects are added to PH or OH to make a compound object. The difference between stack and compound object, is that a stack is allowed to be incomplete (Such as a Cooked Beef Patty with Lettuce also in the stack). A compound object is a fully realized all ingredients (such as a Cooked Beef Patty, Lettuce, and a Bun).
+
+* objects contained in "{,}" or "{;}" represents items in a set. Example: {Bun, Cooked Beef Patty} REQUIRES both objects exist in the set to be true in a comparison to a superset. {Bun; Cooked Beef Patty} is a set with one or more of the listed objects, including the empty set. The target set in this case
+
+* Swap means we take (avatar slot, avatar slot stack/object) and switch places with (resource slot, resource slot stack/object)
+===================================================================================================
+Stove scenarios:
+---------------------------------------------------------------------------------------------------
+Stove Slot Empty:
+	1. PH = E && OH = E
+		-Avatar moves to location but no error or action results.
+	2. PH = Raw Beef Patty
+		-From PH, place object on resource and begin cook animation.
+	3. PH != Raw Beef Patty && OH == Raw Beef Patty
+		-From OH, place object on resource and begin cook animation.
+	4. PH Uncookable Object && (OH = Uncookable Object || OH = E)
+		-Error
+	5. (PH = Uncookable Object || PH = E) || OH = Uncookable Object
+		-Error
+---------------------------------------------------------------------------------------------------
+Stove Slot Laden w/ Raw Patty:
+	1. PH = E
+		-From resource, take Raw Beef Patty into PH.
+	2. PH = Laden && OH = E
+		-From resource, take Raw Beef Patty into OH.
+	3. PH = Laden && OH = Laden
+		-Error
+---------------------------------------------------------------------------------------------------
+Stove Slot Laden w/ Cooked Patty:
+	1. PH = Raw Beef Patty && OH != Bun
+		-Swap (PH, Raw Beef Patty) and (Stove, Cooked Patty)
+	2. (PH != Bun && PH != Raw Beef Patty) && OH = Raw Beef Patty
+		-Swap (OH, Raw Beef Patty) and (Stove, Cooked Patty)
+	3. PH = Bun
+		-From resource, add cooked patty to PH stack.
+	4. PH != Bun && OH = Bun
+		-From resource, add cooked patty to OH stack.
+	5. PH = E && OH != Bun
+		-From resource, add cooked patty to PH stack.
+	6. (PH != Bun && PH != E) && OH = E
+		-From resource, add cooked patty to OH stack.
+	7. (PH = Laden && PH != Bun && PH != Raw Beef Patty) && (OH = Laden && OH != Bun && OH != Raw Beef Patty)
+		-Error.
+---------------------------------------------------------------------------------------------------
+Stove Slot Laden w/ Burned Patty:
+	1. PH = Raw Beef Patty
+		-Swap (PH, Raw Beef Patty) and (Stove, Burnt Patty)
+	2. PH != Raw Beef Patty && OH = Raw Beef Patty
+		-Swap (OH, Raw Beef Patty) and (Stove, Burnt Patty)
+	3. PH = E && OH != Raw Beef Patty
+		-From resource, take object into PH.
+	4. (PH = Laden && PH != Raw Beef Patty) && OH = E
+		-From resource, take object into OH.
+	5. PH = Laden && OH = Laden
+		-Error.
+===================================================================================================
+Drink Dispenser Scenarios:
+---------------------------------------------------------------------------------------------------
+Drink Dispenser Slot Empty:
+	1. Always
+		-Activate drink pour animation
+---------------------------------------------------------------------------------------------------
+Drink Dispenser Slot Laden:
+	1. PH = E
+		-From resource, take object into PH.
+	2. PH = Laden && OH = E
+		-From resource, take object into OH.
+	3. PH = Laden && OH = Laden
+		-Error.
+===================================================================================================
+Fryer Scenarios:
+---------------------------------------------------------------------------------------------------
+Fryer Slot Empty:
+	1. PH = E && OH = E
+		-Avatar moves to location but no error or action results.
+	2. PH = Frozen Side
+		-From PH, place object in resource and begin cook animation.
+	3. PH != Frozen Side && OH = Frozen Side
+		-From OH, place object in resource and begin cook animation.
+	4. PH != Frozen Side && OH != Frozen Side
+		-Error.
+---------------------------------------------------------------------------------------------------
+Fryer Slot Laden w/ Frozen Side:
+	1. PH = E
+		-From resource, take object into PH.
+	2. PH = Laden && OH = E
+		-From resource, take object into OH.
+	3. PH = Laden && OH = Laden
+		-Error.
+---------------------------------------------------------------------------------------------------
+Fryer Slot Laden w/ Cooked Side:
+	1. PH = Frozen Side
+		-Swap (PH, Frozen Side) and (Fryer, Cooked Side).
+	2. PH != Frozen Side && OH = Frozen Side
+		-Swap (OH, Frozen Side) and (Fryer, Cooked Side).
+	3. PH = E && OH != Frozen Side
+		-From resource, take object into PH.
+	4. (PH = Laden && PH != Frozen Side) && OH = E
+		-From resource, take object into OH.
+	5. (PH = Laden && PH != Frozen Side) && (OH = Laden && OH != Frozen Side)
+		-Error.
+---------------------------------------------------------------------------------------------------
+Fryer Slot Laden w/ Burnt Side:
+	1. PH = Frozen Side
+		-Swap (PH, Frozen Side) and (Fryer, Burnt Side).
+	2. PH != Frozen Side && OH = Frozen Side
+		-Swap (OH, Frozen Side) and (Fryer, Burnt Side).
+	3. PH = E && OH != Frozen Side
+		-From resource, take object into PH.
+	4. (PH = Laden && PH != Frozen Side) && OH = E
+		-From resource, take object into OH.
+	5. (PH = Laden && PH != Frozen Side) && (OH = Laden && OH != Frozen Side).
+		-Error
+===================================================================================================
+Box O Buns Scenarios:
+---------------------------------------------------------------------------------------------------
+All:
+	1. PH stack contains Cooked Patty && PH stack contains no Bun
+		-From resource, take object into PH stack.
+	2. PH stack contains no Cooked Patty && (OH stack contains Cooked Patty && OH stack contains no Bun)
+		-From resource, take object into OH stack.
+	3. PH = E && OH stack contains no Cooked Patty
+		-From resource, take object into PH stack.
+	4. (PH = Laden && PH != Cooked Patty) && OH = E
+		-From resource, take object into OH stack.
+	5. (PH = Laden && PH != Cooked Patty) && (OH = Laden && OH != Cooked Patty)
+		-Error
+===================================================================================================
+Meat Stash Scenarios: (Applies separately to both Meat Stash 1 and Meat Stash 2)
+---------------------------------------------------------------------------------------------------
+All:
+	1. PH = E
+		-From resource, take object into PH.
+	2. PH != E && OH = E
+		-From resource, take object into OH.
+	3. PH = Laden && OH = Laden
+		-Error
+===================================================================================================
+Frozen Side Stash Scenarios: (Applies separately to all three Frozen Side Stashes: fries, onion rings, chicken)
+---------------------------------------------------------------------------------------------------
+All:
+	1. PH = E
+		-From resource, take object into PH.
+	2. PH != E && OH = E
+		-From resource, take object into OH.
+	3. PH = Laden && OH = Laden
+		-Error
+===================================================================================================
+Topping Station Scenarios: (Applies separately to all three Topping Stations: Cheese, Bacon, Lettuce)
+---------------------------------------------------------------------------------------------------
+Station Slot Empty:
+	1. PH = E && OH = E
+		-Avatar moves to location but no error or action results.
+	2. PH stack contains {Cooked Beef Patty, Bun} && PH stack contains no [resource object]
+		-From PH, place stack on resource and begin preparation animation.
+	3. (PH stack contains no {Cooked Beef Patty; [resource object]}) && (OH stack contains {Cooked Beef Patty, Bun} && OH stack contains no [resource object])
+		-From OH, place stack on resource and begin preparation animation.
+	4. (PH stack contains no Cooked Beef Patty || PH stack contains [resource object]) && (OH stack contains no Cooked Beef Patty || OH stack contains [resource object])
+		-Error
+---------------------------------------------------------------------------------------------------
+Station Slot Laden:
+	1. PH = E
+		-From resource, take stack into PH
+	2. PH = Laden && OH = E
+		-From resource, take stack into OH
+	3. (PH stack contains {Cooked Beef Patty, Bun} && PH stack contains no [resource object]) && OH = Laden
+		-Swap (PH, stack) and (Station Slot, stack)
+	4. PH = Laden && PH stack contains no {Cooked Beef Patty; Bun} && (OH = Laden && OH stack contains {Cooked Beef Patty, Bun} && PH stack contains no [resource object])
+		-Swap (OH, stack) and (Station Slot, stack)
+===================================================================================================
+Prep Tray Scenarios:
+---------------------------------------------------------------------------------------------------
+Prep Tray Empty:
+	1. PH = Laden
+		-From PH, place stack on resource.
+	2. PH = E && OH = Laden
+		-From OH, place stack on resource.
+---------------------------------------------------------------------------------------------------
+Prep Tray Laden:
+	1. PH = E
+		-From resource, take stack into PH.
+	2. PH = Laden && OH = E
+		-From resource, take stack into OH.
+	3. (PH = Laden && OH = Laden) && (len(PH.stack) > len(OH.stack)) # More objects in PH stack? Discard OH stack.
+		-Swap (OH, stack) and (resource, stack).
+	3. PH = Laden && OH = Laden && (len(PH.stack) <= len(OH.stack)
+		-Swap (PH, stack) and (resource, stack).
+===================================================================================================
+Customer Scenarios: (Applies to all four vertical counter spots that can be occupied by ordering customers)
+---------------------------------------------------------------------------------------------------
+Customer Slot Unused:
+	1. Always
+		-Avatar moves to location but no error or action results.
+---------------------------------------------------------------------------------------------------
+Customer Slot has Order:
+	1. Order contains {PH.stack, OH.stack}
+		-From PH, cash stack on order.
+		-From OH, cash stack on order.
+	2. Order contains PH.stack && contains no OH.stack # If customer ordered what you're holding in PH
+		-From PH, cash stack on order. # "cash" removes from avatar object slot and customer order.
+	3. Order contains OH.stack && contains no PH.stack
+		-From OH, cash stack on order.
+	4. Order contains no {PH.stack; OH.stack}.
+		-Error.
+---------------------------------------------------------------------------------------------------

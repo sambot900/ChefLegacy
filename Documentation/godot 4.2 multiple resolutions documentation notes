@@ -1,0 +1,110 @@
+Godot Disparate Resolutions and Aspect Ratios:
+
+1. Use single resolution which is stretched to other screen sizes
+
+Use get_tree().root.content_scale_size to configure the stretch base
+size
+
+Viewport node has several functions to handle resizing
+
+and the root node of the scene tree is always a viewport
+
+scenes loaded are instanvecd as a child of it, and it can
+always be accessed by calling get_tree().root
+
+Viewport params are flexible but can be a lot of work and guessing.
+So Godot provides a set of parameters in the project settings to
+handle multiple resolutions.
+
+Project Settings > Stretch
+mode: disabled
+aspect: keep
+scale: 1
+scale mode: fractional
+
+These are default values, not ideal values^
+
+-------------------------------------------------------------------
+
+MODE: defines how the base size is stretched to fit the resolution
+of the window or screen.
+
+If mode is diabled, no stretching will occur and the screen will display the image pixel per pixel
+
+Mode > Canvas Item: You get blank space on the screen where the canvas doesnt fit. The cavnas itself wont be stretched.???
+
+Mode > Viewport: Viewport scaling means that the size of the root Viewport is set precisely to the base size specified in the project settings Display section. So the canvas will be scaled but not stretched...
+
+-------------------------------------------------------------------
+
+STRETCH ASPECT:
+
+Stretch Aspect > Ignore: Simple stretch to the size of the screen. May result in non-uniform stretching. (easy solution)
+
+Stretch Aspect > Keep Height/Width/Expand: adds undrawable area to either vertical or horizontal resolution that exceeds the canvas.
+
+I think we want Expand because it allows us to draw above and below the canvas and if the device allows a larger width, we can simply see a little more of the drawing, and if we have a device that shows more vertical then we can see more of the customer area. 
+
+We may need to use functions to adjust what background asset we load, or maybe offset the background image so we arent seeing black bars on a particular side. Here are content aspect scale functions:
+
+*******************************************************************
+
+enum ContentScaleAspect:
+
+ContentScaleAspect CONTENT_SCALE_ASPECT_IGNORE = 0
+
+The aspect will be ignored. Scaling will simply stretch the content to fit the target size.
+
+ContentScaleAspect CONTENT_SCALE_ASPECT_KEEP = 1
+
+The content's aspect will be preserved. If the target size has different aspect from the base one, the image will be centered and black bars will appear on left and right sides.
+
+ContentScaleAspect CONTENT_SCALE_ASPECT_KEEP_WIDTH = 2
+
+The content can be expanded vertically. Scaling horizontally will result in keeping the width ratio and then black bars on left and right sides.
+
+ContentScaleAspect CONTENT_SCALE_ASPECT_KEEP_HEIGHT = 3
+
+The content can be expanded horizontally. Scaling vertically will result in keeping the height ratio and then black bars on top and bottom sides.
+
+ContentScaleAspect CONTENT_SCALE_ASPECT_EXPAND = 4
+
+The content's aspect will be preserved. If the target size has different aspect from the base one, the content will stay in the top-left corner and add an extra visible area in the stretched space.
+
+*******************************************************************
+
+STRETCH SCALE MODE: Allows us to control scaling factors as whole integer or fractional. This is good because fractional scaling can result in distorted pixels in assets. Looks like it has sharp edges etc... So we can set it to integer if we need to.
+
+*******************************************************************
+
+Reducing aliasing on downsampling
+
+If the game has a very high base resolution (e.g. 3840×2160), aliasing might appear when downsampling to something considerably lower like 1280×720.
+
+To resolve this, you can enable mipmaps on all your 2D textures. However, enabling mipmaps will increase memory usage which can be an issue on low-end mobile devices.
+
+*******************************************************************
+
+For desktop pixel art use:
+Project Settings > Stretch
+mode: viewport
+aspect: expand
+scale: ?
+scale mode: integer
+
+For mobile games in portrait mode:
+Set base width to 720 and height to 1280
+Set Display > Window > Handheld > Orientation to portrait.
+Set the stretch mode to canvas_items
+Set the stretch aspect to expand
+Configure Control nodes' anchors to snap to the correct corners using the Layout menu.
+
+Non-game application (Menus?)
+
+    Set the base window width and height to the smallest window size that you intend to target. This is not required, but this ensures that you design your UI with small window sizes in mind.
+
+    Keep the stretch mode to its default value, disabled.
+
+    Keep the stretch aspect to its default value, ignore (its value won't be used since the stretch mode is disabled).
+
+    You can define a minimum window size by calling get_window().set_min_size() in a script's _ready() function. This prevents the user from resizing the application below a certain size, which could break the UI layout.

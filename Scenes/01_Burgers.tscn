@@ -245,6 +245,11 @@ position = Vector2(594, -76)
 scale = Vector2(0.405228, 0.522876)
 texture_normal = ExtResource("2_1huu3")
 
+[node name="c_fs-1" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(703, 259)
+scale = Vector2(0.542483, 0.431372)
+texture_normal = ExtResource("2_1huu3")
+
 [node name="c_fs-2" type="TouchScreenButton" parent="CMDs"]
 position = Vector2(705, 330)
 scale = Vector2(0.516339, 0.4183)
@@ -273,11 +278,6 @@ texture_normal = ExtResource("2_1huu3")
 [node name="c_ts-3" type="TouchScreenButton" parent="CMDs"]
 position = Vector2(490, 117)
 scale = Vector2(0.490196, 0.320261)
-texture_normal = ExtResource("2_1huu3")
-
-[node name="c_fs-1" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(703, 259)
-scale = Vector2(0.542483, 0.431372)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_f-left" type="TouchScreenButton" parent="CMDs"]
