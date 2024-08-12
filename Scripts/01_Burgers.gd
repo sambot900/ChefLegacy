@@ -17,3 +17,7 @@ func start_camera_pan():
 		camera_animation_player.play("PanCamera")
 	else:
 		print("Camera and AnimationPlayer not found")  # Debug print
+
+
+func _on_player_reached_interactable(target):
+	print("target reached: ", target)

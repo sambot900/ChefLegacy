@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://ees3wkka1sse"]
+[gd_scene load_steps=42 format=3 uid="uid://ees3wkka1sse"]
 
 [ext_resource type="Script" path="res://Scripts/01_Burgers.gd" id="1_hbsg8"]
 [ext_resource type="Texture2D" uid="uid://yrsm0dtwtepc" path="res://Sprites/Levels/01_Burgers/invis_button_153sq.png" id="2_1huu3"]
@@ -9,16 +9,23 @@
 [ext_resource type="Texture2D" uid="uid://dmle1j61k3tpm" path="res://Sprites/Avatars/Boom/ss-boom.png" id="7_xivwc"]
 [ext_resource type="Texture2D" uid="uid://cywhvg8ma5nu5" path="res://Sprites/Avatars/Boom/ss-boom-idle.png" id="8_ri1tp"]
 [ext_resource type="Texture2D" uid="uid://b7xhjf5j6qv10" path="res://Sprites/Levels/01_Burgers/bottom_counter.png" id="10_11uuh"]
-[ext_resource type="Texture2D" uid="uid://dfws6sm2ari1v" path="res://Sprites/Levels/01_Burgers/L_counter.png" id="10_u12vv"]
 [ext_resource type="Texture2D" uid="uid://dvh1ovsne5ury" path="res://Sprites/Levels/01_Burgers/island1.png" id="11_nqtrk"]
-[ext_resource type="Texture2D" uid="uid://c75fc8uova3er" path="res://Sprites/Levels/01_Burgers/ts_board_cheese.png" id="12_mbjjp"]
-[ext_resource type="Texture2D" uid="uid://bacwyhxlcudi0" path="res://Sprites/Levels/01_Burgers/ts_board_bacon.png" id="13_tt7br"]
-[ext_resource type="Texture2D" uid="uid://bcmr8352nrc6q" path="res://Sprites/Levels/01_Burgers/ts_board_lettuce.png" id="14_1lqul"]
+[ext_resource type="Texture2D" uid="uid://c75fc8uova3er" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_cheese.png" id="12_mbjjp"]
+[ext_resource type="Texture2D" uid="uid://b8a5ehqgtu432" path="res://Sprites/Levels/01_Burgers/Interactables/freezer_fries_rings.png" id="12_nnmns"]
+[ext_resource type="Texture2D" uid="uid://bacwyhxlcudi0" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_bacon.png" id="13_tt7br"]
+[ext_resource type="Texture2D" uid="uid://bcmr8352nrc6q" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_lettuce.png" id="14_1lqul"]
 [ext_resource type="Texture2D" uid="uid://n3kmqxtdc2h5" path="res://Sprites/Levels/01_Burgers/condiments.png" id="15_e1nox"]
 [ext_resource type="Texture2D" uid="uid://jofdkdxsljkw" path="res://Sprites/Levels/01_Burgers/island1_shadow.png" id="16_gxhvc"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rsov3"]
-size = Vector2(150, 200)
+[ext_resource type="Texture2D" uid="uid://cmbb2ilbp4eam" path="res://Sprites/Levels/UI/back_button.png" id="17_3nah0"]
+[ext_resource type="Script" path="res://Scenes/UI.gd" id="17_ecpc5"]
+[ext_resource type="Texture2D" uid="uid://bgjtlo5frisbp" path="res://Sprites/Levels/01_Burgers/Interactables/DD1_empty.png" id="19_30w0c"]
+[ext_resource type="Texture2D" uid="uid://u843tcriw6sm" path="res://Sprites/Levels/01_Burgers/Interactables/helper_tray.png" id="19_gerfd"]
+[ext_resource type="Texture2D" uid="uid://ukgqtqgtpfe7" path="res://Sprites/Levels/01_Burgers/Interactables/F1_empty.png" id="20_rjqle"]
+[ext_resource type="Texture2D" uid="uid://eiengf1pnysv" path="res://Sprites/Levels/01_Burgers/Interactables/freezer_fries.png" id="21_2k0f7"]
+[ext_resource type="Texture2D" uid="uid://k66wnrjne4sk" path="res://Sprites/Levels/01_Burgers/Interactables/ms_1.png" id="21_mmamr"]
+[ext_resource type="Texture2D" uid="uid://qnouysaajek4" path="res://Sprites/Levels/01_Burgers/main_counter.png" id="22_sl6vc"]
+[ext_resource type="Texture2D" uid="uid://dhv8f7sjqbjg6" path="res://Sprites/Levels/01_Burgers/bottom_shadow.png" id="22_viu0h"]
+[ext_resource type="Texture2D" uid="uid://bejpdbieal841" path="res://Sprites/Levels/01_Burgers/Interactables/ms_2.png" id="23_oc6tk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mqkqv"]
 atlas = ExtResource("7_xivwc")
@@ -105,7 +112,7 @@ length = 1.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("White BG:modulate")
+tracks/0/path = NodePath("MISCELLANEOUS/White BG:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -120,7 +127,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("White BG:modulate")
+tracks/0/path = NodePath("MISCELLANEOUS/White BG:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -137,37 +144,110 @@ _data = {
 }
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_v4t1i"]
-vertices = PackedVector2Array(564, 361, 569, 301, 615, 264, 616, 264, 627, 339, 622, 780, 557, 428, 560, 276, 589, 209, 188, 780, 190, 630, 485, 631, 475, 577, 191, 432, 171, 504, 191, 370, 114, 136, 182, 329, 197, 286, 256, 158, 263, 209, 261, 264, 534, 266)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedInt32Array(6, 0, 5), PackedInt32Array(2, 1, 7, 8), PackedInt32Array(5, 9, 10, 11), PackedInt32Array(6, 5, 11, 12), PackedInt32Array(13, 6, 12, 14), PackedInt32Array(15, 13, 14, 16, 17), PackedInt32Array(18, 17, 16), PackedInt32Array(18, 16, 19, 20, 21), PackedInt32Array(22, 21, 20, 8), PackedInt32Array(22, 8, 7)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(102, 124, 265, 150, 272, 199, 595, 199, 626, 263, 637, 338, 632, 790, 178, 791, 181, 620, 473, 621, 466, 585, 162, 513), PackedVector2Array(201, 422, 548, 418, 554, 360, 559, 302, 552, 284, 532, 276, 263, 274, 205, 294, 192, 330, 201, 368)])
+vertices = PackedVector2Array(564, 361, 569, 301, 616, 264, 627, 339, 622, 780, 557, 428, 560, 276, 614, 209, 616, 263, 188, 780, 190, 630, 485, 631, 475, 577, 191, 432, 171, 504, 191, 370, 114, 136, 182, 329, 197, 286, 256, 158, 263, 209, 261, 264, 534, 266)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(5, 0, 4), PackedInt32Array(2, 1, 6, 7, 8), PackedInt32Array(4, 9, 10, 11), PackedInt32Array(5, 4, 11, 12), PackedInt32Array(13, 5, 12, 14), PackedInt32Array(15, 13, 14, 16, 17), PackedInt32Array(18, 17, 16), PackedInt32Array(18, 16, 19, 20, 21), PackedInt32Array(22, 21, 20, 7), PackedInt32Array(6, 22, 7)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(102, 124, 265, 150, 272, 199, 613, 221, 626, 263, 637, 338, 632, 790, 178, 791, 181, 620, 473, 621, 466, 585, 162, 513), PackedVector2Array(201, 422, 548, 418, 554, 360, 559, 302, 552, 284, 532, 276, 263, 274, 205, 294, 192, 330, 201, 368)])
 source_geometry_group_name = &"navigation_polygon_source_group"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rsov3"]
+size = Vector2(150, 200)
 
 [node name="01_Burgers" type="Node2D"]
 script = ExtResource("1_hbsg8")
-metadata/_edit_horizontal_guides_ = [648.0]
+metadata/_edit_horizontal_guides_ = [648.0, 38.0, 122.0]
 metadata/_edit_vertical_guides_ = [1152.0]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+z_index = 1
+z_as_relative = false
+position = Vector2(257, -35)
+scale = Vector2(1, 1.00001)
+script = ExtResource("6_x85if")
+metadata/_edit_group_ = true
+
+[node name="anim" type="AnimatedSprite2D" parent="Player"]
+scale = Vector2(0.640957, 0.640957)
+sprite_frames = SubResource("SpriteFrames_oxu7q")
+animation = &"idle"
+
+[node name="NavAg" type="NavigationAgent2D" parent="Player"]
+path_desired_distance = 3.0
+target_desired_distance = 1.0
+path_max_distance = 25.0
+
+[node name="MISCELLANEOUS" type="Node2D" parent="."]
+
+[node name="Black BG" type="TextureRect" parent="MISCELLANEOUS"]
+visible = false
+z_index = -100
+y_sort_enabled = true
+offset_left = -56.0
+offset_right = 1864.0
+offset_bottom = 648.0
+pivot_offset = Vector2(899, -56)
+texture = ExtResource("3_25ffw")
+expand_mode = 2
+
+[node name="Main BG" type="TextureRect" parent="MISCELLANEOUS"]
+offset_left = 44.0
+offset_top = -579.0
+offset_right = 942.0
+offset_bottom = 1416.0
+texture = ExtResource("4_uuspb")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="White BG" type="TextureRect" parent="MISCELLANEOUS"]
+visible = false
+z_index = 100
+y_sort_enabled = true
+offset_left = -56.0
+offset_right = 1864.0
+offset_bottom = 648.0
+pivot_offset = Vector2(899, -56)
+texture = ExtResource("5_ejmqt")
+
+[node name="Camera2D" type="Camera2D" parent="MISCELLANEOUS"]
+position = Vector2(493, 323)
+scale = Vector2(400, 400)
+
+[node name="CameraAnimationPlayer" type="AnimationPlayer" parent="MISCELLANEOUS"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_uoo1i")
+}
+speed_scale = 0.555
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="MISCELLANEOUS"]
+position = Vector2(48, -214)
+navigation_polygon = SubResource("NavigationPolygon_v4t1i")
 
 [node name="CMDs" type="Node2D" parent="."]
 
 [node name="c_dd-left" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(300, 270)
+position = Vector2(292, 270)
 scale = Vector2(0.509804, 0.810458)
 texture_normal = ExtResource("2_1huu3")
 shape = SubResource("RectangleShape2D_rsov3")
 
 [node name="c_dd-right" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(384, 272)
+position = Vector2(376, 272)
 scale = Vector2(0.503268, 0.803921)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_ms-left" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(523, -81)
+position = Vector2(523, -82)
 scale = Vector2(0.405229, 0.562091)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_ms-right" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(594, -75)
+position = Vector2(594, -76)
 scale = Vector2(0.405228, 0.522876)
+texture_normal = ExtResource("2_1huu3")
+
+[node name="c_fs-2" type="TouchScreenButton" parent="CMDs"]
+position = Vector2(705, 330)
+scale = Vector2(0.516339, 0.4183)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_s-left" type="TouchScreenButton" parent="CMDs"]
@@ -198,11 +278,6 @@ texture_normal = ExtResource("2_1huu3")
 [node name="c_fs-1" type="TouchScreenButton" parent="CMDs"]
 position = Vector2(703, 259)
 scale = Vector2(0.542483, 0.431372)
-texture_normal = ExtResource("2_1huu3")
-
-[node name="c_fs-2" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(705, 330)
-scale = Vector2(0.516339, 0.4183)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_f-left" type="TouchScreenButton" parent="CMDs"]
@@ -250,120 +325,162 @@ position = Vector2(642, 592)
 scale = Vector2(0.666667, 1.06536)
 texture_normal = ExtResource("2_1huu3")
 
-[node name="Black BG" type="TextureRect" parent="."]
-visible = false
-z_index = -100
-y_sort_enabled = true
-offset_left = -56.0
-offset_right = 1864.0
-offset_bottom = 648.0
-pivot_offset = Vector2(899, -56)
-texture = ExtResource("3_25ffw")
-expand_mode = 2
+[node name="INTERACTABLES" type="Node2D" parent="."]
+z_as_relative = false
 
-[node name="Main BG" type="TextureRect" parent="."]
-offset_left = 44.0
-offset_top = -579.0
-offset_right = 942.0
-offset_bottom = 1416.0
-texture = ExtResource("4_uuspb")
-expand_mode = 1
-stretch_mode = 4
+[node name="DrinkDispenser" type="Node2D" parent="INTERACTABLES"]
+z_as_relative = false
+position = Vector2(-6, 0)
 
-[node name="White BG" type="TextureRect" parent="."]
-visible = false
-z_index = 100
-y_sort_enabled = true
-offset_left = -56.0
-offset_right = 1864.0
-offset_bottom = 648.0
-pivot_offset = Vector2(899, -56)
-texture = ExtResource("5_ejmqt")
-
-[node name="Player" type="CharacterBody2D" parent="."]
-z_index = 1
-position = Vector2(257, -35)
-scale = Vector2(1, 1.00001)
-script = ExtResource("6_x85if")
-metadata/_edit_group_ = true
-
-[node name="anim" type="AnimatedSprite2D" parent="Player"]
-scale = Vector2(0.640957, 0.640957)
-sprite_frames = SubResource("SpriteFrames_oxu7q")
-animation = &"idle"
-
-[node name="NavAg" type="NavigationAgent2D" parent="Player"]
-path_desired_distance = 3.0
-target_desired_distance = 1.0
-path_max_distance = 25.0
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(493, 323)
-scale = Vector2(400, 400)
-
-[node name="CameraAnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_uoo1i")
-}
-speed_scale = 0.555
-
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-position = Vector2(48, -214)
-navigation_polygon = SubResource("NavigationPolygon_v4t1i")
-
-[node name="Island1" type="Sprite2D" parent="."]
-z_index = 8
-position = Vector2(424, 182)
-scale = Vector2(0.5, 0.497)
-texture = ExtResource("11_nqtrk")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 10
-position = Vector2(495, 313)
+[node name="dd1_empty" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser"]
+z_index = 11
+position = Vector2(372, 333)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("10_u12vv")
+texture = ExtResource("19_30w0c")
 
-[node name="BottomCounter" type="Sprite2D" parent="."]
+[node name="Fryer" type="Node2D" parent="INTERACTABLES"]
+
+[node name="F1Empty" type="Sprite2D" parent="INTERACTABLES/Fryer"]
+z_index = 11
+position = Vector2(736, 190)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("20_rjqle")
+
+[node name="Freezer" type="Node2D" parent="INTERACTABLES"]
+
+[node name="FreezerFries" type="Sprite2D" parent="INTERACTABLES/Freezer"]
+z_index = 11
+position = Vector2(760, 330)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("21_2k0f7")
+
+[node name="FreezerFries&Rings" type="Sprite2D" parent="INTERACTABLES/Freezer"]
+visible = false
+z_index = 11
+position = Vector2(760, 330)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_nnmns")
+
+[node name="MeatSource" type="Node2D" parent="INTERACTABLES"]
+
+[node name="Ms1" type="Sprite2D" parent="INTERACTABLES/MeatSource"]
+z_index = 1
+position = Vector2(555, -45)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("21_mmamr")
+
+[node name="Ms2" type="Sprite2D" parent="INTERACTABLES/MeatSource"]
+position = Vector2(626, -45)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("23_oc6tk")
+
+[node name="Node2D5" type="Node2D" parent="INTERACTABLES"]
+
+[node name="Node2D6" type="Node2D" parent="INTERACTABLES"]
+
+[node name="Node2D7" type="Node2D" parent="INTERACTABLES"]
+
+[node name="HelperTray" type="Sprite2D" parent="INTERACTABLES"]
+z_index = 11
+position = Vector2(750, 452)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("19_gerfd")
+
+[node name="HelperTray2" type="Sprite2D" parent="INTERACTABLES"]
+z_index = 11
+position = Vector2(750, 518)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("19_gerfd")
+
+[node name="TOPPING STATION" type="Node2D" parent="INTERACTABLES"]
+z_index = 9
+z_as_relative = false
+position = Vector2(-40, -1)
+
+[node name="TsBoardCheese" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION"]
+z_index = 9
+z_as_relative = false
+position = Vector2(402, 140)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_mbjjp")
+offset = Vector2(-14, -2)
+
+[node name="TsBoardBacon" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION"]
+z_index = 9
+z_as_relative = false
+position = Vector2(479, 141)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("13_tt7br")
+
+[node name="TsBoardLettuce" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION"]
+z_index = 9
+z_as_relative = false
+position = Vector2(584, 146)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("14_1lqul")
+offset = Vector2(-32, -16)
+
+[node name="STRUCTURES" type="Node2D" parent="."]
+
+[node name="BottomCounter" type="Node2D" parent="STRUCTURES"]
+
+[node name="BottomCounterSprite" type="Sprite2D" parent="STRUCTURES/BottomCounter"]
 z_index = 15
 position = Vector2(205, 644)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("10_11uuh")
 offset = Vector2(602, 30)
 
-[node name="Condiments" type="Sprite2D" parent="."]
+[node name="BottomShadow" type="Sprite2D" parent="STRUCTURES/BottomCounter"]
+position = Vector2(492, 683)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("22_viu0h")
+
+[node name="Island1" type="Node2D" parent="STRUCTURES"]
+z_as_relative = false
+
+[node name="Island1" type="Sprite2D" parent="STRUCTURES/Island1"]
+z_index = 8
+position = Vector2(424, 182)
+scale = Vector2(0.5, 0.497)
+texture = ExtResource("11_nqtrk")
+
+[node name="Island1Shadow" type="Sprite2D" parent="STRUCTURES/Island1"]
+position = Vector2(434, 215)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("16_gxhvc")
+
+[node name="MainCounter" type="Sprite2D" parent="STRUCTURES"]
+z_index = 10
+position = Vector2(488, 271)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("22_sl6vc")
+
+[node name="DOODADS" type="Node2D" parent="."]
+
+[node name="Condiments" type="Sprite2D" parent="DOODADS"]
 z_index = 15
 position = Vector2(504, 620)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("15_e1nox")
 offset = Vector2(-110, -172)
 
-[node name="TOPPING STATION" type="Node2D" parent="."]
-position = Vector2(-40, -1)
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 493.0
+offset_top = 323.0
+offset_right = 533.0
+offset_bottom = 363.0
+script = ExtResource("17_ecpc5")
 
-[node name="TsBoardCheese" type="Sprite2D" parent="TOPPING STATION"]
-z_index = 8
-position = Vector2(402, 140)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("12_mbjjp")
-offset = Vector2(-14, -2)
+[node name="back_button" type="TouchScreenButton" parent="UI"]
+position = Vector2(257, -552)
+scale = Vector2(0.414141, 0.414141)
+texture_normal = ExtResource("17_3nah0")
 
-[node name="TsBoardBacon" type="Sprite2D" parent="TOPPING STATION"]
-z_index = 8
-position = Vector2(479, 141)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("13_tt7br")
-
-[node name="TsBoardLettuce" type="Sprite2D" parent="TOPPING STATION"]
-z_index = 8
-position = Vector2(584, 146)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("14_1lqul")
-offset = Vector2(-32, -16)
-
-[node name="Island1Shadow" type="Sprite2D" parent="."]
-position = Vector2(434, 215)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("16_gxhvc")
-
+[connection signal="reached_interactable" from="Player" to="." method="_on_player_reached_interactable"]
 [connection signal="navigation_finished" from="Player/NavAg" to="Player" method="_on_nav_ag_navigation_finished"]
 [connection signal="target_reached" from="Player/NavAg" to="Player" method="_on_nav_ag_target_reached"]
+[connection signal="target_reached" from="Player/NavAg" to="INTERACTABLES" method="_on_nav_ag_target_reached"]
+[connection signal="pressed" from="UI/back_button" to="UI" method="_on_back_button_pressed"]

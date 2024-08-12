@@ -1,0 +1,54 @@
+8/11/24
+01_Burgers
+True Middles of Interactables:
+---------------------------------
+*y values may need an offset based on avatar anchorpoint
+---------------------------------
+c_dd-left: 337x
+c_dd-right: 409x
+c_ms-left: 554x
+c_ms-right: 625x 
+c_s-left: 348x
+c_s-right: 474
+c_ts-1: 350x140y
+c_ts-2: 437x140y
+c_ts-3: 525x140y
+c_fs-1: 295y
+c_fs-2: 359y
+c_f-left: 148y
+c_f-right: 200y
+c_t: 453y 
+c_t2: 519y
+c_bob: 46y
+c_o1: 
+c_o2: 
+c_o3: 
+c_o4: 
+
+----
+
+lower than 223 = player should show above topping station
+
+higher than 330
+
+37
+26
+
+521-593
+
+649,25
+602
+
+player getting twitched when ealking through R lock zone
+
+R lock should be decided at beginning of command issued, not through enitre command
+
+maybe adjust logic to move the locking mechanism into the scope of an if condition
+
+	else:
+		if orientation_edge_case_l:
+			if animated_sprite.flip_h == true:
+				animated_sprite.flip_h = false
+		elif orientation_edge_case_r:
+			if animated_sprite.flip_h == false:
+				animated_sprite.flip_h = true

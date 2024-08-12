@@ -9,13 +9,14 @@ script/source = "extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Set the screen orientation to portrait
-	print(DisplayServer.screen_get_orientation())
 	
 	# Connect to the signal emitted by the StartButton in the MainMenu scene
-	var start_button = get_node(\"StartButton\")
+	var start_button = $start_button
+	var quit_button = $exit_button
 	if start_button:
 		start_button.pressed.connect(Callable(self, \"_on_StartButton_pressed\"))
+	if quit_button:
+		quit_button.pressed.connect(Callable(self, \"_on_QuitButton_pressed\"))
 
 # Method to handle the start button pressed event
 func _on_StartButton_pressed():
@@ -33,6 +34,10 @@ func _on_StartButton_pressed():
 	# Optionally, remove the MainMenu scene if it's no longer needed
 	queue_free()
 
+# Method to handle the quit button pressed event
+func _on_QuitButton_pressed():
+	get_tree().quit()
+
 # Add _process function if needed and prefix the delta parameter with an underscore
 func _process(_delta):
 	pass
@@ -41,7 +46,7 @@ func _process(_delta):
 [node name="MainMenu" type="Node2D"]
 script = SubResource("GDScript_lf3rp")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="background_img" type="TextureRect" parent="."]
 offset_left = -272.0
 offset_top = -152.0
 offset_right = 744.0
@@ -50,19 +55,18 @@ texture = ExtResource("1_hs148")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="StartButton" type="TouchScreenButton" parent="."]
+[node name="start_button" type="TouchScreenButton" parent="."]
 position = Vector2(54, 1010)
 scale = Vector2(0.521739, 0.521739)
 texture_normal = ExtResource("2_wsixp")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(198, 801)
+[node name="camera" type="Camera2D" parent="."]
+position = Vector2(193, 804)
 scale = Vector2(0.632242, 0.64557)
 
-[node name="QuitButton" type="Sprite2D" parent="."]
-position = Vector2(394.63, 1115.95)
-scale = Vector2(0.530435, 0.530435)
-texture = ExtResource("3_52rmy")
-offset = Vector2(-380, -6)
+[node name="exit_button" type="TouchScreenButton" parent="."]
+position = Vector2(54, 1083)
+scale = Vector2(0.521739, 0.521739)
+texture_normal = ExtResource("3_52rmy")
 
-[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="start_button" to="." method="_on_start_button_pressed"]
