@@ -1,6 +1,6 @@
 extends Node2D
 
-#region coordinate key
+#region Coordinate Key
 var coordinate_key = {
 	"dd_left": [Vector2(307, 423), Vector2(337, 423), Vector2(367, 423)],
 	"dd_right": [Vector2(379, 423), Vector2(409, 423), Vector2(439, 423)],
@@ -25,6 +25,7 @@ var coordinate_key = {
 }
 #endregion
 
+#region Declarations
 
 @onready var cook_avatar = $Player
 @onready var cmds_node = $CMDs
@@ -32,6 +33,7 @@ var coordinate_key = {
 @onready var camera_animation_player = $CameraAnimationPlayer
 @onready var dd = $INTERACTABLES/DrinkDispenser
 @onready var freezer = $INTERACTABLES/Freezer
+#endregion
 
 func _ready():
 	print("Round node ready")
@@ -44,7 +46,7 @@ func start_camera_pan():
 	if round_camera and camera_animation_player:
 		camera_animation_player.play("PanCamera")
 	else:
-		print("Camera and AnimationPlayer not found")  # Debug print
+		print("Camera and AnimationPlayer not found")
 
 
 func _on_player_reached_interactable(target: Vector2):
