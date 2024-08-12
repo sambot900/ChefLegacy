@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://ees3wkka1sse"]
+[gd_scene load_steps=43 format=3 uid="uid://ees3wkka1sse"]
 
 [ext_resource type="Script" path="res://Scripts/01_Burgers.gd" id="1_hbsg8"]
 [ext_resource type="Texture2D" uid="uid://yrsm0dtwtepc" path="res://Sprites/Levels/01_Burgers/invis_button_153sq.png" id="2_1huu3"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dmle1j61k3tpm" path="res://Sprites/Avatars/Boom/ss-boom.png" id="7_xivwc"]
 [ext_resource type="Texture2D" uid="uid://cywhvg8ma5nu5" path="res://Sprites/Avatars/Boom/ss-boom-idle.png" id="8_ri1tp"]
 [ext_resource type="Texture2D" uid="uid://b7xhjf5j6qv10" path="res://Sprites/Levels/01_Burgers/bottom_counter.png" id="10_11uuh"]
+[ext_resource type="Script" path="res://Scenes/dd_left.gd" id="10_haucj"]
 [ext_resource type="Texture2D" uid="uid://dvh1ovsne5ury" path="res://Sprites/Levels/01_Burgers/island1.png" id="11_nqtrk"]
 [ext_resource type="Texture2D" uid="uid://c75fc8uova3er" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_cheese.png" id="12_mbjjp"]
 [ext_resource type="Texture2D" uid="uid://b8a5ehqgtu432" path="res://Sprites/Levels/01_Burgers/Interactables/freezer_fries_rings.png" id="12_nnmns"]
@@ -338,6 +339,17 @@ position = Vector2(372, 333)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("19_30w0c")
 
+[node name="dd_left" type="Node2D" parent="INTERACTABLES/DrinkDispenser"]
+script = ExtResource("10_haucj")
+
+[node name="dd_right" type="Node2D" parent="INTERACTABLES/DrinkDispenser"]
+
+[node name="Stove" type="Node2D" parent="INTERACTABLES"]
+
+[node name="s1_left" type="Node2D" parent="INTERACTABLES/Stove"]
+
+[node name="s1_right" type="Node2D" parent="INTERACTABLES/Stove"]
+
 [node name="Fryer" type="Node2D" parent="INTERACTABLES"]
 
 [node name="F1Empty" type="Sprite2D" parent="INTERACTABLES/Fryer"]
@@ -345,6 +357,10 @@ z_index = 11
 position = Vector2(736, 190)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("20_rjqle")
+
+[node name="f_left" type="Node2D" parent="INTERACTABLES/Fryer"]
+
+[node name="Node2D2" type="Node2D" parent="INTERACTABLES/Fryer"]
 
 [node name="Freezer" type="Node2D" parent="INTERACTABLES"]
 
@@ -361,32 +377,32 @@ position = Vector2(760, 330)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_nnmns")
 
-[node name="MeatSource" type="Node2D" parent="INTERACTABLES"]
+[node name="MeatSource1" type="Node2D" parent="INTERACTABLES"]
 
-[node name="Ms1" type="Sprite2D" parent="INTERACTABLES/MeatSource"]
+[node name="Ms1" type="Sprite2D" parent="INTERACTABLES/MeatSource1"]
 z_index = 1
 position = Vector2(555, -45)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("21_mmamr")
 
-[node name="Ms2" type="Sprite2D" parent="INTERACTABLES/MeatSource"]
+[node name="MeatSource2" type="Node2D" parent="INTERACTABLES"]
+
+[node name="Ms2" type="Sprite2D" parent="INTERACTABLES/MeatSource2"]
 position = Vector2(626, -45)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("23_oc6tk")
 
-[node name="Node2D5" type="Node2D" parent="INTERACTABLES"]
+[node name="HelperTray1" type="Node2D" parent="INTERACTABLES"]
 
-[node name="Node2D6" type="Node2D" parent="INTERACTABLES"]
-
-[node name="Node2D7" type="Node2D" parent="INTERACTABLES"]
-
-[node name="HelperTray" type="Sprite2D" parent="INTERACTABLES"]
+[node name="HelperTray" type="Sprite2D" parent="INTERACTABLES/HelperTray1"]
 z_index = 11
 position = Vector2(750, 452)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("19_gerfd")
 
-[node name="HelperTray2" type="Sprite2D" parent="INTERACTABLES"]
+[node name="HelperTray2" type="Node2D" parent="INTERACTABLES"]
+
+[node name="HelperTray" type="Sprite2D" parent="INTERACTABLES/HelperTray2"]
 z_index = 11
 position = Vector2(750, 518)
 scale = Vector2(0.5, 0.5)
@@ -479,6 +495,7 @@ position = Vector2(257, -552)
 scale = Vector2(0.414141, 0.414141)
 texture_normal = ExtResource("17_3nah0")
 
+[connection signal="dd_left" from="." to="INTERACTABLES/DrinkDispenser/dd_left" method="_on__burgers_dd_left"]
 [connection signal="reached_interactable" from="Player" to="." method="_on_player_reached_interactable"]
 [connection signal="navigation_finished" from="Player/NavAg" to="Player" method="_on_nav_ag_navigation_finished"]
 [connection signal="target_reached" from="Player/NavAg" to="Player" method="_on_nav_ag_target_reached"]
