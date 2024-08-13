@@ -1,6 +1,13 @@
 extends CharacterBody2D
 
+######################################################
+# 	Player
+######################################################
+
 #region *Global Declarations
+signal reached_interactable
+signal where
+
 @export var speed = 300
 @export var accel = 20
 var command_queue = []
@@ -12,8 +19,6 @@ var orientation_edge_case_r = false
 var orientation_edge_case_l = false
 var orientation_lock = false
 var level_coordinates = []
-signal reached_interactable
-signal where
 #endregion
 
 #region *Onready Declarations
@@ -161,7 +166,8 @@ func _physics_process(delta):
 	
 # Assign command from queue
 	if finished and command_queue.size() > 0:
-		if current_command != null:
+	# Report avatar reaching the destination with emit
+		if current_command != null: 
 			reached_interactable.emit(current_command)
 		current_command = command_queue.pop_front()
 		orientation_edge_case()
@@ -223,7 +229,7 @@ func orientation_edge_case():
 			#print("edge case R2 VOID")
 	# ---------------------------------------------------------------------------------------------------------
 	# R3
-	# You are in general right... your command is anywhere under the "top-right area"
+	# You are in general right... your command is anywhere under the "top-right area" defined in R2 (above)
 	# (global_position.x > 620) and (current_command.x > 652 and current_command.y > 37)
 	# ---------------------------------------------------------------------------------------------------------
 	elif current_command.y < 122:
@@ -270,6 +276,7 @@ func orientation_common_case(direction):
 			if animated_sprite.flip_h == false:
 				animated_sprite.flip_h = true
 
-
+# Each queued command added emits a request for next coords and those
+# coords output below into the enqueue command.
 func _on__burgers_go_here(coords):
 	enqueue_command(coords)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://ees3wkka1sse"]
+[gd_scene load_steps=46 format=3 uid="uid://ees3wkka1sse"]
 
 [ext_resource type="Script" path="res://Scripts/01_Burgers.gd" id="1_hbsg8"]
 [ext_resource type="Texture2D" uid="uid://yrsm0dtwtepc" path="res://Sprites/Levels/01_Burgers/invis_button_153sq.png" id="2_1huu3"]
@@ -8,9 +8,11 @@
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="6_x85if"]
 [ext_resource type="Texture2D" uid="uid://dmle1j61k3tpm" path="res://Sprites/Avatars/Boom/ss-boom.png" id="7_xivwc"]
 [ext_resource type="Texture2D" uid="uid://cywhvg8ma5nu5" path="res://Sprites/Avatars/Boom/ss-boom-idle.png" id="8_ri1tp"]
+[ext_resource type="Script" path="res://Scenes/DrinkDispenser.gd" id="9_lghu4"]
 [ext_resource type="Texture2D" uid="uid://b7xhjf5j6qv10" path="res://Sprites/Levels/01_Burgers/bottom_counter.png" id="10_11uuh"]
 [ext_resource type="Script" path="res://Scenes/dd_left.gd" id="10_haucj"]
 [ext_resource type="Texture2D" uid="uid://dvh1ovsne5ury" path="res://Sprites/Levels/01_Burgers/island1.png" id="11_nqtrk"]
+[ext_resource type="Script" path="res://Scenes/dd_right.gd" id="12_ebi7b"]
 [ext_resource type="Texture2D" uid="uid://c75fc8uova3er" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_cheese.png" id="12_mbjjp"]
 [ext_resource type="Texture2D" uid="uid://b8a5ehqgtu432" path="res://Sprites/Levels/01_Burgers/Interactables/freezer_fries_rings.png" id="12_nnmns"]
 [ext_resource type="Texture2D" uid="uid://bacwyhxlcudi0" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_bacon.png" id="13_tt7br"]
@@ -27,6 +29,7 @@
 [ext_resource type="Texture2D" uid="uid://qnouysaajek4" path="res://Sprites/Levels/01_Burgers/main_counter.png" id="22_sl6vc"]
 [ext_resource type="Texture2D" uid="uid://dhv8f7sjqbjg6" path="res://Sprites/Levels/01_Burgers/bottom_shadow.png" id="22_viu0h"]
 [ext_resource type="Texture2D" uid="uid://bejpdbieal841" path="res://Sprites/Levels/01_Burgers/Interactables/ms_2.png" id="23_oc6tk"]
+[ext_resource type="Script" path="res://Scenes/Timer.gd" id="29_hdvxg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mqkqv"]
 atlas = ExtResource("7_xivwc")
@@ -332,6 +335,7 @@ z_as_relative = false
 [node name="DrinkDispenser" type="Node2D" parent="INTERACTABLES"]
 z_as_relative = false
 position = Vector2(-6, 0)
+script = ExtResource("9_lghu4")
 
 [node name="dd1_empty" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser"]
 z_index = 11
@@ -343,6 +347,7 @@ texture = ExtResource("19_30w0c")
 script = ExtResource("10_haucj")
 
 [node name="dd_right" type="Node2D" parent="INTERACTABLES/DrinkDispenser"]
+script = ExtResource("12_ebi7b")
 
 [node name="Stove" type="Node2D" parent="INTERACTABLES"]
 
@@ -495,7 +500,11 @@ position = Vector2(257, -552)
 scale = Vector2(0.414141, 0.414141)
 texture_normal = ExtResource("17_3nah0")
 
+[node name="Timer" type="Timer" parent="."]
+script = ExtResource("29_hdvxg")
+
 [connection signal="dd_left" from="." to="INTERACTABLES/DrinkDispenser/dd_left" method="_on__burgers_dd_left"]
+[connection signal="dd_right" from="." to="INTERACTABLES/DrinkDispenser/dd_right" method="_on__burgers_dd_right"]
 [connection signal="go_here" from="." to="Player" method="_on__burgers_go_here"]
 [connection signal="reached_interactable" from="Player" to="." method="_on_player_reached_interactable"]
 [connection signal="where" from="Player" to="." method="_on_player_where"]

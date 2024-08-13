@@ -25,7 +25,6 @@ signal o_4
 signal go_here
 #endregion
 
-
 #region Coordinate Key
 var coordinate_key = {
 	"dd_left": [Vector2(307, 423), Vector2(337, 423), Vector2(367, 423)],
@@ -74,14 +73,72 @@ func start_camera_pan():
 	else:
 		print("Camera and AnimationPlayer not found")
 
-
+# Emit to interactables when player reaches target
 func _on_player_reached_interactable(target: Vector2):
 	for key in coordinate_key.keys():
 		if target in coordinate_key[key]:
 			if key == "dd_left":
 				dd_left.emit()
 				break
+			elif key == "dd_right":
+				dd_right.emit()
+				break
+			elif key == "ms_left":
+				ms_left.emit()
+				break
+			elif key == "ms_right":
+				ms_right.emit()
+				break
+			elif key == "fs_1":
+				fs_1.emit()
+				break
+			elif key == "fs_2":
+				fs_2.emit()
+				break
+			elif key == "s_left":
+				s_left.emit()
+				break
+			elif key == "s_right":
+				s_right.emit()
+				break
+			elif key == "ts_1":
+				ts_1.emit()
+				break
+			elif key == "ts_2":
+				ts_2.emit()
+				break
+			elif key == "ts_3":
+				ts_3.emit()
+				break
+			elif key == "f_1":
+				f_1.emit()
+				break
+			elif key == "f_2":
+				f_2.emit()
+				break
+			elif key == "t_1":
+				t_1.emit()
+				break
+			elif key == "t_2":
+				t_2.emit()
+				break
+			elif key == "bob":
+				bob.emit()
+				break
+			elif key == "o_1":
+				o_1.emit()
+				break
+			elif key == "o_2":
+				o_2.emit()
+				break
+			elif key == "o_3":
+				o_3.emit()
+				break
+			elif key == "o_4":
+				o_4.emit()
+				break
 
+# Find shortest distance coordinate
 func cmd_seek(name, pos):
 	var shortest_distance = INF
 	var closest_command = null
@@ -92,8 +149,11 @@ func cmd_seek(name, pos):
 			closest_command = command
 	return closest_command
 
-
+# Tell avatar where to go
 func _on_player_where(name, pos):
 	var chosen_cmd = cmd_seek(name, pos)
 	go_here.emit(chosen_cmd)
-	# where.emit("dd_left", global_position)
+
+
+func _on_timer_timeout():
+	pass # Replace with function body.

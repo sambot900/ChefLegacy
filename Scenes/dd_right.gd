@@ -13,41 +13,34 @@ func _ready():
 func _process(delta):
 	pass
 
-func _on__burgers_dd_left():
+func _on__burgers_dd_right():
 	# Avatar reached this command
 	if active:
-		print("dd_left: busy dispensing")
+		print("dd_right: busy dispensing")
 	else:
 		if laden:
-			print("dd_left: okay to pick up")
+			print("dd_right: okay to pick up")
 			# OKAY TO PICK UP
 			return 1
 		else:
 			# ACTIVATE
 			active = true
-			timer_manager.start_timer("dd_left")
-			add_cola_sprite()
-			print("dd_left: activated")
+			timer_manager.start_timer("dd_right")
+			add_oj_sprite()
+			print("dd_right: activated")
 
 func _on_timer_expired(timer_id: String):
-	if timer_id == "dd_left":
+	if timer_id == "dd_right":
 		active = false
 		laden = true
-		print("dd_left: laden")
+		print("dd_right: laden")
 
 func start_round_timer():
 	timer_manager.start_timer("round")
-
-func add_cola_sprite():
-	if not drink_dispenser.has_node("cola"):
-		var cola_sprite = Sprite2D.new()
-		cola_sprite.name = "cola"
-		#cola_sprite.texture = preload("res://path/to/cola_texture.png")  # Adjust the path to your cola texture
-		drink_dispenser.add_child(cola_sprite)
 
 func add_oj_sprite():
 	if not drink_dispenser.has_node("oj"):
 		var oj_sprite = Sprite2D.new()
 		oj_sprite.name = "oj"
-		#cola_sprite.texture = preload("res://path/to/cola_texture.png")  # Adjust the path to your cola texture
+		#oj_sprite.texture = preload("res://path/to/oj_texture.png")  # Adjust the path to your orange juice texture
 		drink_dispenser.add_child(oj_sprite)
