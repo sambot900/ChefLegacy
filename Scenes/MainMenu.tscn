@@ -47,6 +47,7 @@ func _process(_delta):
 script = SubResource("GDScript_lf3rp")
 
 [node name="background_img" type="TextureRect" parent="."]
+z_index = 2
 offset_left = -272.0
 offset_top = -152.0
 offset_right = 744.0

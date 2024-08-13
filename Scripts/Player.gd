@@ -11,7 +11,9 @@ var finished = false
 var orientation_edge_case_r = false
 var orientation_edge_case_l = false
 var orientation_lock = false
+var level_coordinates = []
 signal reached_interactable
+signal where
 #endregion
 
 #region *Onready Declarations
@@ -61,269 +63,97 @@ func _ready():
 	c_o2.pressed.connect(self._on_c_o2_pressed)
 	c_o3.pressed.connect(self._on_c_o3_pressed)
 	c_o4.pressed.connect(self._on_c_o4_pressed)
-	#print("Round node ready")
 
-func enqueue_command(target_pos_array: Array):
-	if command_queue.size() > 0 and command_queue[-1] != target_pos_array:
-		command_queue.append(target_pos_array)
+func enqueue_command(target: Vector2):
+	if command_queue.size() > 0 and command_queue[-1] != target:
+		command_queue.append(target)
 	elif command_queue.size() == 0:
-		command_queue.append(target_pos_array)
+		command_queue.append(target)
 		#print("Current queue: ", command_queue)
 	else:
-		pass
+		print("dupe?")
 
 #region *OnPress Movement Command Functions
 
 func _on_c_dd_left_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var x_mid = 337
-	var x_range = 30
-	var y_common = 423
-	# -----------------------------------------
-	var travel_distance_left = x_mid-x_range
-	var travel_distance_right = x_mid+x_range
-	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
-	print("dd_left: ",coords)
-	enqueue_command(coords)
+	name = "dd_left"
+	where.emit(name, global_position)
 
 func _on_c_dd_right_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var x_mid = 409		# command plane surface mid-point (x or y)
-	var reach = 30		# how far can avatar reach
-	var y_common = 423	# common case value
-	# -----------------------------------------
-	var travel_distance_left = x_mid-reach
-	var travel_distance_right = x_mid+reach
-	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
-	print("dd_right: ",coords)
-	enqueue_command(coords)
+	name = "dd_right"
+	where.emit(name, global_position)
 
 func _on_c_ms_left_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS	
-	var x_mid = 554		# command plane surface mid-point (x or y)
-	var reach = 30		# how far can avatar reach
-	var y_common = 14	# common case value
-	# -----------------------------------------
-	var travel_distance_left = x_mid-reach
-	var travel_distance_right = x_mid+reach
-	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
-	print("ms_left: ",coords)
-	enqueue_command(coords)
+	name = "ms_left"
+	where.emit(name, global_position)
 
 func _on_c_ms_right_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var x_mid = 625		# command plane surface mid-point (x or y)
-	var reach = 24		# how far can avatar reach
-	var y_common = 14	# common case value
-	# -----------------------------------------
-	var travel_distance_left = x_mid-reach
-	var travel_distance_right = x_mid+reach
-	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
-	print("ms_right: ",coords)
-	enqueue_command(coords)
+	name = "ms_right"
+	where.emit(name, global_position)
 
 func _on_c_s_left_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var x_mid = 348		# command plane surface mid-point (x or y)
-	var reach = 30		# how far can avatar reach
-	var y_common = -9	# common case value
-	# -----------------------------------------
-	var travel_distance_left = x_mid-reach
-	var travel_distance_right = x_mid+reach
-	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
-	print("s_left: ",coords)
-	enqueue_command(coords)
+	name = "s_left"
+	where.emit(name, global_position)
 
 func _on_c_s_right_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var x_mid = 474		# command plane surface mid-point (x or y)
-	var reach = 30		# how far can avatar reach
-	var y_common = -9	# common case value
-	# -----------------------------------------
-	var travel_distance_left = x_mid-reach
-	var travel_distance_right = x_mid+reach
-	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
-	print("s_right: ",coords)
-	enqueue_command(coords)
+	name = "s_right"
+	where.emit(name, global_position)
 
 func _on_c_ts_1_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var x_mid = 350
-	var y_mid = 140
-	var reach = 30
-	var x_common = 238
-	var y_common = 55
-	var y_common2 = 180
-	# -----------------------------------------
-	var travel_distance_left = x_mid-reach
-	var travel_distance_right = x_mid+reach
-	var travel_distance_up = y_mid-reach
-	var travel_distance_down = y_mid+reach
-	
-	var top = [Vector2(travel_distance_left, y_common),Vector2(x_mid, y_common),Vector2(travel_distance_right, y_common)]
-	var left = [Vector2(x_common, travel_distance_up),Vector2(x_common, y_mid),Vector2(x_common, travel_distance_down)]
-	var bottom = [Vector2(travel_distance_left, y_common2),Vector2(x_mid, y_common2),Vector2(travel_distance_right, y_common2)]
-	var coords = (top + left + bottom)
-	print("ts_1: ",coords)
-	enqueue_command(coords)
+	name = "ts_1"
+	where.emit(name, global_position)
 
 func _on_c_ts_2_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var x_mid = 437
-	var y_mid = 140
-	var reach = 30
-	var y_common = 55
-	var y_common2 = 180
-	# -----------------------------------------
-	var travel_distance_left = x_mid-reach
-	var travel_distance_right = x_mid+reach
-	
-	var top = [Vector2(travel_distance_left, y_common),Vector2(x_mid, y_common),Vector2(travel_distance_right, y_common)]
-	var bottom = [Vector2(travel_distance_left, y_common2),Vector2(x_mid, y_common2),Vector2(travel_distance_right, y_common2)]
-	var coords = (top + bottom)
-	print("ts_2: ",coords)
-	enqueue_command(coords)
+	name = "ts_2"
+	where.emit(name, global_position)
 
 func _on_c_ts_3_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var x_mid = 525
-	var y_mid = 138
-	var reach = 30
-	var x_common = 612
-	var y_common = 55
-	var y_common2 = 180
-	# -----------------------------------------
-	var travel_distance_left = x_mid-reach
-	var travel_distance_right = x_mid+reach
-	var travel_distance_up = (y_mid-(reach))
-	var travel_distance_down = (y_mid+reach)
-	
-	var top = [Vector2(travel_distance_left, y_common),Vector2(x_mid, y_common),Vector2(travel_distance_right, y_common)]
-	var right = [Vector2(x_common, travel_distance_up),Vector2(x_common, y_mid),Vector2(x_common, y_mid+6)]
-	var bottom = [Vector2(travel_distance_left, y_common2),Vector2(x_mid, y_common2),Vector2(travel_distance_right, y_common2)]
-	var coords = (top + right + bottom)
-	print("ts_3: ",coords)
-	enqueue_command(coords)
+	name = "ts_3"
+	where.emit(name, global_position)
 
 func _on_c_f_left_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var y_mid = 148		# command plane surface mid-point (x or y)
-	var reach = 15		# how far can avatar reach
-	var x_common = 653	# common case value
-	# -----------------------------------------
-	var travel_distance_up = y_mid-reach
-	var travel_distance_down = y_mid+reach
-	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
-	print("f_left: ",coords)
-	enqueue_command(coords)
+	name = "f_1"
+	where.emit(name, global_position)
 
 func _on_c_f_right_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var y_mid = 200		# command plane surface mid-point (x or y)
-	var reach = 15		# how far can avatar reach
-	var x_common = 653	# common case value
-	# -----------------------------------------
-	var travel_distance_up = y_mid-reach
-	var travel_distance_down = y_mid+reach
-	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
-	print("f_right: ",coords)
-	enqueue_command(coords)
+	name = "f_2"
+	where.emit(name, global_position)
 
 func _on_c_fs_1_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var y_mid = 295		# command plane surface mid-point (x or y)
-	var reach = 30		# how far can avatar reach
-	var x_common = 653	# common case value
-	# -----------------------------------------
-	var travel_distance_up = y_mid-reach
-	var travel_distance_down = y_mid+reach
-	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
-	print("fs_1: ",coords)
-	enqueue_command(coords)
+	name = "fs_1"
+	where.emit(name, global_position)
 
 func _on_c_fs_2_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var y_mid = 359		# command plane surface mid-point (x or y)
-	var reach = 30		# how far can avatar reach
-	var x_common = 653	# common case value
-	# -----------------------------------------
-	var travel_distance_up = y_mid-reach
-	var travel_distance_down = y_mid+reach
-	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
-	print("fs_2: ",coords)
-	enqueue_command(coords)
+	name = "fs_2"
+	where.emit(name, global_position)
 
 func _on_c_t_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var y_mid = 453		# command plane surface mid-point (x or y)
-	var reach = 25		# how far can avatar reach
-	var x_common = 653	# common case value
-	# -----------------------------------------
-	var travel_distance_up = y_mid-reach
-	var travel_distance_down = y_mid+reach
-	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
-	print("t: ",coords)
-	enqueue_command(coords)
+	name = "t_1"
+	where.emit(name, global_position)
 
 func _on_c_t2_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var y_mid = 519		# command plane surface mid-point (x or y)
-	var reach = 25		# how far can avatar reach
-	var x_common = 653	# common case value
-	# -----------------------------------------
-	var travel_distance_up = y_mid-reach
-	var travel_distance_down = y_mid+reach
-	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
-	print("t2: ",coords)
-	enqueue_command(coords)
+	name = "t_2"
+	where.emit(name, global_position)
 
 func _on_c_bob_pressed():
-	# -----------------------------------------
-	# ADJUSTMENTS
-	var y_mid = 46		# command plane surface mid-point (x or y)
-	var reach = 25		# how far can avatar reach
-	var x_common = 653	# common case value
-	# -----------------------------------------
-	var travel_distance_up = y_mid-reach
-	var travel_distance_down = y_mid+reach
-	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
-	print("bob: ",coords)
-	enqueue_command(coords)
+	name = "bob"
+	where.emit(name, global_position)
 
 func _on_c_o1_pressed():
-	var coords = [Vector2(292, 572)]
-	print("o1: ",coords)
-	enqueue_command(coords)
+	name = "o_1"
+	where.emit(name, global_position)
 
 func _on_c_o2_pressed():
-	var coords = [Vector2(424, 572)]
-	print("o2: ",coords)
-	enqueue_command(coords)
+	name = "o_2"
+	where.emit(name, global_position)
 
 func _on_c_o3_pressed():
-	var coords = [Vector2(558, 572)]
-	print("o3: ",coords)
-	enqueue_command(coords)
+	name = "o_3"
+	where.emit(name, global_position)
 
 func _on_c_o4_pressed():
-	var coords = [Vector2(686, 572)]
-	print("o4: ",coords)
-	enqueue_command(coords)
+	name = "o_4"
+	where.emit(name, global_position)
 #endregion
 
 func _physics_process(delta):
@@ -333,7 +163,7 @@ func _physics_process(delta):
 	if finished and command_queue.size() > 0:
 		if current_command != null:
 			reached_interactable.emit(current_command)
-		current_command = command_seek()
+		current_command = command_queue.pop_front()
 		orientation_edge_case()
 		agent.target_position = current_command
 		finished = false
@@ -366,23 +196,6 @@ func edge_case_exists():
 		return true
 	else:
 		return false
-
-func command_seek():
-# Get next command in queue
-	command_array = command_queue.pop_front()
-# Find shortest distance destination
-	if command_array.size() > 1:
-		var shortest_distance = INF
-		var closest_command = null
-		for command in command_array:
-			var distance = global_position.distance_to(command)
-			if distance < shortest_distance:
-				shortest_distance = distance
-				closest_command = command
-		return closest_command
-# If only one destination available from command
-	else:
-		return command_array[0]
 
 func z_sort():
 	if global_position.y > 383:
@@ -456,3 +269,7 @@ func orientation_common_case(direction):
 		elif orientation_edge_case_r:
 			if animated_sprite.flip_h == false:
 				animated_sprite.flip_h = true
+
+
+func _on__burgers_go_here(coords):
+	enqueue_command(coords)

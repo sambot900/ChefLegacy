@@ -21,6 +21,8 @@ signal o_1
 signal o_2
 signal o_3
 signal o_4
+
+signal go_here
 #endregion
 
 
@@ -80,3 +82,18 @@ func _on_player_reached_interactable(target: Vector2):
 				dd_left.emit()
 				break
 
+func cmd_seek(name, pos):
+	var shortest_distance = INF
+	var closest_command = null
+	for command in coordinate_key[name]:
+		var distance = pos.distance_to(command)
+		if distance < shortest_distance:
+			shortest_distance = distance
+			closest_command = command
+	return closest_command
+
+
+func _on_player_where(name, pos):
+	var chosen_cmd = cmd_seek(name, pos)
+	go_here.emit(chosen_cmd)
+	# where.emit("dd_left", global_position)

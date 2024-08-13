@@ -1,0 +1,252 @@
+func _on_c_dd_left_pressed():
+	name = "dd_left"
+	where.emit("dd_left", global_position)
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var x_mid = 337
+	var x_range = 30
+	var y_common = 423
+	# -----------------------------------------
+	var travel_distance_left = x_mid-x_range
+	var travel_distance_right = x_mid+x_range
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("dd_left: ",coords)
+
+func _on_c_dd_right_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var x_mid = 409		# command plane surface mid-point (x or y)
+	var reach = 30		# how far can avatar reach
+	var y_common = 423	# common case value
+	# -----------------------------------------
+	var travel_distance_left = x_mid-reach
+	var travel_distance_right = x_mid+reach
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("dd_right: ",coords)
+	enqueue_command(coords)
+
+func _on_c_ms_left_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS	
+	var x_mid = 554		# command plane surface mid-point (x or y)
+	var reach = 30		# how far can avatar reach
+	var y_common = 14	# common case value
+	# -----------------------------------------
+	var travel_distance_left = x_mid-reach
+	var travel_distance_right = x_mid+reach
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("ms_left: ",coords)
+	enqueue_command(coords)
+
+func _on_c_ms_right_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var x_mid = 625		# command plane surface mid-point (x or y)
+	var reach = 24		# how far can avatar reach
+	var y_common = 14	# common case value
+	# -----------------------------------------
+	var travel_distance_left = x_mid-reach
+	var travel_distance_right = x_mid+reach
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("ms_right: ",coords)
+	enqueue_command(coords)
+
+func _on_c_s_left_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var x_mid = 348		# command plane surface mid-point (x or y)
+	var reach = 30		# how far can avatar reach
+	var y_common = -9	# common case value
+	# -----------------------------------------
+	var travel_distance_left = x_mid-reach
+	var travel_distance_right = x_mid+reach
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("s_left: ",coords)
+	enqueue_command(coords)
+
+func _on_c_s_right_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var x_mid = 474		# command plane surface mid-point (x or y)
+	var reach = 30		# how far can avatar reach
+	var y_common = -9	# common case value
+	# -----------------------------------------
+	var travel_distance_left = x_mid-reach
+	var travel_distance_right = x_mid+reach
+	var coords = [Vector2(travel_distance_left, y_common), Vector2(x_mid, y_common), Vector2(travel_distance_right, y_common)]
+	print("s_right: ",coords)
+	enqueue_command(coords)
+
+func _on_c_ts_1_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var x_mid = 350
+	var y_mid = 140
+	var reach = 30
+	var x_common = 238
+	var y_common = 55
+	var y_common2 = 180
+	# -----------------------------------------
+	var travel_distance_left = x_mid-reach
+	var travel_distance_right = x_mid+reach
+	var travel_distance_up = y_mid-reach
+	var travel_distance_down = y_mid+reach
+	
+	var top = [Vector2(travel_distance_left, y_common),Vector2(x_mid, y_common),Vector2(travel_distance_right, y_common)]
+	var side = [Vector2(x_common, travel_distance_up),Vector2(x_common, y_mid),Vector2(x_common, travel_distance_down)]
+	var bottom = [Vector2(travel_distance_left, y_common2),Vector2(x_mid, y_common2),Vector2(travel_distance_right, y_common2)]
+	var coords = (top + side + bottom)
+	print("ts_1: ",coords)
+	enqueue_command(coords)
+
+func _on_c_ts_2_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var x_mid = 437
+	var y_mid = 140
+	var reach = 30
+	var y_common = 55
+	var y_common2 = 180
+	# -----------------------------------------
+	var travel_distance_left = x_mid-reach
+	var travel_distance_right = x_mid+reach
+	
+	var top = [Vector2(travel_distance_left, y_common),Vector2(x_mid, y_common),Vector2(travel_distance_right, y_common)]
+	var bottom = [Vector2(travel_distance_left, y_common2),Vector2(x_mid, y_common2),Vector2(travel_distance_right, y_common2)]
+	var coords = (top + bottom)
+	print("ts_2: ",coords)
+	enqueue_command(coords)
+
+func _on_c_ts_3_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var x_mid = 525
+	var y_mid = 138
+	var reach = 30
+	var x_common = 612
+	var y_common = 55
+	var y_common2 = 180
+	# -----------------------------------------
+	var travel_distance_left = x_mid-reach
+	var travel_distance_right = x_mid+reach
+	var travel_distance_up = (y_mid-(reach))
+	var travel_distance_down = (y_mid+reach)
+	
+	var top = [Vector2(travel_distance_left, y_common),Vector2(x_mid, y_common),Vector2(travel_distance_right, y_common)]
+	var side = [Vector2(x_common, travel_distance_up),Vector2(x_common, y_mid),Vector2(x_common, y_mid+6)]
+	var bottom = [Vector2(travel_distance_left, y_common2),Vector2(x_mid, y_common2),Vector2(travel_distance_right, y_common2)]
+	var coords = (top + side + bottom)
+	print("ts_3: ",coords)
+	enqueue_command(coords)
+
+func _on_c_f_left_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var y_mid = 148		# command plane surface mid-point (x or y)
+	var reach = 15		# how far can avatar reach
+	var x_common = 653	# common case value
+	# -----------------------------------------
+	var travel_distance_up = y_mid-reach
+	var travel_distance_down = y_mid+reach
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("f_left: ",coords)
+	enqueue_command(coords)
+
+func _on_c_f_right_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var y_mid = 200		# command plane surface mid-point (x or y)
+	var reach = 15		# how far can avatar reach
+	var x_common = 653	# common case value
+	# -----------------------------------------
+	var travel_distance_up = y_mid-reach
+	var travel_distance_down = y_mid+reach
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("f_right: ",coords)
+	enqueue_command(coords)
+
+func _on_c_fs_1_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var y_mid = 295		# command plane surface mid-point (x or y)
+	var reach = 30		# how far can avatar reach
+	var x_common = 653	# common case value
+	# -----------------------------------------
+	var travel_distance_up = y_mid-reach
+	var travel_distance_down = y_mid+reach
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("fs_1: ",coords)
+	enqueue_command(coords)
+
+func _on_c_fs_2_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var y_mid = 359		# command plane surface mid-point (x or y)
+	var reach = 30		# how far can avatar reach
+	var x_common = 653	# common case value
+	# -----------------------------------------
+	var travel_distance_up = y_mid-reach
+	var travel_distance_down = y_mid+reach
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("fs_2: ",coords)
+	enqueue_command(coords)
+
+func _on_c_t_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var y_mid = 453		# command plane surface mid-point (x or y)
+	var reach = 25		# how far can avatar reach
+	var x_common = 653	# common case value
+	# -----------------------------------------
+	var travel_distance_up = y_mid-reach
+	var travel_distance_down = y_mid+reach
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("t: ",coords)
+	enqueue_command(coords)
+
+func _on_c_t2_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var y_mid = 519		# command plane surface mid-point (x or y)
+	var reach = 25		# how far can avatar reach
+	var x_common = 653	# common case value
+	# -----------------------------------------
+	var travel_distance_up = y_mid-reach
+	var travel_distance_down = y_mid+reach
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("t2: ",coords)
+	enqueue_command(coords)
+
+func _on_c_bob_pressed():
+	# -----------------------------------------
+	# ADJUSTMENTS
+	var y_mid = 46		# command plane surface mid-point (x or y)
+	var reach = 25		# how far can avatar reach
+	var x_common = 653	# common case value
+	# -----------------------------------------
+	var travel_distance_up = y_mid-reach
+	var travel_distance_down = y_mid+reach
+	var coords = [Vector2(x_common, travel_distance_up), Vector2(x_common, y_mid), Vector2(x_common, travel_distance_down)]
+	print("bob: ",coords)
+	enqueue_command(coords)
+
+func _on_c_o1_pressed():
+	var coords = [Vector2(292, 572)]
+	print("o1: ",coords)
+	enqueue_command(coords)
+
+func _on_c_o2_pressed():
+	var coords = [Vector2(424, 572)]
+	print("o2: ",coords)
+	enqueue_command(coords)
+
+func _on_c_o3_pressed():
+	var coords = [Vector2(558, 572)]
+	print("o3: ",coords)
+	enqueue_command(coords)
+
+func _on_c_o4_pressed():
+	var coords = [Vector2(686, 572)]
+	print("o4: ",coords)
+	enqueue_command(coords)
+#endregion
