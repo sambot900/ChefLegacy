@@ -25,7 +25,7 @@ signal o_4
 signal go_here
 #endregion
 
-#region Coordinate Key
+#region Dictionary Init: coordinate_key
 var coordinate_key = {
 	"dd_left": [Vector2(307, 423), Vector2(337, 423), Vector2(367, 423)],
 	"dd_right": [Vector2(379, 423), Vector2(409, 423), Vector2(439, 423)],
@@ -50,6 +50,54 @@ var coordinate_key = {
 }
 #endregion
 
+#region Dictionary Init: cmd_count
+var cmd_count = {
+	"dd_left": 0,
+	"dd_right": 0,
+	"ms_left": 0,
+	"ms_right": 0,
+	"fs_1": 0,
+	"fs_2": 0,
+	"s_left": 0,
+	"s_right": 0,
+	"ts_1": 0,
+	"ts_2": 0,
+	"ts_3": 0,
+	"f_1": 0,
+	"f_2": 0,
+	"t_1": 0,
+	"t_2": 0,
+	"bob": 0,
+	"o_1": 0,
+	"o_2": 0,
+	"o_3": 0,
+	"o_4": 0
+}
+
+var cmd_count_max = {
+	"dd_left": 2,
+	"dd_right": 2,
+	"ms_left": 2,
+	"ms_right": 2,
+	"fs_1": 2,
+	"fs_2": 2,
+	"s_left": 2, # 1. picks up cooked patty into free hand, 2. sets down raw patty
+	"s_right": 2,
+	"ts_1": 2,
+	"ts_2": 2,
+	"ts_3": 2,
+	"f_1": 2,
+	"f_2": 2,
+	"t_1": 2,
+	"t_2": 2,
+	"bob": 2,
+	"o_1": 1,
+	"o_2": 1,
+	"o_3": 1,
+	"o_4": 1
+	}
+#endregion
+
 #region Declarations
 
 @onready var cook_avatar = $Player
@@ -67,76 +115,22 @@ func _ready():
 func _input(event):
 	pass
 
+
 func start_camera_pan():
 	if round_camera and camera_animation_player:
 		camera_animation_player.play("PanCamera")
 	else:
 		print("Camera and AnimationPlayer not found")
 
-# Emit to interactables when player reaches target
 func _on_player_reached_interactable(target: Vector2):
+	# Parameter is where the player's last CMD was.
+	# Find which command was used based on the vector.
+	# Decrement the cmd_count and emit cmd name to obj.
 	for key in coordinate_key.keys():
 		if target in coordinate_key[key]:
-			if key == "dd_left":
-				dd_left.emit()
-				break
-			elif key == "dd_right":
-				dd_right.emit()
-				break
-			elif key == "ms_left":
-				ms_left.emit()
-				break
-			elif key == "ms_right":
-				ms_right.emit()
-				break
-			elif key == "fs_1":
-				fs_1.emit()
-				break
-			elif key == "fs_2":
-				fs_2.emit()
-				break
-			elif key == "s_left":
-				s_left.emit()
-				break
-			elif key == "s_right":
-				s_right.emit()
-				break
-			elif key == "ts_1":
-				ts_1.emit()
-				break
-			elif key == "ts_2":
-				ts_2.emit()
-				break
-			elif key == "ts_3":
-				ts_3.emit()
-				break
-			elif key == "f_1":
-				f_1.emit()
-				break
-			elif key == "f_2":
-				f_2.emit()
-				break
-			elif key == "t_1":
-				t_1.emit()
-				break
-			elif key == "t_2":
-				t_2.emit()
-				break
-			elif key == "bob":
-				bob.emit()
-				break
-			elif key == "o_1":
-				o_1.emit()
-				break
-			elif key == "o_2":
-				o_2.emit()
-				break
-			elif key == "o_3":
-				o_3.emit()
-				break
-			elif key == "o_4":
-				o_4.emit()
-				break
+			var cmd_name = cmd_count_decrement(key)
+			emit_signal(cmd_name)
+			
 
 # Find shortest distance coordinate
 func cmd_seek(name, pos):
@@ -152,8 +146,42 @@ func cmd_seek(name, pos):
 # Tell avatar where to go
 func _on_player_where(name, pos):
 	var chosen_cmd = cmd_seek(name, pos)
-	go_here.emit(chosen_cmd)
+	if cmd_count[name] < cmd_count_max[name]:
+		cmd_count_increment(name)
+		go_here.emit(chosen_cmd)
+	else:
+		#print("Queue full for this obj.")
+		pass
+	for key in cmd_count:
+		#print("Command: ", key, "\tCount: ", cmd_count[key])
+		pass
 
 
 func _on_timer_timeout():
 	pass # Replace with function body.
+	
+func cmd_count_decrement(name):
+# Make sure command doesn't have too many counts.
+	if cmd_count[name] >= cmd_count_max[name]:
+		cmd_count[name] = cmd_count_max[name]
+		
+	if cmd_count[name] > 0:
+####################################################################### TODO
+		# TODO REMOVE CHECKMARK SPRITE
+		
+		cmd_count[name] -= 1
+	else:
+		cmd_count[name] = 0
+	return name
+
+func cmd_count_increment(name):
+# Make sure command doesn't have negative counts
+	if cmd_count[name] < 1:
+		cmd_count[name] = 0
+	
+	if cmd_count[name] >= cmd_count_max[name] - 1:
+		cmd_count[name] = cmd_count_max[name]
+	else:
+####################################################################### TODO
+		# TODO ADD CHECKMARK SPRITE
+		cmd_count[name] += 1

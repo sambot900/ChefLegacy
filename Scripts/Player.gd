@@ -279,4 +279,7 @@ func orientation_common_case(direction):
 # Each queued command added emits a request for next coords and those
 # coords output below into the enqueue command.
 func _on__burgers_go_here(coords):
-	enqueue_command(coords)
+	if coords != null:
+		enqueue_command(coords)
+	else:
+		print("This obj cmd_count is maxed")
