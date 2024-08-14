@@ -1,11 +1,17 @@
 extends Node2D
 
+######################################################
+# 	dd_right
+######################################################
+
 var enabled = true
 var active = false
 var laden = false
 
 @onready var timer_manager = $"../../../Timer"
 @onready var drink_dispenser = $".."
+@onready var cup_empty = $cup_empty
+@onready var cup_cola = $cup_cola
 
 func _ready():
 	timer_manager.connect("timer_expired", Callable(self, "_on_timer_expired"))
@@ -20,27 +26,24 @@ func _on__burgers_dd_right():
 	else:
 		if laden:
 			print("dd_right: okay to pick up")
-			# OKAY TO PICK UP
+			laden = false
+			cup_cola.visible = false
 			return 1
 		else:
 			# ACTIVATE
 			active = true
+			cup_empty.visible = true
 			timer_manager.start_timer("dd_right")
-			add_oj_sprite()
 			print("dd_right: activated")
+		
 
 func _on_timer_expired(timer_id: String):
 	if timer_id == "dd_right":
 		active = false
+		cup_empty.visible = false
 		laden = true
+		cup_cola.visible = true
 		print("dd_right: laden")
 
 func start_round_timer():
 	timer_manager.start_timer("round")
-
-func add_oj_sprite():
-	if not drink_dispenser.has_node("oj"):
-		var oj_sprite = Sprite2D.new()
-		oj_sprite.name = "oj"
-		#oj_sprite.texture = preload("res://path/to/oj_texture.png")  # Adjust the path to your orange juice texture
-		drink_dispenser.add_child(oj_sprite)

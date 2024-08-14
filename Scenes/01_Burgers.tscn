@@ -1,7 +1,8 @@
-[gd_scene load_steps=46 format=3 uid="uid://ees3wkka1sse"]
+[gd_scene load_steps=51 format=3 uid="uid://ees3wkka1sse"]
 
 [ext_resource type="Script" path="res://Scripts/01_Burgers.gd" id="1_hbsg8"]
 [ext_resource type="Texture2D" uid="uid://yrsm0dtwtepc" path="res://Sprites/Levels/01_Burgers/invis_button_153sq.png" id="2_1huu3"]
+[ext_resource type="Texture2D" uid="uid://cegajgl57ofcp" path="res://Sprites/Avatars/1.png" id="2_r74is"]
 [ext_resource type="Texture2D" uid="uid://bkdk032rk15q8" path="res://Sprites/Transitions/bg_black.jpg" id="3_25ffw"]
 [ext_resource type="Texture2D" uid="uid://k2ibrgclpslp" path="res://Sprites/Levels/01_Burgers/bg1.png" id="4_uuspb"]
 [ext_resource type="Texture2D" uid="uid://b2svqa6u5jpq" path="res://Sprites/Transitions/bg_white.jpg" id="5_ejmqt"]
@@ -13,11 +14,15 @@
 [ext_resource type="Script" path="res://Scenes/dd_left.gd" id="10_haucj"]
 [ext_resource type="Texture2D" uid="uid://dvh1ovsne5ury" path="res://Sprites/Levels/01_Burgers/island1.png" id="11_nqtrk"]
 [ext_resource type="Script" path="res://Scenes/dd_right.gd" id="12_ebi7b"]
+[ext_resource type="Texture2D" uid="uid://dvggof21fghar" path="res://Sprites/Levels/01_Burgers/Food/cup_empty.png" id="12_kh5kr"]
 [ext_resource type="Texture2D" uid="uid://c75fc8uova3er" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_cheese.png" id="12_mbjjp"]
 [ext_resource type="Texture2D" uid="uid://b8a5ehqgtu432" path="res://Sprites/Levels/01_Burgers/Interactables/freezer_fries_rings.png" id="12_nnmns"]
+[ext_resource type="Texture2D" uid="uid://c5qvacxhyg7kv" path="res://Sprites/Levels/CMD Icons/check1.png" id="12_oxtuv"]
+[ext_resource type="Texture2D" uid="uid://dahfbkfpf38v3" path="res://Sprites/Levels/01_Burgers/Food/oj_full.png" id="12_q376w"]
 [ext_resource type="Texture2D" uid="uid://bacwyhxlcudi0" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_bacon.png" id="13_tt7br"]
 [ext_resource type="Texture2D" uid="uid://bcmr8352nrc6q" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_lettuce.png" id="14_1lqul"]
 [ext_resource type="Texture2D" uid="uid://n3kmqxtdc2h5" path="res://Sprites/Levels/01_Burgers/condiments.png" id="15_e1nox"]
+[ext_resource type="Texture2D" uid="uid://colgmpr0hkowd" path="res://Sprites/Levels/01_Burgers/Food/cola_full.png" id="16_48fy6"]
 [ext_resource type="Texture2D" uid="uid://jofdkdxsljkw" path="res://Sprites/Levels/01_Burgers/island1_shadow.png" id="16_gxhvc"]
 [ext_resource type="Texture2D" uid="uid://cmbb2ilbp4eam" path="res://Sprites/Levels/UI/back_button.png" id="17_3nah0"]
 [ext_resource type="Script" path="res://Scenes/UI.gd" id="17_ecpc5"]
@@ -148,9 +153,9 @@ _data = {
 }
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_v4t1i"]
-vertices = PackedVector2Array(564, 361, 569, 301, 616, 266, 627, 339, 622, 780, 557, 428, 560, 276, 605, 230, 188, 780, 190, 630, 484, 631, 479, 540, 191, 432, 156, 507, 191, 370, 113, 136, 182, 329, 197, 286, 256, 158, 263, 208, 261, 264, 534, 266)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(5, 0, 4), PackedInt32Array(2, 1, 6, 7), PackedInt32Array(4, 8, 9, 10), PackedInt32Array(5, 4, 10, 11), PackedInt32Array(12, 5, 11, 13), PackedInt32Array(14, 12, 13, 15, 16), PackedInt32Array(17, 16, 15), PackedInt32Array(17, 15, 18, 19, 20), PackedInt32Array(20, 19, 7, 21), PackedInt32Array(21, 7, 6)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(102, 124, 265, 150, 272, 199, 613, 221, 626, 263, 637, 338, 632, 790, 178, 791, 181, 620, 473, 621, 469, 549, 147, 517), PackedVector2Array(201, 422, 548, 418, 554, 360, 559, 302, 552, 284, 532, 276, 263, 274, 205, 294, 192, 330, 201, 368)])
+vertices = PackedVector2Array(564, 361, 569, 298, 605, 230, 616, 266, 627, 339, 622, 780, 557, 428, 188, 780, 190, 630, 484, 631, 479, 540, 191, 432, 156, 507, 191, 370, 113, 136, 182, 329, 197, 286, 256, 158, 263, 208, 261, 264, 536, 266)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedInt32Array(6, 0, 5), PackedInt32Array(5, 7, 8, 9), PackedInt32Array(6, 5, 9, 10), PackedInt32Array(11, 6, 10, 12), PackedInt32Array(13, 11, 12, 14, 15), PackedInt32Array(16, 15, 14), PackedInt32Array(16, 14, 17, 18, 19), PackedInt32Array(19, 18, 2, 20), PackedInt32Array(1, 20, 2)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(102, 124, 265, 150, 272, 199, 613, 221, 626, 263, 637, 338, 632, 790, 178, 791, 181, 620, 473, 621, 469, 549, 147, 517), PackedVector2Array(201, 422, 548, 418, 554, 360, 559, 302, 532, 276, 263, 274, 205, 294, 192, 330, 201, 368)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rsov3"]
@@ -160,6 +165,16 @@ size = Vector2(150, 200)
 script = ExtResource("1_hbsg8")
 metadata/_edit_horizontal_guides_ = [648.0, 38.0, 122.0]
 metadata/_edit_vertical_guides_ = [1152.0]
+
+[node name="Player2" type="CharacterBody2D" parent="."]
+z_index = 100
+position = Vector2(289, 123)
+scale = Vector2(1, 1.00001)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player2"]
+position = Vector2(146, 577.994)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_r74is")
 
 [node name="Player" type="CharacterBody2D" parent="."]
 z_index = 1
@@ -172,7 +187,7 @@ metadata/_edit_group_ = true
 [node name="anim" type="AnimatedSprite2D" parent="Player"]
 scale = Vector2(0.640957, 0.640957)
 sprite_frames = SubResource("SpriteFrames_oxu7q")
-animation = &"idle"
+animation = &"L-walk"
 
 [node name="NavAg" type="NavigationAgent2D" parent="Player"]
 path_desired_distance = 3.0
@@ -229,84 +244,84 @@ navigation_polygon = SubResource("NavigationPolygon_v4t1i")
 [node name="CMDs" type="Node2D" parent="."]
 
 [node name="c_dd-left" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(292, 270)
-scale = Vector2(0.509804, 0.810458)
+position = Vector2(278, 270)
+scale = Vector2(0.614379, 0.810458)
 texture_normal = ExtResource("2_1huu3")
 shape = SubResource("RectangleShape2D_rsov3")
 
 [node name="c_dd-right" type="TouchScreenButton" parent="CMDs"]
 position = Vector2(376, 272)
-scale = Vector2(0.503268, 0.803921)
+scale = Vector2(0.660131, 0.803921)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_ms-left" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(523, -82)
-scale = Vector2(0.405229, 0.562091)
+position = Vector2(519, -82)
+scale = Vector2(0.457516, 0.562091)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_ms-right" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(594, -76)
-scale = Vector2(0.405228, 0.522876)
+position = Vector2(593, -76)
+scale = Vector2(0.529412, 0.522876)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_fs-1" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(703, 259)
-scale = Vector2(0.542483, 0.431372)
+position = Vector2(692, 254)
+scale = Vector2(0.843137, 0.464052)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_fs-2" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(705, 330)
-scale = Vector2(0.516339, 0.4183)
+position = Vector2(688, 330)
+scale = Vector2(0.869281, 0.48366)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_s-left" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(309, -78)
-scale = Vector2(0.535947, 0.581699)
+position = Vector2(309, -126)
+scale = Vector2(0.653595, 0.928104)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_s-right" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(430, -83)
-scale = Vector2(0.542484, 0.601307)
+position = Vector2(416, -127)
+scale = Vector2(0.633987, 0.941176)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_ts-1" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(314, 116)
-scale = Vector2(0.444444, 0.326797)
+position = Vector2(297, 110)
+scale = Vector2(0.614379, 0.45098)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_ts-2" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(402, 118)
-scale = Vector2(0.45098, 0.313725)
+position = Vector2(393, 110)
+scale = Vector2(0.562092, 0.45098)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_ts-3" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(490, 117)
-scale = Vector2(0.490196, 0.320261)
+position = Vector2(481, 109)
+scale = Vector2(0.594771, 0.464052)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_f-left" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(684, 115)
-scale = Vector2(0.816993, 0.359477)
+position = Vector2(681, 96)
+scale = Vector2(0.928105, 0.48366)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_f-right" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(684, 173)
-scale = Vector2(0.816993, 0.359477)
+position = Vector2(683, 173)
+scale = Vector2(0.908497, 0.496732)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_t" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(715, 427)
-scale = Vector2(0.45098, 0.333333)
+position = Vector2(682, 411)
+scale = Vector2(0.908496, 0.470589)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_t2" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(716, 493)
-scale = Vector2(0.45098, 0.333333)
+position = Vector2(681, 487)
+scale = Vector2(0.947712, 0.529412)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_bob" type="TouchScreenButton" parent="CMDs"]
-position = Vector2(687, -3)
-scale = Vector2(0.633987, 0.601307)
+position = Vector2(681, -34)
+scale = Vector2(0.777777, 0.803921)
 texture_normal = ExtResource("2_1huu3")
 
 [node name="c_o1" type="TouchScreenButton" parent="CMDs"]
@@ -346,14 +361,123 @@ texture = ExtResource("19_30w0c")
 [node name="dd_left" type="Node2D" parent="INTERACTABLES/DrinkDispenser"]
 script = ExtResource("10_haucj")
 
+[node name="cup_oj" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_left"]
+visible = false
+z_index = 11
+z_as_relative = false
+position = Vector2(340, 354)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_q376w")
+
+[node name="cup_empty" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_left"]
+visible = false
+z_index = 11
+z_as_relative = false
+position = Vector2(340, 351)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_kh5kr")
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/DrinkDispenser/dd_left"]
+z_index = 100
+z_as_relative = false
+position = Vector2(0, -20)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_left/CMD icons"]
+visible = false
+position = Vector2(382, 282)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_left/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
 [node name="dd_right" type="Node2D" parent="INTERACTABLES/DrinkDispenser"]
+position = Vector2(0, 1)
 script = ExtResource("12_ebi7b")
+
+[node name="cup_cola" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_right"]
+visible = false
+z_index = 11
+z_as_relative = false
+position = Vector2(413, 354)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("16_48fy6")
+
+[node name="cup_empty" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_right"]
+visible = false
+z_index = 11
+z_as_relative = false
+position = Vector2(413, 351)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_kh5kr")
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/DrinkDispenser/dd_right"]
+z_index = 100
+z_as_relative = false
+position = Vector2(73, -21)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_right/CMD icons"]
+visible = false
+position = Vector2(382, 282)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_right/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
 
 [node name="Stove" type="Node2D" parent="INTERACTABLES"]
 
 [node name="s1_left" type="Node2D" parent="INTERACTABLES/Stove"]
 
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/Stove/s1_left"]
+z_index = 100
+z_as_relative = false
+position = Vector2(-6, -21)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/Stove/s1_left/CMD icons"]
+visible = false
+position = Vector2(396, -103.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/Stove/s1_left/CMD icons"]
+visible = false
+position = Vector2(396, -71.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
 [node name="s1_right" type="Node2D" parent="INTERACTABLES/Stove"]
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/Stove/s1_right"]
+z_index = 100
+z_as_relative = false
+position = Vector2(120, -21)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/Stove/s1_right/CMD icons"]
+visible = false
+position = Vector2(396, -103.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/Stove/s1_right/CMD icons"]
+visible = false
+position = Vector2(396, -71.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
 
 [node name="Fryer" type="Node2D" parent="INTERACTABLES"]
 
@@ -363,24 +487,104 @@ position = Vector2(736, 190)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("20_rjqle")
 
-[node name="f_left" type="Node2D" parent="INTERACTABLES/Fryer"]
+[node name="f_1" type="Node2D" parent="INTERACTABLES/Fryer"]
 
-[node name="Node2D2" type="Node2D" parent="INTERACTABLES/Fryer"]
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/Fryer/f_1"]
+z_index = 100
+z_as_relative = false
+position = Vector2(406, -187)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/Fryer/f_1/CMD icons"]
+visible = false
+position = Vector2(382, 282)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/Fryer/f_1/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="f_2" type="Node2D" parent="INTERACTABLES/Fryer"]
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/Fryer/f_2"]
+z_index = 100
+z_as_relative = false
+position = Vector2(406, -121)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/Fryer/f_2/CMD icons"]
+visible = false
+position = Vector2(382, 282)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/Fryer/f_2/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
 
 [node name="Freezer" type="Node2D" parent="INTERACTABLES"]
 
 [node name="FreezerFries" type="Sprite2D" parent="INTERACTABLES/Freezer"]
+visible = false
 z_index = 11
 position = Vector2(760, 330)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("21_2k0f7")
 
 [node name="FreezerFries&Rings" type="Sprite2D" parent="INTERACTABLES/Freezer"]
-visible = false
 z_index = 11
 position = Vector2(760, 330)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_nnmns")
+
+[node name="fs_1" type="Node2D" parent="INTERACTABLES/Freezer"]
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/Freezer/fs_1"]
+z_index = 100
+z_as_relative = false
+position = Vector2(403, -31)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/Freezer/fs_1/CMD icons"]
+visible = false
+position = Vector2(382, 282)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/Freezer/fs_1/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="fs_2" type="Node2D" parent="INTERACTABLES/Freezer"]
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/Freezer/fs_2"]
+z_index = 100
+z_as_relative = false
+position = Vector2(403, 36)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/Freezer/fs_2/CMD icons"]
+visible = false
+position = Vector2(382, 282)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/Freezer/fs_2/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
 
 [node name="MeatSource1" type="Node2D" parent="INTERACTABLES"]
 
@@ -390,12 +594,46 @@ position = Vector2(555, -45)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("21_mmamr")
 
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/MeatSource1/Ms1"]
+z_index = 100
+z_as_relative = false
+position = Vector2(-302, -368)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/MeatSource1/Ms1/CMD icons"]
+visible = false
+position = Vector2(384, 266)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/MeatSource1/Ms1/CMD icons"]
+visible = false
+position = Vector2(382, 326)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
 [node name="MeatSource2" type="Node2D" parent="INTERACTABLES"]
 
 [node name="Ms2" type="Sprite2D" parent="INTERACTABLES/MeatSource2"]
 position = Vector2(626, -45)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("23_oc6tk")
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/MeatSource2/Ms2"]
+z_index = 100
+z_as_relative = false
+position = Vector2(-302, -368)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/MeatSource2/Ms2/CMD icons"]
+visible = false
+position = Vector2(384, 266)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/MeatSource2/Ms2/CMD icons"]
+visible = false
+position = Vector2(382, 326)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
 
 [node name="HelperTray1" type="Node2D" parent="INTERACTABLES"]
 
@@ -405,6 +643,23 @@ position = Vector2(750, 452)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("19_gerfd")
 
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/HelperTray1/HelperTray"]
+z_index = 100
+z_as_relative = false
+position = Vector2(-304, -340)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/HelperTray1/HelperTray/CMD icons"]
+visible = false
+position = Vector2(382, 256)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/HelperTray1/HelperTray/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
 [node name="HelperTray2" type="Node2D" parent="INTERACTABLES"]
 
 [node name="HelperTray" type="Sprite2D" parent="INTERACTABLES/HelperTray2"]
@@ -412,6 +667,23 @@ z_index = 11
 position = Vector2(750, 518)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("19_gerfd")
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/HelperTray2/HelperTray"]
+z_index = 100
+z_as_relative = false
+position = Vector2(-304, -340)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/HelperTray2/HelperTray/CMD icons"]
+visible = false
+position = Vector2(382, 256)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/HelperTray2/HelperTray/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
 
 [node name="TOPPING STATION" type="Node2D" parent="INTERACTABLES"]
 z_index = 9
@@ -426,12 +698,46 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_mbjjp")
 offset = Vector2(-14, -2)
 
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/TOPPING STATION/TsBoardCheese"]
+z_index = 100
+z_as_relative = false
+position = Vector2(-328, -334)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION/TsBoardCheese/CMD icons"]
+visible = false
+position = Vector2(382, 256)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION/TsBoardCheese/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
 [node name="TsBoardBacon" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION"]
 z_index = 9
 z_as_relative = false
 position = Vector2(479, 141)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("13_tt7br")
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/TOPPING STATION/TsBoardBacon"]
+z_index = 100
+z_as_relative = false
+position = Vector2(-306, -334)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION/TsBoardBacon/CMD icons"]
+visible = false
+position = Vector2(382, 256)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION/TsBoardBacon/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
 
 [node name="TsBoardLettuce" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION"]
 z_index = 9
@@ -440,6 +746,100 @@ position = Vector2(584, 146)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("14_1lqul")
 offset = Vector2(-32, -16)
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/TOPPING STATION/TsBoardLettuce"]
+z_index = 100
+z_as_relative = false
+position = Vector2(-338, -344)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION/TsBoardLettuce/CMD icons"]
+visible = false
+position = Vector2(382, 256)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION/TsBoardLettuce/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="BOB" type="Node2D" parent="INTERACTABLES"]
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/BOB"]
+z_index = 100
+z_as_relative = false
+position = Vector2(395, -310)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/BOB/CMD icons"]
+visible = false
+position = Vector2(382, 282)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="check2" type="Sprite2D" parent="INTERACTABLES/BOB/CMD icons"]
+visible = false
+position = Vector2(382, 314)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="o_1" type="Node2D" parent="INTERACTABLES"]
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/o_1"]
+z_index = 100
+z_as_relative = false
+position = Vector2(73, 0)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/o_1/CMD icons"]
+visible = false
+position = Vector2(264, 663)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="o_2" type="Node2D" parent="INTERACTABLES"]
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/o_2"]
+z_index = 100
+z_as_relative = false
+position = Vector2(222, 0)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/o_2/CMD icons"]
+visible = false
+position = Vector2(258, 663)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="o_3" type="Node2D" parent="INTERACTABLES"]
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/o_3"]
+z_index = 100
+z_as_relative = false
+position = Vector2(355, 0)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/o_3/CMD icons"]
+visible = false
+position = Vector2(258, 663)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
+
+[node name="o_4" type="Node2D" parent="INTERACTABLES"]
+
+[node name="CMD icons" type="Node2D" parent="INTERACTABLES/o_4"]
+z_index = 100
+z_as_relative = false
+position = Vector2(483, 0)
+
+[node name="check1" type="Sprite2D" parent="INTERACTABLES/o_4/CMD icons"]
+visible = false
+position = Vector2(258, 663)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_oxtuv")
+offset = Vector2(-73, -13)
 
 [node name="STRUCTURES" type="Node2D" parent="."]
 
