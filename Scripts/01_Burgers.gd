@@ -81,7 +81,7 @@ var cmd_count_max = {
 	"ms_right": 2,
 	"fs_1": 2,
 	"fs_2": 2,
-	"s_left": 2, # 1. picks up cooked patty into free hand, 2. sets down raw patty
+	"s_left": 2,
 	"s_right": 2,
 	"ts_1": 2,
 	"ts_2": 2,
@@ -254,8 +254,26 @@ func cmd_count_increment(name):
 	if cmd_count[name] < 1:
 		cmd_count[name] = 0
 	
-	if cmd_count[name] >= cmd_count_max[name] - 1:
+	if cmd_count[name] >= cmd_count_max[name]:
 		cmd_count[name] = cmd_count_max[name]
 	else:
 		# TODO ADD CHECKMARK SPRITE
 		cmd_count[name] += 1
+
+
+func _on_dd_left_activated(n):
+	cmd_count_max[n] = 1
+
+
+func _on_dd_left_deactivated(n):
+	pass
+
+
+func _on_dd_left_ladened(n):
+	cmd_count_max[n] = 2
+	print(cmd_count_max[n])
+
+
+func _on_dd_left_unladened(n):
+	cmd_count_max[n] = 1
+	print("MAX!!! ",cmd_count_max[n])

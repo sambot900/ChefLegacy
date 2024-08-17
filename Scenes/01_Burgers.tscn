@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://ees3wkka1sse"]
+[gd_scene load_steps=62 format=3 uid="uid://ees3wkka1sse"]
 
 [ext_resource type="Script" path="res://Scripts/01_Burgers.gd" id="1_hbsg8"]
 [ext_resource type="Texture2D" uid="uid://yrsm0dtwtepc" path="res://Sprites/Levels/01_Burgers/invis_button_153sq.png" id="2_1huu3"]
@@ -6,9 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://bkdk032rk15q8" path="res://Sprites/Transitions/bg_black.jpg" id="3_25ffw"]
 [ext_resource type="Texture2D" uid="uid://k2ibrgclpslp" path="res://Sprites/Levels/01_Burgers/bg1.png" id="4_uuspb"]
 [ext_resource type="Texture2D" uid="uid://b2svqa6u5jpq" path="res://Sprites/Transitions/bg_white.jpg" id="5_ejmqt"]
+[ext_resource type="Texture2D" uid="uid://jmlo4psjmpk3" path="res://Sprites/Avatars/Boom/avatar_shadow.png" id="6_gbo6r"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="6_x85if"]
-[ext_resource type="Texture2D" uid="uid://dmle1j61k3tpm" path="res://Sprites/Avatars/Boom/ss-boom.png" id="7_xivwc"]
-[ext_resource type="Texture2D" uid="uid://cywhvg8ma5nu5" path="res://Sprites/Avatars/Boom/ss-boom-idle.png" id="8_ri1tp"]
+[ext_resource type="Texture2D" uid="uid://c78ky5d5dph8x" path="res://Sprites/Avatars/Boom/ss-boom.png" id="7_xivwc"]
+[ext_resource type="Texture2D" uid="uid://cnu1qsyaptod6" path="res://Sprites/Avatars/Boom/ss-boom-idle.png" id="8_ri1tp"]
 [ext_resource type="Script" path="res://Scenes/DrinkDispenser.gd" id="9_lghu4"]
 [ext_resource type="Texture2D" uid="uid://b7xhjf5j6qv10" path="res://Sprites/Levels/01_Burgers/bottom_counter.png" id="10_11uuh"]
 [ext_resource type="Script" path="res://Scenes/dd_left.gd" id="10_haucj"]
@@ -31,10 +32,63 @@
 [ext_resource type="Texture2D" uid="uid://ukgqtqgtpfe7" path="res://Sprites/Levels/01_Burgers/Interactables/F1_empty.png" id="20_rjqle"]
 [ext_resource type="Texture2D" uid="uid://eiengf1pnysv" path="res://Sprites/Levels/01_Burgers/Interactables/freezer_fries.png" id="21_2k0f7"]
 [ext_resource type="Texture2D" uid="uid://k66wnrjne4sk" path="res://Sprites/Levels/01_Burgers/Interactables/ms_1.png" id="21_mmamr"]
-[ext_resource type="Texture2D" uid="uid://qnouysaajek4" path="res://Sprites/Levels/01_Burgers/main_counter.png" id="22_sl6vc"]
-[ext_resource type="Texture2D" uid="uid://dhv8f7sjqbjg6" path="res://Sprites/Levels/01_Burgers/bottom_shadow.png" id="22_viu0h"]
 [ext_resource type="Texture2D" uid="uid://bejpdbieal841" path="res://Sprites/Levels/01_Burgers/Interactables/ms_2.png" id="23_oc6tk"]
 [ext_resource type="Script" path="res://Scenes/Timer.gd" id="29_hdvxg"]
+[ext_resource type="Texture2D" uid="uid://yssnar5pmwex" path="res://Sprites/Levels/01_Burgers/doodads.png" id="30_2ejp4"]
+[ext_resource type="Texture2D" uid="uid://msqwdjva2ju4" path="res://Sprites/Levels/01_Burgers/register.png" id="31_v51eu"]
+[ext_resource type="Texture2D" uid="uid://dvg18gqcn46xk" path="res://Sprites/Levels/01_Burgers/mixer.png" id="32_eqjtr"]
+[ext_resource type="Texture2D" uid="uid://dx0lkm8wp8aye" path="res://Sprites/Levels/01_Burgers/bottom_left_counter.png" id="32_gtlav"]
+[ext_resource type="Texture2D" uid="uid://bmitq7fgisicv" path="res://Sprites/Levels/01_Burgers/stove.png" id="36_kxsu3"]
+[ext_resource type="Texture2D" uid="uid://dj0u2wr3eytnw" path="res://Sprites/Levels/01_Burgers/main_counter_shadow.png" id="38_yo6hr"]
+[ext_resource type="Texture2D" uid="uid://bhjml8wa55uf7" path="res://Sprites/Levels/01_Burgers/boundaries.png" id="39_3xn2a"]
+[ext_resource type="Texture2D" uid="uid://docasyxtod82g" path="res://Sprites/Levels/01_Burgers/floor_mat.png" id="39_xmyjw"]
+[ext_resource type="Texture2D" uid="uid://d4mqraq47ydva" path="res://Sprites/Levels/01_Burgers/floor_mat_shadow.png" id="40_4aex1"]
+[ext_resource type="Texture2D" uid="uid://d1u6wytsugeiu" path="res://Sprites/Levels/01_Burgers/stove_hood.png" id="42_0xsp3"]
+[ext_resource type="Texture2D" uid="uid://bmiqq4mkixy21" path="res://Sprites/Levels/01_Burgers/top-_right_counter.png" id="43_k55kj"]
+[ext_resource type="Texture2D" uid="uid://58t1evpwbc5e" path="res://Sprites/Levels/01_Burgers/stove shadow.png" id="45_ulrje"]
+
+[sub_resource type="Animation" id="Animation_5scld"]
+resource_name = "PanCamera"
+length = 1.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MISCELLANEOUS/White BG:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hbte0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MISCELLANEOUS/White BG:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uoo1i"]
+_data = {
+"PanCamera": SubResource("Animation_5scld"),
+"RESET": SubResource("Animation_hbte0")
+}
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_v4t1i"]
+vertices = PackedVector2Array(564, 361, 569, 298, 605, 230, 616, 266, 627, 339, 622, 780, 557, 428, 188, 780, 190, 630, 484, 631, 479, 540, 191, 432, 156, 507, 191, 370, 113, 136, 182, 329, 197, 286, 256, 158, 263, 208, 261, 264, 536, 266)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedInt32Array(6, 0, 5), PackedInt32Array(5, 7, 8, 9), PackedInt32Array(6, 5, 9, 10), PackedInt32Array(11, 6, 10, 12), PackedInt32Array(13, 11, 12, 14, 15), PackedInt32Array(16, 15, 14), PackedInt32Array(16, 14, 17, 18, 19), PackedInt32Array(19, 18, 2, 20), PackedInt32Array(1, 20, 2)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(102, 124, 265, 150, 272, 199, 613, 221, 626, 263, 637, 338, 632, 790, 178, 791, 181, 620, 473, 621, 469, 549, 147, 517), PackedVector2Array(201, 422, 548, 418, 554, 360, 559, 302, 532, 276, 263, 274, 205, 294, 192, 330, 201, 368)])
+source_geometry_group_name = &"navigation_polygon_source_group"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mqkqv"]
 atlas = ExtResource("7_xivwc")
@@ -115,84 +169,14 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="Animation" id="Animation_5scld"]
-resource_name = "PanCamera"
-length = 1.8
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MISCELLANEOUS/White BG:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_hbte0"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MISCELLANEOUS/White BG:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_uoo1i"]
-_data = {
-"PanCamera": SubResource("Animation_5scld"),
-"RESET": SubResource("Animation_hbte0")
-}
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_v4t1i"]
-vertices = PackedVector2Array(564, 361, 569, 298, 605, 230, 616, 266, 627, 339, 622, 780, 557, 428, 188, 780, 190, 630, 484, 631, 479, 540, 191, 432, 156, 507, 191, 370, 113, 136, 182, 329, 197, 286, 256, 158, 263, 208, 261, 264, 536, 266)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedInt32Array(6, 0, 5), PackedInt32Array(5, 7, 8, 9), PackedInt32Array(6, 5, 9, 10), PackedInt32Array(11, 6, 10, 12), PackedInt32Array(13, 11, 12, 14, 15), PackedInt32Array(16, 15, 14), PackedInt32Array(16, 14, 17, 18, 19), PackedInt32Array(19, 18, 2, 20), PackedInt32Array(1, 20, 2)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(102, 124, 265, 150, 272, 199, 613, 221, 626, 263, 637, 338, 632, 790, 178, 791, 181, 620, 473, 621, 469, 549, 147, 517), PackedVector2Array(201, 422, 548, 418, 554, 360, 559, 302, 532, 276, 263, 274, 205, 294, 192, 330, 201, 368)])
-source_geometry_group_name = &"navigation_polygon_source_group"
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rsov3"]
 size = Vector2(150, 200)
 
 [node name="01_Burgers" type="Node2D"]
+position = Vector2(-1, 1)
 script = ExtResource("1_hbsg8")
 metadata/_edit_horizontal_guides_ = [648.0, 38.0, 122.0]
 metadata/_edit_vertical_guides_ = [1152.0]
-
-[node name="Player2" type="CharacterBody2D" parent="."]
-z_index = 100
-position = Vector2(289, 123)
-scale = Vector2(1, 1.00001)
-
-[node name="Sprite2D" type="Sprite2D" parent="Player2"]
-position = Vector2(146, 577.994)
-scale = Vector2(0.7, 0.7)
-texture = ExtResource("2_r74is")
-
-[node name="Player" type="CharacterBody2D" parent="."]
-z_index = 1
-z_as_relative = false
-position = Vector2(257, -35)
-scale = Vector2(1, 1.00001)
-script = ExtResource("6_x85if")
-metadata/_edit_group_ = true
-
-[node name="anim" type="AnimatedSprite2D" parent="Player"]
-scale = Vector2(0.640957, 0.640957)
-sprite_frames = SubResource("SpriteFrames_oxu7q")
-animation = &"L-walk"
-
-[node name="NavAg" type="NavigationAgent2D" parent="Player"]
-path_desired_distance = 3.0
-target_desired_distance = 1.0
-path_max_distance = 25.0
 
 [node name="MISCELLANEOUS" type="Node2D" parent="."]
 
@@ -208,6 +192,7 @@ texture = ExtResource("3_25ffw")
 expand_mode = 2
 
 [node name="Main BG" type="TextureRect" parent="MISCELLANEOUS"]
+z_index = -10
 offset_left = 44.0
 offset_top = -579.0
 offset_right = 942.0
@@ -227,8 +212,10 @@ pivot_offset = Vector2(899, -56)
 texture = ExtResource("5_ejmqt")
 
 [node name="Camera2D" type="Camera2D" parent="MISCELLANEOUS"]
-position = Vector2(493, 323)
+z_index = 1000
+position = Vector2(477, 323)
 scale = Vector2(400, 400)
+zoom = Vector2(1.02, 1.02)
 
 [node name="CameraAnimationPlayer" type="AnimationPlayer" parent="MISCELLANEOUS"]
 root_node = NodePath("../..")
@@ -238,8 +225,47 @@ libraries = {
 speed_scale = 0.555
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="MISCELLANEOUS"]
+visible = false
 position = Vector2(48, -214)
 navigation_polygon = SubResource("NavigationPolygon_v4t1i")
+
+[node name="Player2" type="CharacterBody2D" parent="."]
+z_index = 100
+position = Vector2(289, 123)
+scale = Vector2(1, 1.00001)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player2"]
+position = Vector2(146, 577.994)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_r74is")
+
+[node name="AvatarShadow" type="Sprite2D" parent="Player2"]
+position = Vector2(140, 702.993)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_gbo6r")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+z_index = 5
+z_as_relative = false
+position = Vector2(257, -35)
+scale = Vector2(1, 1.00001)
+script = ExtResource("6_x85if")
+metadata/_edit_group_ = true
+
+[node name="anim" type="AnimatedSprite2D" parent="Player"]
+scale = Vector2(0.640957, 0.640957)
+sprite_frames = SubResource("SpriteFrames_oxu7q")
+animation = &"idle"
+
+[node name="NavAg" type="NavigationAgent2D" parent="Player"]
+path_desired_distance = 6.0
+target_desired_distance = 1.0
+path_max_distance = 25.0
+
+[node name="AvatarShadow" type="Sprite2D" parent="Player"]
+position = Vector2(6, 116.999)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_gbo6r")
 
 [node name="CMDs" type="Node2D" parent="."]
 
@@ -348,22 +374,27 @@ texture_normal = ExtResource("2_1huu3")
 z_as_relative = false
 
 [node name="DrinkDispenser" type="Node2D" parent="INTERACTABLES"]
+z_index = 14
 z_as_relative = false
-position = Vector2(-6, 0)
+position = Vector2(5, 0)
 script = ExtResource("9_lghu4")
 
 [node name="dd1_empty" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser"]
-z_index = 11
+z_index = 14
+z_as_relative = false
 position = Vector2(372, 333)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("19_30w0c")
 
 [node name="dd_left" type="Node2D" parent="INTERACTABLES/DrinkDispenser"]
+z_index = 15
+z_as_relative = false
+position = Vector2(-10, 0)
 script = ExtResource("10_haucj")
 
 [node name="cup_oj" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_left"]
 visible = false
-z_index = 11
+z_index = 15
 z_as_relative = false
 position = Vector2(340, 354)
 scale = Vector2(0.5, 0.5)
@@ -371,7 +402,7 @@ texture = ExtResource("12_q376w")
 
 [node name="cup_empty" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_left"]
 visible = false
-z_index = 11
+z_index = 15
 z_as_relative = false
 position = Vector2(340, 351)
 scale = Vector2(0.5, 0.5)
@@ -384,25 +415,27 @@ position = Vector2(0, -20)
 
 [node name="check1" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_left/CMD icons"]
 visible = false
-position = Vector2(382, 282)
+position = Vector2(382, 288)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_oxtuv")
 offset = Vector2(-73, -13)
 
 [node name="check2" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_left/CMD icons"]
 visible = false
-position = Vector2(382, 314)
+position = Vector2(374, 288)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_oxtuv")
 offset = Vector2(-73, -13)
 
 [node name="dd_right" type="Node2D" parent="INTERACTABLES/DrinkDispenser"]
-position = Vector2(0, 1)
+z_index = 15
+z_as_relative = false
+position = Vector2(-10, 1)
 script = ExtResource("12_ebi7b")
 
 [node name="cup_cola" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_right"]
 visible = false
-z_index = 11
+z_index = 15
 z_as_relative = false
 position = Vector2(413, 354)
 scale = Vector2(0.5, 0.5)
@@ -410,7 +443,7 @@ texture = ExtResource("16_48fy6")
 
 [node name="cup_empty" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_right"]
 visible = false
-z_index = 11
+z_index = 15
 z_as_relative = false
 position = Vector2(413, 351)
 scale = Vector2(0.5, 0.5)
@@ -423,14 +456,14 @@ position = Vector2(73, -21)
 
 [node name="check1" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_right/CMD icons"]
 visible = false
-position = Vector2(382, 282)
+position = Vector2(382, 288)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_oxtuv")
 offset = Vector2(-73, -13)
 
 [node name="check2" type="Sprite2D" parent="INTERACTABLES/DrinkDispenser/dd_right/CMD icons"]
 visible = false
-position = Vector2(382, 314)
+position = Vector2(374, 288)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_oxtuv")
 offset = Vector2(-73, -13)
@@ -478,6 +511,12 @@ position = Vector2(396, -71.5)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_oxtuv")
 offset = Vector2(-73, -13)
+
+[node name="Stove" type="Sprite2D" parent="INTERACTABLES/Stove"]
+z_index = 3
+position = Vector2(411, -94)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("36_kxsu3")
 
 [node name="Fryer" type="Node2D" parent="INTERACTABLES"]
 
@@ -587,9 +626,12 @@ texture = ExtResource("12_oxtuv")
 offset = Vector2(-73, -13)
 
 [node name="MeatSource1" type="Node2D" parent="INTERACTABLES"]
+z_index = 4
+position = Vector2(0, -13)
 
 [node name="Ms1" type="Sprite2D" parent="INTERACTABLES/MeatSource1"]
-z_index = 1
+z_index = 4
+z_as_relative = false
 position = Vector2(555, -45)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("21_mmamr")
@@ -612,8 +654,12 @@ texture = ExtResource("12_oxtuv")
 offset = Vector2(-73, -13)
 
 [node name="MeatSource2" type="Node2D" parent="INTERACTABLES"]
+z_index = 4
+position = Vector2(0, -13)
 
 [node name="Ms2" type="Sprite2D" parent="INTERACTABLES/MeatSource2"]
+z_index = 4
+z_as_relative = false
 position = Vector2(626, -45)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("23_oc6tk")
@@ -693,7 +739,7 @@ position = Vector2(-40, -1)
 [node name="TsBoardCheese" type="Sprite2D" parent="INTERACTABLES/TOPPING STATION"]
 z_index = 9
 z_as_relative = false
-position = Vector2(402, 140)
+position = Vector2(382, 140)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_mbjjp")
 offset = Vector2(-14, -2)
@@ -842,20 +888,7 @@ texture = ExtResource("12_oxtuv")
 offset = Vector2(-73, -13)
 
 [node name="STRUCTURES" type="Node2D" parent="."]
-
-[node name="BottomCounter" type="Node2D" parent="STRUCTURES"]
-
-[node name="BottomCounterSprite" type="Sprite2D" parent="STRUCTURES/BottomCounter"]
-z_index = 15
-position = Vector2(205, 644)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("10_11uuh")
-offset = Vector2(602, 30)
-
-[node name="BottomShadow" type="Sprite2D" parent="STRUCTURES/BottomCounter"]
-position = Vector2(492, 683)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("22_viu0h")
+z_as_relative = false
 
 [node name="Island1" type="Node2D" parent="STRUCTURES"]
 z_as_relative = false
@@ -867,24 +900,106 @@ scale = Vector2(0.5, 0.497)
 texture = ExtResource("11_nqtrk")
 
 [node name="Island1Shadow" type="Sprite2D" parent="STRUCTURES/Island1"]
-position = Vector2(434, 215)
+position = Vector2(445, 211)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("16_gxhvc")
 
-[node name="MainCounter" type="Sprite2D" parent="STRUCTURES"]
-z_index = 10
-position = Vector2(488, 271)
+[node name="BottomCounter" type="Sprite2D" parent="STRUCTURES"]
+z_index = 20
+z_as_relative = false
+position = Vector2(498, 663)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("22_sl6vc")
+texture = ExtResource("10_11uuh")
+
+[node name="BottomLeftCounter" type="Sprite2D" parent="STRUCTURES"]
+z_index = 13
+z_as_relative = false
+position = Vector2(520, 543)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("32_gtlav")
+
+[node name="MainCounterShadow" type="Sprite2D" parent="STRUCTURES/BottomLeftCounter"]
+z_as_relative = false
+position = Vector2(-12, -370)
+texture = ExtResource("38_yo6hr")
+
+[node name="Top-RightCounter" type="Sprite2D" parent="STRUCTURES"]
+z_index = 3
+z_as_relative = false
+position = Vector2(682, 71)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("43_k55kj")
 
 [node name="DOODADS" type="Node2D" parent="."]
+z_index = 3
+z_as_relative = false
 
-[node name="Condiments" type="Sprite2D" parent="DOODADS"]
+[node name="doodads" type="Sprite2D" parent="DOODADS"]
+z_index = 3
+z_as_relative = false
+position = Vector2(655, -1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("30_2ejp4")
+offset = Vector2(-110, -172)
+
+[node name="Register" type="Sprite2D" parent="DOODADS"]
 z_index = 15
-position = Vector2(504, 620)
+position = Vector2(208, 352)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("31_v51eu")
+
+[node name="Mixer" type="Sprite2D" parent="DOODADS"]
+z_index = 15
+position = Vector2(728, -43)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("32_eqjtr")
+
+[node name="doodads2" type="Sprite2D" parent="DOODADS"]
+z_index = 20
+z_as_relative = false
+position = Vector2(539, 629)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("15_e1nox")
 offset = Vector2(-110, -172)
+
+[node name="FloorMat" type="Sprite2D" parent="DOODADS"]
+position = Vector2(718, 139)
+rotation = -1.58722
+scale = Vector2(0.304457, 0.313737)
+texture = ExtResource("39_xmyjw")
+offset = Vector2(-400, -252)
+
+[node name="FloorMatShadow" type="Sprite2D" parent="DOODADS"]
+position = Vector2(646, 265)
+rotation = -1.57595
+scale = Vector2(0.304, 0.304)
+texture = ExtResource("40_4aex1")
+
+[node name="FloorMatShadow2" type="Sprite2D" parent="DOODADS"]
+position = Vector2(468, 113)
+rotation = -3.14703
+scale = Vector2(0.304, 0.304)
+texture = ExtResource("40_4aex1")
+
+[node name="FloorMatShadow3" type="Sprite2D" parent="DOODADS"]
+position = Vector2(373, 111)
+rotation = -3.17998
+scale = Vector2(0.304, 0.304)
+texture = ExtResource("40_4aex1")
+
+[node name="FloorMat2" type="Sprite2D" parent="DOODADS"]
+position = Vector2(242, 32)
+rotation = -3.18568
+scale = Vector2(0.304457, 0.313737)
+texture = ExtResource("39_xmyjw")
+offset = Vector2(-400, -252)
+
+[node name="FloorMat3" type="Sprite2D" parent="DOODADS"]
+position = Vector2(341, 28)
+rotation = -3.12965
+scale = Vector2(0.304457, 0.313737)
+texture = ExtResource("39_xmyjw")
+offset = Vector2(-400, -252)
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -896,12 +1011,29 @@ offset_bottom = 363.0
 script = ExtResource("17_ecpc5")
 
 [node name="back_button" type="TouchScreenButton" parent="UI"]
-position = Vector2(257, -552)
+position = Vector2(244, -519)
 scale = Vector2(0.414141, 0.414141)
 texture_normal = ExtResource("17_3nah0")
 
 [node name="Timer" type="Timer" parent="."]
 script = ExtResource("29_hdvxg")
+
+[node name="Boundaries" type="Sprite2D" parent="."]
+z_index = 1000
+position = Vector2(493, 294)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("39_3xn2a")
+
+[node name="StoveHood" type="Sprite2D" parent="."]
+z_index = 4
+position = Vector2(408, -185)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("42_0xsp3")
+
+[node name="StoveShadow" type="Sprite2D" parent="."]
+position = Vector2(415, 61)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("45_ulrje")
 
 [connection signal="dd_left" from="." to="INTERACTABLES/DrinkDispenser/dd_left" method="_on__burgers_dd_left"]
 [connection signal="dd_right" from="." to="INTERACTABLES/DrinkDispenser/dd_right" method="_on__burgers_dd_right"]
@@ -911,4 +1043,8 @@ script = ExtResource("29_hdvxg")
 [connection signal="navigation_finished" from="Player/NavAg" to="Player" method="_on_nav_ag_navigation_finished"]
 [connection signal="target_reached" from="Player/NavAg" to="Player" method="_on_nav_ag_target_reached"]
 [connection signal="target_reached" from="Player/NavAg" to="INTERACTABLES" method="_on_nav_ag_target_reached"]
+[connection signal="activated" from="INTERACTABLES/DrinkDispenser/dd_left" to="." method="_on_dd_left_activated"]
+[connection signal="deactivated" from="INTERACTABLES/DrinkDispenser/dd_left" to="." method="_on_dd_left_deactivated"]
+[connection signal="ladened" from="INTERACTABLES/DrinkDispenser/dd_left" to="." method="_on_dd_left_ladened"]
+[connection signal="unladened" from="INTERACTABLES/DrinkDispenser/dd_left" to="." method="_on_dd_left_unladened"]
 [connection signal="pressed" from="UI/back_button" to="UI" method="_on_back_button_pressed"]

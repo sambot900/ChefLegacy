@@ -5,6 +5,11 @@ extends Node2D
 # 	dd_left
 ######################################################
 
+signal activated
+signal deactivated
+signal ladened
+signal unladened
+
 var enabled = true
 var active = false
 var laden = false
@@ -15,6 +20,10 @@ var laden = false
 @onready var cup_oj = $cup_oj
 
 func _ready():
+	active = false
+	laden = false
+	deactivated.emit("dd_left")
+	unladened.emit("dd_left")
 	timer_manager.connect("timer_expired", Callable(self, "_on_timer_expired"))
 
 func _process(delta):
@@ -27,13 +36,14 @@ func _on__burgers_dd_left():
 	else:
 		if laden:
 			print("dd_left: okay to pick up")
+			unladened.emit("dd_left")
 			laden = false
 			cup_oj.visible = false
-			return 1
 		else:
 			cup_oj.visible = false
 			# ACTIVATE
 			active = true
+			activated.emit("dd_left")
 			cup_empty.visible = true
 			timer_manager.start_timer("dd_left")
 			print("dd_left: activated")
@@ -41,8 +51,11 @@ func _on__burgers_dd_left():
 
 func _on_timer_expired(timer_id: String):
 	if timer_id == "dd_left":
+		deactivated.emit("dd_left")
 		active = false
+		
 		cup_empty.visible = false
+		ladened.emit("dd_left")
 		laden = true
 		cup_oj.visible = true
 		print("dd_left: laden")

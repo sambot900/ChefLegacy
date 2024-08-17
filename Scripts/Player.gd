@@ -8,7 +8,7 @@ extends CharacterBody2D
 signal reached_interactable
 signal where
 
-@export var speed = 300
+@export var speed = 400
 @export var accel = 20
 var command_queue = []
 var command_array
@@ -203,13 +203,11 @@ func edge_case_exists():
 
 func z_sort():
 	if global_position.y > 383:
-		z_index = 12
+		z_index = 20
 	elif global_position.y > 168 and global_position.y < 384:
-		z_index = 10
+		z_index = 12
 	elif global_position.y < 160:
-		z_index = 4
-	else:
-		z_index = 1
+		z_index = 5
 
 func orientation_edge_case():
 # Reset edge case detection for each command
