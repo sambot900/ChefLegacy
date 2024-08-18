@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://ees3wkka1sse"]
+[gd_scene load_steps=64 format=3 uid="uid://ees3wkka1sse"]
 
 [ext_resource type="Script" path="res://Scripts/01_Burgers.gd" id="1_hbsg8"]
 [ext_resource type="Texture2D" uid="uid://yrsm0dtwtepc" path="res://Sprites/Levels/01_Burgers/invis_button_153sq.png" id="2_1huu3"]
@@ -8,8 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://b2svqa6u5jpq" path="res://Sprites/Transitions/bg_white.jpg" id="5_ejmqt"]
 [ext_resource type="Texture2D" uid="uid://jmlo4psjmpk3" path="res://Sprites/Avatars/Boom/avatar_shadow.png" id="6_gbo6r"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="6_x85if"]
-[ext_resource type="Texture2D" uid="uid://c78ky5d5dph8x" path="res://Sprites/Avatars/Boom/ss-boom.png" id="7_xivwc"]
-[ext_resource type="Texture2D" uid="uid://cnu1qsyaptod6" path="res://Sprites/Avatars/Boom/ss-boom-idle.png" id="8_ri1tp"]
+[ext_resource type="Texture2D" uid="uid://4kswvchhwefe" path="res://Sprites/Avatars/Tom/ss-tom.png" id="8_32txv"]
+[ext_resource type="Texture2D" uid="uid://306mutvy0drc" path="res://Sprites/Avatars/Tom/ss-tom-idle.png" id="9_buawf"]
 [ext_resource type="Script" path="res://Scenes/DrinkDispenser.gd" id="9_lghu4"]
 [ext_resource type="Texture2D" uid="uid://b7xhjf5j6qv10" path="res://Sprites/Levels/01_Burgers/bottom_counter.png" id="10_11uuh"]
 [ext_resource type="Script" path="res://Scenes/dd_left.gd" id="10_haucj"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://c75fc8uova3er" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_cheese.png" id="12_mbjjp"]
 [ext_resource type="Texture2D" uid="uid://b8a5ehqgtu432" path="res://Sprites/Levels/01_Burgers/Interactables/freezer_fries_rings.png" id="12_nnmns"]
 [ext_resource type="Texture2D" uid="uid://c5qvacxhyg7kv" path="res://Sprites/Levels/CMD Icons/check1.png" id="12_oxtuv"]
+[ext_resource type="Texture2D" uid="uid://dewe65h04u2ud" path="res://Sprites/Levels/01_Burgers/Interactables/DD1_empty2.png" id="12_pp2ly"]
 [ext_resource type="Texture2D" uid="uid://dahfbkfpf38v3" path="res://Sprites/Levels/01_Burgers/Food/oj_full.png" id="12_q376w"]
 [ext_resource type="Texture2D" uid="uid://bacwyhxlcudi0" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_bacon.png" id="13_tt7br"]
 [ext_resource type="Texture2D" uid="uid://bcmr8352nrc6q" path="res://Sprites/Levels/01_Burgers/Interactables/ts_board_lettuce.png" id="14_1lqul"]
@@ -27,7 +28,6 @@
 [ext_resource type="Texture2D" uid="uid://jofdkdxsljkw" path="res://Sprites/Levels/01_Burgers/island1_shadow.png" id="16_gxhvc"]
 [ext_resource type="Texture2D" uid="uid://cmbb2ilbp4eam" path="res://Sprites/Levels/UI/back_button.png" id="17_3nah0"]
 [ext_resource type="Script" path="res://Scenes/UI.gd" id="17_ecpc5"]
-[ext_resource type="Texture2D" uid="uid://bgjtlo5frisbp" path="res://Sprites/Levels/01_Burgers/Interactables/DD1_empty.png" id="19_30w0c"]
 [ext_resource type="Texture2D" uid="uid://u843tcriw6sm" path="res://Sprites/Levels/01_Burgers/Interactables/helper_tray.png" id="19_gerfd"]
 [ext_resource type="Texture2D" uid="uid://ukgqtqgtpfe7" path="res://Sprites/Levels/01_Burgers/Interactables/F1_empty.png" id="20_rjqle"]
 [ext_resource type="Texture2D" uid="uid://eiengf1pnysv" path="res://Sprites/Levels/01_Burgers/Interactables/freezer_fries.png" id="21_2k0f7"]
@@ -46,6 +46,8 @@
 [ext_resource type="Texture2D" uid="uid://d1u6wytsugeiu" path="res://Sprites/Levels/01_Burgers/stove_hood.png" id="42_0xsp3"]
 [ext_resource type="Texture2D" uid="uid://bmiqq4mkixy21" path="res://Sprites/Levels/01_Burgers/top-_right_counter.png" id="43_k55kj"]
 [ext_resource type="Texture2D" uid="uid://58t1evpwbc5e" path="res://Sprites/Levels/01_Burgers/stove shadow.png" id="45_ulrje"]
+[ext_resource type="Texture2D" uid="uid://dj0itssl73kbk" path="res://Sprites/Levels/01_Burgers/Interactables/bob.png" id="47_b0mif"]
+[ext_resource type="Texture2D" uid="uid://b721ethp83p71" path="res://Sprites/Levels/01_Burgers/pan.png" id="48_epjd6"]
 
 [sub_resource type="Animation" id="Animation_5scld"]
 resource_name = "PanCamera"
@@ -90,71 +92,68 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedIn
 outlines = Array[PackedVector2Array]([PackedVector2Array(102, 124, 265, 150, 272, 199, 613, 221, 626, 263, 637, 338, 632, 790, 178, 791, 181, 620, 473, 621, 469, 549, 147, 517), PackedVector2Array(201, 422, 548, 418, 554, 360, 559, 302, 532, 276, 263, 274, 205, 294, 192, 330, 201, 368)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mqkqv"]
-atlas = ExtResource("7_xivwc")
-region = Rect2(1504, 0, 188, 397)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_o54wp"]
-atlas = ExtResource("7_xivwc")
+[sub_resource type="AtlasTexture" id="AtlasTexture_73rqq"]
+atlas = ExtResource("8_32txv")
 region = Rect2(1316, 0, 188, 397)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8wf3b"]
-atlas = ExtResource("7_xivwc")
+[sub_resource type="AtlasTexture" id="AtlasTexture_6umrx"]
+atlas = ExtResource("8_32txv")
 region = Rect2(1128, 0, 188, 397)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2xmcy"]
-atlas = ExtResource("7_xivwc")
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4gsf"]
+atlas = ExtResource("8_32txv")
 region = Rect2(940, 0, 188, 397)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_b6w74"]
-atlas = ExtResource("7_xivwc")
+[sub_resource type="AtlasTexture" id="AtlasTexture_1uaor"]
+atlas = ExtResource("8_32txv")
 region = Rect2(752, 0, 188, 397)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fqrtd"]
-atlas = ExtResource("7_xivwc")
+[sub_resource type="AtlasTexture" id="AtlasTexture_0hvrk"]
+atlas = ExtResource("8_32txv")
 region = Rect2(564, 0, 188, 397)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yv35o"]
-atlas = ExtResource("7_xivwc")
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ba5b"]
+atlas = ExtResource("8_32txv")
 region = Rect2(376, 0, 188, 397)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_80psw"]
-atlas = ExtResource("7_xivwc")
+[sub_resource type="AtlasTexture" id="AtlasTexture_nghhh"]
+atlas = ExtResource("8_32txv")
 region = Rect2(188, 0, 188, 397)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6r3ya"]
-atlas = ExtResource("7_xivwc")
+[sub_resource type="AtlasTexture" id="AtlasTexture_2c3xo"]
+atlas = ExtResource("8_32txv")
 region = Rect2(0, 0, 188, 397)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iijbf"]
+atlas = ExtResource("9_buawf")
+region = Rect2(0, 0, 126, 385)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_oxu7q"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mqkqv")
+"texture": SubResource("AtlasTexture_73rqq")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_o54wp")
+"texture": SubResource("AtlasTexture_6umrx")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_8wf3b")
+"texture": SubResource("AtlasTexture_e4gsf")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2xmcy")
+"texture": SubResource("AtlasTexture_1uaor")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_b6w74")
+"texture": SubResource("AtlasTexture_0hvrk")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_fqrtd")
+"texture": SubResource("AtlasTexture_2ba5b")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yv35o")
+"texture": SubResource("AtlasTexture_nghhh")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_80psw")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6r3ya")
+"texture": SubResource("AtlasTexture_2c3xo")
 }],
 "loop": true,
 "name": &"L-walk",
@@ -162,7 +161,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("8_ri1tp")
+"texture": SubResource("AtlasTexture_iijbf")
 }],
 "loop": true,
 "name": &"idle",
@@ -193,10 +192,10 @@ expand_mode = 2
 
 [node name="Main BG" type="TextureRect" parent="MISCELLANEOUS"]
 z_index = -10
-offset_left = 44.0
-offset_top = -579.0
-offset_right = 942.0
-offset_bottom = 1416.0
+offset_left = 46.0
+offset_top = -582.0
+offset_right = 944.0
+offset_bottom = 1413.0
 texture = ExtResource("4_uuspb")
 expand_mode = 1
 stretch_mode = 4
@@ -230,6 +229,7 @@ position = Vector2(48, -214)
 navigation_polygon = SubResource("NavigationPolygon_v4t1i")
 
 [node name="Player2" type="CharacterBody2D" parent="."]
+visible = false
 z_index = 100
 position = Vector2(289, 123)
 scale = Vector2(1, 1.00001)
@@ -255,7 +255,7 @@ metadata/_edit_group_ = true
 [node name="anim" type="AnimatedSprite2D" parent="Player"]
 scale = Vector2(0.640957, 0.640957)
 sprite_frames = SubResource("SpriteFrames_oxu7q")
-animation = &"idle"
+animation = &"L-walk"
 
 [node name="NavAg" type="NavigationAgent2D" parent="Player"]
 path_desired_distance = 6.0
@@ -384,7 +384,7 @@ z_index = 14
 z_as_relative = false
 position = Vector2(372, 333)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("19_30w0c")
+texture = ExtResource("12_pp2ly")
 
 [node name="dd_left" type="Node2D" parent="INTERACTABLES/DrinkDispenser"]
 z_index = 15
@@ -1026,7 +1026,7 @@ texture = ExtResource("39_3xn2a")
 
 [node name="StoveHood" type="Sprite2D" parent="."]
 z_index = 4
-position = Vector2(408, -185)
+position = Vector2(408, -112)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("42_0xsp3")
 
@@ -1034,6 +1034,24 @@ texture = ExtResource("42_0xsp3")
 position = Vector2(415, 61)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("45_ulrje")
+
+[node name="Bob" type="Sprite2D" parent="."]
+z_index = 20
+position = Vector2(750, 38)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("47_b0mif")
+
+[node name="Pan" type="Sprite2D" parent="."]
+z_index = 3
+position = Vector2(456, -56)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("48_epjd6")
+
+[node name="Pan2" type="Sprite2D" parent="."]
+z_index = 3
+position = Vector2(355, -57)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("48_epjd6")
 
 [connection signal="dd_left" from="." to="INTERACTABLES/DrinkDispenser/dd_left" method="_on__burgers_dd_left"]
 [connection signal="dd_right" from="." to="INTERACTABLES/DrinkDispenser/dd_right" method="_on__burgers_dd_right"]
