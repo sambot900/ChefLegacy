@@ -209,12 +209,11 @@ func manage_cmd_vis(name, count):
 		print("ERROR - manage_cmd_vis: unknown command", name)
 
 # Tell avatar where to go
-func _on_player_where(name, pos, size):
+func _on_player_where(name, pos, last):
 	if cmd_count[name] < cmd_count_max[name]:
-		var chosen_cmd = cmd_seek(name, pos)
+		var chosen_cmd = cmd_seek(name, pos, last)
 		cmd_count_increment(name)
 		manage_cmd_icons(name)
-		print(name, " cmd_count=",cmd_count[name])
 		go_here.emit(chosen_cmd)
 	else:
 		#print("Queue full for this obj.")
@@ -224,7 +223,7 @@ func _on_player_where(name, pos, size):
 		pass
 
 # Find shortest distance coordinate
-func cmd_seek(name, pos):
+func cmd_seek(name, pos, last):
 	var shortest_distance = INF
 	var closest_command = null
 	for command in coordinate_key[name]:
@@ -243,7 +242,6 @@ func cmd_count_decrement(name):
 		cmd_count[name] = cmd_count_max[name]
 		
 	if cmd_count[name] > 0:
-		# TODO REMOVE CHECKMARK SPRITE
 		cmd_count[name] -= 1
 	else:
 		cmd_count[name] = 0
@@ -257,23 +255,19 @@ func cmd_count_increment(name):
 	if cmd_count[name] >= cmd_count_max[name]:
 		cmd_count[name] = cmd_count_max[name]
 	else:
-		# TODO ADD CHECKMARK SPRITE
 		cmd_count[name] += 1
 
 
-func _on_dd_left_activated(n):
-	cmd_count_max[n] = 1
 
+func _on_dd_left_state_changed(state_array: Array):
+	var cmd = "dd_left"
 
-func _on_dd_left_deactivated(n):
-	pass
+	if state_array[1] == 1:  # active
+		cmd_count_max[cmd] = 1
+	else:  # deactivated
+		pass
 
-
-func _on_dd_left_ladened(n):
-	cmd_count_max[n] = 2
-	print(cmd_count_max[n])
-
-
-func _on_dd_left_unladened(n):
-	cmd_count_max[n] = 1
-	print("MAX!!! ",cmd_count_max[n])
+	if state_array[2] == 1:  # ladened
+		cmd_count_max[cmd] = 2
+	else:  # unladened
+		cmd_count_max[cmd] = 1

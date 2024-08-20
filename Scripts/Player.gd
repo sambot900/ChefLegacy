@@ -80,83 +80,144 @@ func enqueue_command(target: Vector2):
 # 3. queue size to see if checkmark should be displayed
 func _on_c_dd_left_pressed():
 	name = "dd_left"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_dd_right_pressed():
 	name = "dd_right"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_ms_left_pressed():
 	name = "ms_left"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_ms_right_pressed():
 	name = "ms_right"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_s_left_pressed():
 	name = "s_left"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_s_right_pressed():
 	name = "s_right"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_ts_1_pressed():
 	name = "ts_1"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_ts_2_pressed():
 	name = "ts_2"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_ts_3_pressed():
 	name = "ts_3"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_f_left_pressed():
 	name = "f_1"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_f_right_pressed():
 	name = "f_2"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_fs_1_pressed():
 	name = "fs_1"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_fs_2_pressed():
 	name = "fs_2"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_t_pressed():
 	name = "t_1"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_t2_pressed():
 	name = "t_2"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_bob_pressed():
 	name = "bob"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_o1_pressed():
 	name = "o_1"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_o2_pressed():
 	name = "o_2"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_o3_pressed():
 	name = "o_3"
-	where.emit(name, global_position, command_queue.size())
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
 
 func _on_c_o4_pressed():
 	name = "o_4"
-	where.emit(name, global_position)
+	if command_queue.size() > 0:
+		where.emit(name, global_position, command_queue[-1])
+	else:
+		where.emit(name, global_position, null)
+
 #endregion
 
 func _physics_process(delta):

@@ -12,7 +12,7 @@ func initialize_timers():
 	initial_durations["combo1"] = 2.0
 	initial_durations["combo2"] = 5.0
 	initial_durations["combo3"] = 8.0
-	initial_durations["dd_left"] = 5.0
+	initial_durations["dd_left"] = 4.1
 	initial_durations["dd_right"] = 5.0
 	initial_durations["s_left"] = 8.0
 	initial_durations["s_right"] = 8.0
