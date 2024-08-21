@@ -4,8 +4,6 @@ extends Node2D
 # 	dd_left
 ######################################################
 
-signal state_changed(state_array: Array)
-
 var enabled = true
 var active = false
 var laden = false
@@ -34,7 +32,6 @@ func get_state() -> Array:
 
 func emit_state():
 	var state = get_state()
-	state_changed.emit(cmd_name, state)
 	
 	if state[0] == 1:
 		pass

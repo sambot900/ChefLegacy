@@ -98,6 +98,9 @@ var cmd_count_max = {
 	}
 #endregion
 
+signal interactables_state_changed(cmd, state_array: Array)
+signal player_state_changed(cmd, state_array: Array)
+
 var checkmarks = {}
 var player_state = []
 var interactable_state = []
@@ -279,12 +282,12 @@ func cmd_count_increment(name):
 func _on_dd_left_state_changed(cmd, state_array: Array):
 	interactable_state = state_array
 
-	if state_array[1] == 1:  # active
+	if interactable_state[1] == 1:  # active
 		cmd_count_max[cmd] = 1
 	else:  # deactivated
 		pass
 
-	if state_array[2] == 1:  # ladened
+	if interactable_state[2] == 1:  # ladened
 		cmd_count_max[cmd] = 2
 	else:  # unladened
 		cmd_count_max[cmd] = 1

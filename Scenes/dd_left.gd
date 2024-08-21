@@ -4,8 +4,6 @@ extends Node2D
 # 	dd_left
 ######################################################
 
-signal state_changed(cmd, state_array: Array)
-
 var enabled = true
 var active = false
 var laden = false
@@ -34,7 +32,6 @@ func get_state() -> Array:
 
 func emit_state():
 	var state = get_state()
-	state_changed.emit(cmd_name, state)
 
 # Avatar reached this command
 # determine state
@@ -88,3 +85,9 @@ func _on_timer_expired(timer_id: String):
 
 func start_round_timer():
 	timer_manager.start_timer("round")
+
+
+func _on__burgers_interactables_state_changed(cmd, state_array):
+	
+	
+	if state_array
