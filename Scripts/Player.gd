@@ -5,20 +5,22 @@ extends CharacterBody2D
 ######################################################
 
 #region *Global Declarations
+signal state_changed(state_array: Array)
 signal reached_interactable
 signal where
 
 @export var speed = 400
 @export var accel = 20
 var command_queue = []
-var command_array
 var current_command = null
-var current_command_middle = null
 var finished = false
 var orientation_edge_case_r = false
 var orientation_edge_case_l = false
 var orientation_lock = false
-var level_coordinates = []
+
+var enabled
+var ph_laden
+var oh_laden
 #endregion
 
 #region *Onready Declarations
@@ -46,8 +48,13 @@ var level_coordinates = []
 @onready var animated_sprite: AnimatedSprite2D = $anim
 #endregion
 
+
 func _ready():
+	enabled = true
+	ph_laden = false
+	oh_laden = false
 	finished = true
+	emit_state()
 	c_dd_left.pressed.connect(self._on_c_dd_left_pressed)
 	c_dd_right.pressed.connect(self._on_c_dd_right_pressed)
 	c_ms_right.pressed.connect(self._on_c_ms_right_pressed)
@@ -68,6 +75,12 @@ func _ready():
 	c_o2.pressed.connect(self._on_c_o2_pressed)
 	c_o3.pressed.connect(self._on_c_o3_pressed)
 	c_o4.pressed.connect(self._on_c_o4_pressed)
+
+func get_state() -> Array:
+	var enabled_state = 1 if enabled else 0
+	var ph_state = 1 if ph_laden else 0
+	var oh_state = 1 if oh_laden else 0
+	return [enabled_state, ph_state, oh_state]
 
 func enqueue_command(target: Vector2):
 	command_queue.append(target)
@@ -332,6 +345,10 @@ func orientation_common_case(direction):
 		elif orientation_edge_case_r:
 			if animated_sprite.flip_h == false:
 				animated_sprite.flip_h = true
+
+func emit_state():
+	var state = get_state()
+	state_changed.emit(state)
 
 # Each queued command added emits a request for next coords and those
 # coords output below into the enqueue command.

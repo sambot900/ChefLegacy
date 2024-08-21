@@ -4,11 +4,12 @@ extends Node2D
 # 	dd_left
 ######################################################
 
-signal state_changed(state_array: Array)
+signal state_changed(cmd, state_array: Array)
 
 var enabled = true
 var active = false
 var laden = false
+var cmd_name = "dd_left"
 
 @onready var timer_manager = $"../../../Timer"
 @onready var drink_dispenser = $".."
@@ -33,48 +34,30 @@ func get_state() -> Array:
 
 func emit_state():
 	var state = get_state()
-	state_changed.emit(state)
-	
-	if state[0] == 1:
-		# enabled
-		self.visible = true
-	else:
-		# disabled
-		self.visible = false
-	
-	if state[1] == 1:
-		# activated
-		_active_sounds()
-	else:
-		# deactivated
-		pass
-		
-	
-	if state[2] == 1:
-		# laden
-		_inactive_sounds()
-	else:
-		# unladen
-		pass
+	state_changed.emit(cmd_name, state)
 
 # Avatar reached this command
 # determine state
 # emit state
 func _on__burgers_dd_left():
+	if enabled:
 	# determine state
-	if active:
-		print("dd_left: busy dispensing")
-	else:
-		if laden:
-			print("dd_left: okay to pick up")
-			laden = false
-			cup_oj.visible = false
+		if active:
+			# busy dispensing
+			pass
 		else:
-			cup_oj.visible = false
-			active = true
-			cup_empty.visible = true
-			timer_manager.start_timer("dd_left")
-	# emit state
+			if laden:
+				laden = false
+				cup_oj.visible = false
+			else:
+				_active_sounds()
+				cup_oj.visible = false
+				active = true
+				cup_empty.visible = true
+				timer_manager.start_timer(cmd_name)
+		# emit state
+	else:
+		pass
 	emit_state()
 
 func _active_sounds():
@@ -90,16 +73,17 @@ func _active_sounds():
 func _inactive_sounds():
 	var audio_player3 = $ddaudio3
 	var sound3 = load("res://Sounds/click_2.mp3")
+	print("now laden ", cmd_name)
 	audio_player3.stream = sound3
 	audio_player3.play()
 
 func _on_timer_expired(timer_id: String):
-	if timer_id == "dd_left":
+	if timer_id == cmd_name:
+		_inactive_sounds()
 		active = false
 		laden = true
 		cup_empty.visible = false
 		cup_oj.visible = true
-	
 	emit_state()
 
 func start_round_timer():

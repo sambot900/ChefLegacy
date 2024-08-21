@@ -99,6 +99,8 @@ var cmd_count_max = {
 #endregion
 
 var checkmarks = {}
+var player_state = []
+var interactable_state = []
 
 #region Declarations
 @onready var dd_left_check1 = $"INTERACTABLES/DrinkDispenser/dd_left/CMD icons/check2"
@@ -182,18 +184,33 @@ func start_camera_pan():
 	else:
 		print("Camera and AnimationPlayer not found")
 
+func perform_interaction(cmd):
+	var p_state = player_state
+	var i_state = interactable_state
+	if p_state[0] == 1: # player is enabled
+		if i_state[0] == 1: # interactable is enabled
+			if i_state[2] == 1: # interactable is laden
+				if (p_state[1] == 0) or (p_state[2] == 0): # player has one empty hand
+					print("pick up?")
+					pass # pick up?
+			elif i_state[2] == 0: # interactable is unladen
+				pass # emit cmd?
+
 func _on_player_reached_interactable(target: Vector2):
 	# Parameter is where the player's last CMD was.
 	# Find which command was used based on the vector.
 	# Decrement the cmd_count and emit cmd name to obj.
-	if target == null:
-		print("targ null")
+	var cmd_name = null
 	for key in coordinate_key.keys():
 		if target in coordinate_key[key]:
-			cmd_count_decrement(key)
-			manage_cmd_icons(key)
-			emit_signal(key)
+			cmd_name = key
+		if cmd_name != null:
+			cmd_count_decrement(cmd_name)
+			manage_cmd_icons(cmd_name)
+			emit_signal(cmd_name)
+			perform_interaction(cmd_name)
 			
+
 func manage_cmd_icons(name):
 	manage_cmd_vis(name, cmd_count[name])
 
@@ -259,8 +276,8 @@ func cmd_count_increment(name):
 
 
 
-func _on_dd_left_state_changed(state_array: Array):
-	var cmd = "dd_left"
+func _on_dd_left_state_changed(cmd, state_array: Array):
+	interactable_state = state_array
 
 	if state_array[1] == 1:  # active
 		cmd_count_max[cmd] = 1
@@ -271,3 +288,21 @@ func _on_dd_left_state_changed(state_array: Array):
 		cmd_count_max[cmd] = 2
 	else:  # unladened
 		cmd_count_max[cmd] = 1
+
+
+func _on_dd_right_state_changed(cmd, state_array: Array):
+	interactable_state = state_array
+
+	if state_array[1] == 1:  # active
+		cmd_count_max[cmd] = 1
+	else:  # deactivated
+		pass
+
+	if state_array[2] == 1:  # ladened
+		cmd_count_max[cmd] = 2
+	else:  # unladened
+		cmd_count_max[cmd] = 1
+
+
+func _on_player_state_changed(state_array):
+	player_state = state_array
