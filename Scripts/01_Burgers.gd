@@ -278,7 +278,6 @@ func cmd_count_increment(name):
 		cmd_count[name] += 1
 
 
-
 func _on_dd_left_state_changed(cmd, state_array: Array):
 	interactable_state = state_array
 
