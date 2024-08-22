@@ -1,5 +1,9 @@
 extends Node2D
 
+######################################################
+# 	Root (01_Burgers)
+######################################################
+
 #region Signal Declarations
 signal dd_left
 signal dd_right
@@ -23,6 +27,7 @@ signal o_3
 signal o_4
 
 signal go_here
+signal state_changed(cmd, state_array: Array)
 #endregion
 
 #region Dictionary Init: coordinate_key
@@ -98,12 +103,10 @@ var cmd_count_max = {
 	}
 #endregion
 
-signal interactables_state_changed(cmd, state_array: Array)
-signal player_state_changed(cmd, state_array: Array)
-
 var checkmarks = {}
 var player_state = []
 var interactable_state = []
+var previous_command
 
 #region Declarations
 @onready var dd_left_check1 = $"INTERACTABLES/DrinkDispenser/dd_left/CMD icons/check2"
@@ -178,7 +181,7 @@ func _ready():
 	print("Round node ready")
 	start_camera_pan()
 
-func _input(event):
+func _input(_event):
 	pass
 
 func start_camera_pan():
@@ -187,17 +190,58 @@ func start_camera_pan():
 	else:
 		print("Camera and AnimationPlayer not found")
 
-func perform_interaction(cmd):
+
+
+func update_states(cname):
 	var p_state = player_state
 	var i_state = interactable_state
-	if p_state[0] == 1: # player is enabled
-		if i_state[0] == 1: # interactable is enabled
-			if i_state[2] == 1: # interactable is laden
-				if (p_state[1] == 0) or (p_state[2] == 0): # player has one empty hand
-					print("pick up?")
-					pass # pick up?
-			elif i_state[2] == 0: # interactable is unladen
-				pass # emit cmd?
+	var state = player_state+interactable_state
+											#   what should object hold, what should player hold
+	var player_interactable_compound_state = 	[[0,0],0] # [primary hand, off hand], [object]
+						##########################################################
+						# player  | player | player || object  | object | object #
+	if state:			# enabled | PH     | OH     || enabled | active | laden  #
+			###########################################################################
+		if state ==	 	 [1,       1,       1,         1,        0,       0]: # idle
+			player_interactable_compound_state = [[1,1],0] # hands full
+		elif state ==	 [1,       0,       1,         1,        0,       0]:
+			player_interactable_compound_state = [[0,1],0] # ph free
+		elif state == 	 [1,       1,       0,         1,        0,       0]:
+			player_interactable_compound_state = [[1,0],0] # oh free
+		elif state == 	 [1,       0,       0,         1,        0,       0]:
+			player_interactable_compound_state = [[0,0],0] # both hands free
+			###########################################################################
+		elif state == 	 [1,       1,       1,         1,        1,       0]: # active
+			player_interactable_compound_state = [[1,1],0] # hands full
+		elif state == 	 [1,       0,       1,         1,        1,       0]:
+			player_interactable_compound_state = [[0,1],0] # ph free
+		elif state == 	 [1,       1,       0,         1,        1,       0]:
+			player_interactable_compound_state = [[1,0],0] # oh free
+		elif state == 	 [1,       0,       0,         1,        1,       0]:
+			player_interactable_compound_state = [[0,0],0] # both hands free
+			###########################################################################				
+		elif state == 	 [1,       1,       1,         1,        0,       1]: # laden
+			player_interactable_compound_state = [[1,1],1] # hands full -> swap or no pick up
+		elif state == 	 [1,       0,       1,         1,        0,       1]:
+			player_interactable_compound_state = [[1,1],0] # ph free -> ph pick up
+		elif state ==	 [1,       1,       0,         1,        0,       1]:
+			player_interactable_compound_state = [[1,1],0] # oh free -> oh pick up
+		elif state ==	 [1,       0,       0,         1,        0,       1]:
+			player_interactable_compound_state = [[1,0],0] # both free -> ph pick up
+			# object is laden
+			# todo:
+			# obj: animate
+			# player: no action, error sound
+			pass
+		elif state ==    [0,       0,       0,         1,        1,       0]:
+			pass
+		elif state ==    [1,       2,       2,         1,        1,       0]:
+			pass
+	state_change("player", p_state)
+	state_change(cname, i_state)
+
+func state_change(sname, state_array):
+	state_changed.emit(sname, state_array)
 
 func _on_player_reached_interactable(target: Vector2):
 	# Parameter is where the player's last CMD was.
@@ -207,76 +251,80 @@ func _on_player_reached_interactable(target: Vector2):
 	for key in coordinate_key.keys():
 		if target in coordinate_key[key]:
 			cmd_name = key
-		if cmd_name != null:
-			cmd_count_decrement(cmd_name)
-			manage_cmd_icons(cmd_name)
-			emit_signal(cmd_name)
-			perform_interaction(cmd_name)
+	if cmd_name == null:
+		return
+	cmd_count_decrement(cmd_name)
+	manage_cmd_icons(cmd_name)
+	emit_signal(cmd_name)
+	update_states(cmd_name)
 			
-
-func manage_cmd_icons(name):
-	manage_cmd_vis(name, cmd_count[name])
-
-func manage_cmd_vis(name, count):
-	if name in checkmarks:
-		var checks = checkmarks[name]
+func manage_cmd_icons(cname):
+	var count = cmd_count[cname]
+	if cname in checkmarks:
+		var checks = checkmarks[cname]
 		if checks.size() == 2:
 			checks[0].visible = count >= 1
 			checks[1].visible = count >= 2
 		elif checks.size() == 1:
 			checks[0].visible = count >= 1
 	else:
-		print("ERROR - manage_cmd_vis: unknown command", name)
+		print("ERROR - manage_cmd_vis: unknown command ", cname)
 
 # Tell avatar where to go
-func _on_player_where(name, pos, last):
-	if cmd_count[name] < cmd_count_max[name]:
-		var chosen_cmd = cmd_seek(name, pos, last)
-		cmd_count_increment(name)
-		manage_cmd_icons(name)
+func _on_player_where(pname, pos):
+	if (pname == "o_1") or (pname == "o_2") or (pname == "o_3") or (pname == "o_4"):
+		var chosen_cmd = cmd_seek(pname, pos)
+		cmd_count_increment(pname)
+		manage_cmd_icons(pname)
 		go_here.emit(chosen_cmd)
-	else:
-		#print("Queue full for this obj.")
-		pass
-	for key in cmd_count:
-		#print("Command: ", key, "\tCount: ", cmd_count[key])
-		pass
+	elif cmd_count[pname] < cmd_count_max[pname]:
+		var chosen_cmd = cmd_seek(pname, pos)
+		cmd_count_increment(pname)
+		manage_cmd_icons(pname)
+		go_here.emit(chosen_cmd)
 
 # Find shortest distance coordinate
-func cmd_seek(name, pos, last):
+func cmd_seek(csname, pos):
+	var distance = null
 	var shortest_distance = INF
 	var closest_command = null
-	for command in coordinate_key[name]:
-		var distance = pos.distance_to(command)
+	for command in coordinate_key[csname]:
+		# Assign destination coordinate based on either the previous command
+		# or based on player position if no previous command exists.
+		if previous_command:
+			distance = previous_command.distance_to(command)
+		else:
+			distance = pos.distance_to(command)
 		if distance < shortest_distance:
 			shortest_distance = distance
 			closest_command = command
+	if closest_command:
+		previous_command = closest_command
+	else:
+		previous_command = null
 	return closest_command
 
-func _on_timer_timeout():
-	pass # Replace with function body.
 	
-func cmd_count_decrement(name):
+func cmd_count_decrement(ccdname):
 	# Make sure command doesn't have too many counts.
-	if cmd_count[name] >= cmd_count_max[name]:
-		cmd_count[name] = cmd_count_max[name]
+	if cmd_count[ccdname] >= cmd_count_max[ccdname]:
+		cmd_count[ccdname] = cmd_count_max[ccdname]
 		
-	if cmd_count[name] > 0:
-		cmd_count[name] -= 1
+	if cmd_count[ccdname] > 0:
+		cmd_count[ccdname] -= 1
 	else:
-		cmd_count[name] = 0
-	return name
+		cmd_count[ccdname] = 0
+	return ccdname
 
-func cmd_count_increment(name):
+func cmd_count_increment(cciname):
 	# Make sure command doesn't have negative counts
-	if cmd_count[name] < 1:
-		cmd_count[name] = 0
+	if cmd_count[cciname] < 1:
+		cmd_count[cciname] = 0
 	
-	if cmd_count[name] >= cmd_count_max[name]:
-		cmd_count[name] = cmd_count_max[name]
+	if cmd_count[cciname] >= cmd_count_max[cciname]:
+		cmd_count[cciname] = cmd_count_max[cciname]
 	else:
-		cmd_count[name] += 1
-
+		cmd_count[cciname] += 1
 
 func _on_dd_left_state_changed(cmd, state_array: Array):
 	interactable_state = state_array
@@ -308,3 +356,7 @@ func _on_dd_right_state_changed(cmd, state_array: Array):
 
 func _on_player_state_changed(state_array):
 	player_state = state_array
+
+
+func _on_timer_timer_expired(timer_id: String):
+	state_change(timer_id, [1,0,1])

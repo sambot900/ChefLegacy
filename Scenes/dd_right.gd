@@ -21,7 +21,7 @@ func _ready():
 	emit_state()
 	timer_manager.connect("timer_expired", Callable(self, "_on_timer_expired"))
 
-func _process(delta):
+func _process(_delta):
 	pass
 
 func get_state() -> Array:
@@ -34,24 +34,6 @@ func emit_state():
 	var state = get_state()
 	
 	if state[0] == 1:
-		pass
-	else:
-		# disabled
-		pass
-	
-	if state[1] == 1:
-		# activated
-		pass
-	else:
-		# deactivated
-		pass
-		
-	
-	if state[2] == 1:
-		# laden
-		pass
-	else:
-		# unladen
 		pass
 
 # Avatar reached this command

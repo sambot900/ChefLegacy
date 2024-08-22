@@ -18,20 +18,10 @@ func _ready():
 	enabled = true
 	active = false
 	laden = false
-	emit_state()
 	timer_manager.connect("timer_expired", Callable(self, "_on_timer_expired"))
 
-func _process(delta):
+func _process(_delta):
 	pass
-
-func get_state() -> Array:
-	var enabled_state = 1 if enabled else 0
-	var active_state = 1 if active else 0
-	var laden_state = 1 if laden else 0
-	return [enabled_state, active_state, laden_state]
-
-func emit_state():
-	var state = get_state()
 
 # Avatar reached this command
 # determine state
@@ -55,7 +45,6 @@ func _on__burgers_dd_left():
 		# emit state
 	else:
 		pass
-	emit_state()
 
 func _active_sounds():
 	var audio_player = $ddaudio
@@ -74,20 +63,29 @@ func _inactive_sounds():
 	audio_player3.stream = sound3
 	audio_player3.play()
 
-func _on_timer_expired(timer_id: String):
-	if timer_id == cmd_name:
-		_inactive_sounds()
-		active = false
-		laden = true
-		cup_empty.visible = false
-		cup_oj.visible = true
-	emit_state()
-
 func start_round_timer():
 	timer_manager.start_timer("round")
 
-
-func _on__burgers_interactables_state_changed(cmd, state_array):
-	
-	
-	if state_array
+func _on_interactables_dd_left(state_array):
+	if state_array:
+		enabled = state_array[0]
+		active = state_array[1]
+		laden = state_array[2]
+	if state_array:
+		if 	state_array==  [1,0,0]: # common case: enabled, inactive, unladen
+			_inactive_sounds()
+			cup_oj.visible = 	false
+			cup_empty.visible = false
+		elif state_array== [1,1,0]: # common case: enabled, active, unladen
+			_active_sounds()
+			cup_oj.visible = 	false			
+			cup_empty.visible = true
+			# dispensing animation
+			pass
+		elif state_array== [1,0,1]: # common case: enabled, inactive, laden
+			cup_oj.visible = true
+			cup_empty.visible = false
+		elif state_array== [0,0,0]: # case: disabled
+			pass
+		else:					   # case: else
+			print("error: state error")
