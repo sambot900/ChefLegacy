@@ -23,7 +23,7 @@ func _ready():
 	emit_state()
 	timer_manager.connect("timer_expired", Callable(self, "_on_timer_expired"))
 
-func _process(delta):
+func _process(_delta):
 	pass
 
 func get_state() -> Array:

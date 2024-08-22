@@ -4,8 +4,6 @@ extends Node2D
 # 	dd_left
 ######################################################
 
-signal state_changed(cmd, state_array: Array)
-
 var enabled = true
 var active = false
 var laden = false
@@ -20,21 +18,10 @@ func _ready():
 	enabled = true
 	active = false
 	laden = false
-	emit_state()
 	timer_manager.connect("timer_expired", Callable(self, "_on_timer_expired"))
 
-func _process(delta):
+func _process(_delta):
 	pass
-
-func get_state() -> Array:
-	var enabled_state = 1 if enabled else 0
-	var active_state = 1 if active else 0
-	var laden_state = 1 if laden else 0
-	return [enabled_state, active_state, laden_state]
-
-func emit_state():
-	var state = get_state()
-	state_changed.emit(cmd_name, state)
 
 # Avatar reached this command
 # determine state
@@ -58,7 +45,6 @@ func _on__burgers_dd_left():
 		# emit state
 	else:
 		pass
-	emit_state()
 
 func _active_sounds():
 	var audio_player = $ddaudio
@@ -84,7 +70,10 @@ func _on_timer_expired(timer_id: String):
 		laden = true
 		cup_empty.visible = false
 		cup_oj.visible = true
-	emit_state()
 
 func start_round_timer():
 	timer_manager.start_timer("round")
+
+
+func _on_interactables_dd_left():
+	print("HEY IT WORKS")
