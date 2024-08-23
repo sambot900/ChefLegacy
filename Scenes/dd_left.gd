@@ -26,25 +26,7 @@ func _process(_delta):
 # Avatar reached this command
 # determine state
 # emit state
-func _on__burgers_dd_left():
-	if enabled:
-	# determine state
-		if active:
-			# busy dispensing
-			pass
-		else:
-			if laden:
-				laden = false
-				cup_oj.visible = false
-			else:
-				_active_sounds()
-				cup_oj.visible = false
-				active = true
-				cup_empty.visible = true
-				timer_manager.start_timer(cmd_name)
-		# emit state
-	else:
-		pass
+
 
 func _active_sounds():
 	var audio_player = $ddaudio

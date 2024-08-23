@@ -4,6 +4,7 @@ extends Node2D
 # 	Interactables
 ######################################################
 
+signal state_changed(state_array: Array)
 signal dd_left
 signal dd_right
 signal ms_left
@@ -31,16 +32,43 @@ func _ready():
 	# Initialize states for all interactables (if needed)
 	states["dd_left"] = [1,0,0]
 	states["dd_right"] = [1,0,0]
+	states["ms_left"] = [1,0,0]
+	states["ms_right"] = [0,0,0]
+	states["s_left"] = [1,0,0]
+	states["s_right"] = [1,0,0]
+	states["ts_1"] = [1,0,0] # enabled for testing
+	states["ts_2"] = [0,0,0] # disabled for testing
+	states["ts_3"] = [0,0,0] # disabled for testing
+	states["f_1"] = [1,0,0]
+	states["f_2"] = [1,0,0]
+	states["fs_1"] = [1,0,0]
+	states["fs_2"] = [0,0,0]
+	states["t_1"] = [1,0,0]
+	states["t_2"] = [1,0,0]
+	states["bob"] = [1,0,0]
+	states["o_1"] = [1,0,0] # enabled when a customer is there... but for now...
+	states["o_2"] = [1,0,0]
+	states["o_3"] = [1,0,0]
+	states["o_4"] = [1,0,0]
+	for key in states.keys():
+		emit_state(states[key])
+	
 	# Add more initial states as necessary
 
+func emit_state(cname):
+	var state = get_state(cname)
+	state_changed.emit(state)
+
 func _on__burgers_state_changed(cname: String, state_array: Array):
+	if cname == "player":
+		return
 	# Store the state in the dictionary
 	states[cname] = state_array
 	
 	# Emit the signal if it exists
 	if has_signal(cname):
 		emit_signal(cname, state_array)
-		print("NAME IS: ", get_state(cname))
+		print(cname, ":", get_state(cname))
 	else:
 		print("Signal not found for:", cname)
 

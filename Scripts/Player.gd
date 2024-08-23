@@ -298,6 +298,23 @@ func _on__burgers_go_here(coords):
 	else:
 		print("This obj cmd_count is maxed")
 
-
-func _on__burgers_script_changed(cname,state_array):
-	pass # UPDATE TEXTURES BASED ON STATE
+func _on__burgers_state_changed(cmd, state_array):
+	if state_array:
+		if state_array == [1,0,0]:
+			pass
+		elif state_array == [1,1,0]:
+			pass
+		elif state_array == [1,0,1]:
+			pass
+		elif state_array == [1,1,1]:
+			pass
+		elif state_array == [0,0,0]:
+			pass
+		elif state_array == [0,1,0]:
+			pass
+		elif state_array == [0,0,1]:
+			pass
+		elif state_array == [0,1,1]:
+			pass
+			
+		print("player:", state_array)

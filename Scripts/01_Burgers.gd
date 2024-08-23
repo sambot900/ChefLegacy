@@ -190,53 +190,57 @@ func start_camera_pan():
 	else:
 		print("Camera and AnimationPlayer not found")
 
-
-
-func update_states(cname):
-	var p_state = player_state
-	var i_state = interactable_state
-	var state = player_state+interactable_state
-											#   what should object hold, what should player hold
-	var player_interactable_compound_state = 	[[0,0],0] # [primary hand, off hand], [object]
+func dd_state_decision(cname, p_state, i_state, action):
+	var state = p_state+i_state
 						##########################################################
 						# player  | player | player || object  | object | object #
 	if state:			# enabled | PH     | OH     || enabled | active | laden  #
 			###########################################################################
 		if state ==	 	 [1,       1,       1,         1,        0,       0]: # idle
-			player_interactable_compound_state = [[1,1],0] # hands full
+			p_state = [1,1,1]
+			i_state = [1,1,0]
 		elif state ==	 [1,       0,       1,         1,        0,       0]:
-			player_interactable_compound_state = [[0,1],0] # ph free
+			p_state = [1,0,1]
 		elif state == 	 [1,       1,       0,         1,        0,       0]:
-			player_interactable_compound_state = [[1,0],0] # oh free
+			p_state = [1,1,0]
 		elif state == 	 [1,       0,       0,         1,        0,       0]:
-			player_interactable_compound_state = [[0,0],0] # both hands free
+			p_state = [1,0,0]
 			###########################################################################
 		elif state == 	 [1,       1,       1,         1,        1,       0]: # active
-			player_interactable_compound_state = [[1,1],0] # hands full
+			p_state = [1,1,1]
 		elif state == 	 [1,       0,       1,         1,        1,       0]:
-			player_interactable_compound_state = [[0,1],0] # ph free
+			p_state = [1,0,1]
 		elif state == 	 [1,       1,       0,         1,        1,       0]:
-			player_interactable_compound_state = [[1,0],0] # oh free
+			p_state = [1,1,0]
 		elif state == 	 [1,       0,       0,         1,        1,       0]:
-			player_interactable_compound_state = [[0,0],0] # both hands free
+			p_state = [1,0,0]
 			###########################################################################				
 		elif state == 	 [1,       1,       1,         1,        0,       1]: # laden
-			player_interactable_compound_state = [[1,1],1] # hands full -> swap or no pick up
+			p_state = [1,1,1]
+			action = 0
 		elif state == 	 [1,       0,       1,         1,        0,       1]:
-			player_interactable_compound_state = [[1,1],0] # ph free -> ph pick up
+			p_state = [1,1,1]
+			action = 1
 		elif state ==	 [1,       1,       0,         1,        0,       1]:
-			player_interactable_compound_state = [[1,1],0] # oh free -> oh pick up
+			p_state = [1,1,1]
+			action = 2
 		elif state ==	 [1,       0,       0,         1,        0,       1]:
-			player_interactable_compound_state = [[1,0],0] # both free -> ph pick up
-			# object is laden
-			# todo:
-			# obj: animate
-			# player: no action, error sound
+			p_state = [1,1,0]
+			action = 1
+		###########################################################################		
+		else:																 # edge cases
 			pass
-		elif state ==    [0,       0,       0,         1,        1,       0]:
-			pass
-		elif state ==    [1,       2,       2,         1,        1,       0]:
-			pass
+
+func update_states(cname):
+	var p_state = player_state
+	var i_state = interactable_state
+	var state = player_state+interactable_state
+	var action = 0 # 0=no action, 1=ph pick up, 2=oh pick up, 3=ph set down, 4=oh set down, 5=ph swap, 6=oh swap
+											#   what should object hold, what should player hold
+	
+	if cname == "dd_left" or cname == "dd_right":
+		dd_state_decision(cname, p_state, i_state, action)
+	
 	state_change("player", p_state)
 	state_change(cname, i_state)
 
@@ -253,10 +257,11 @@ func _on_player_reached_interactable(target: Vector2):
 			cmd_name = key
 	if cmd_name == null:
 		return
+	update_states(cmd_name)
 	cmd_count_decrement(cmd_name)
 	manage_cmd_icons(cmd_name)
 	emit_signal(cmd_name)
-	update_states(cmd_name)
+	
 			
 func manage_cmd_icons(cname):
 	var count = cmd_count[cname]
@@ -325,33 +330,6 @@ func cmd_count_increment(cciname):
 		cmd_count[cciname] = cmd_count_max[cciname]
 	else:
 		cmd_count[cciname] += 1
-
-func _on_dd_left_state_changed(cmd, state_array: Array):
-	interactable_state = state_array
-
-	if interactable_state[1] == 1:  # active
-		cmd_count_max[cmd] = 1
-	else:  # deactivated
-		pass
-
-	if interactable_state[2] == 1:  # ladened
-		cmd_count_max[cmd] = 2
-	else:  # unladened
-		cmd_count_max[cmd] = 1
-
-
-func _on_dd_right_state_changed(cmd, state_array: Array):
-	interactable_state = state_array
-
-	if state_array[1] == 1:  # active
-		cmd_count_max[cmd] = 1
-	else:  # deactivated
-		pass
-
-	if state_array[2] == 1:  # ladened
-		cmd_count_max[cmd] = 2
-	else:  # unladened
-		cmd_count_max[cmd] = 1
 
 
 func _on_player_state_changed(state_array):
