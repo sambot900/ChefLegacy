@@ -108,6 +108,7 @@ var player_state = []
 var interactable_state = []
 var previous_command
 
+
 #region Declarations
 @onready var dd_left_check1 = $"INTERACTABLES/DrinkDispenser/dd_left/CMD icons/check2"
 @onready var dd_left_check2 = $"INTERACTABLES/DrinkDispenser/dd_left/CMD icons/check1"
@@ -178,8 +179,8 @@ func _ready():
 		"o_4": [o_4_check1]
 	}
 
-	print("Round node ready")
-	start_camera_pan()
+	print("player state:<<init>> ", player_state)
+	print("interactable state:<<init>> ", interactable_state)
 
 func _input(_event):
 	pass
@@ -190,59 +191,105 @@ func start_camera_pan():
 	else:
 		print("Camera and AnimationPlayer not found")
 
-func dd_state_decision(cname, p_state, i_state, action):
+func dd_state_decision(cname, targ_reached):
+	var action = 0 # 0=no action, 1=ph pick up, 2=oh pick up, 3=ph set down, 4=oh set down, 5=ph swap, 6=oh swap
+	var p_state = player_state
+	var i_state = interactable_state
 	var state = p_state+i_state
+	print("decision state: ",state)
 						##########################################################
 						# player  | player | player || object  | object | object #
 	if state:			# enabled | PH     | OH     || enabled | active | laden  #
 			###########################################################################
 		if state ==	 	 [1,       1,       1,         1,        0,       0]: # idle
-			p_state = [1,1,1]
-			i_state = [1,1,0]
+			if targ_reached:
+				print("p:full i:idle -> i:active")
+				p_state = [1,1,1]
+				i_state = [1,1,0]
 		elif state ==	 [1,       0,       1,         1,        0,       0]:
-			p_state = [1,0,1]
+			if targ_reached:
+				print("p:oh i:idle -> i:active")
+				p_state = [1,0,1]
+				i_state = [1,1,0]
 		elif state == 	 [1,       1,       0,         1,        0,       0]:
-			p_state = [1,1,0]
+			if targ_reached:
+				print("p:ph i:idle -> i:active")
+				p_state = [1,1,0]
+				i_state = [1,1,0]
 		elif state == 	 [1,       0,       0,         1,        0,       0]:
-			p_state = [1,0,0]
+			if targ_reached:
+				print("p:empty i:idle -> i:active")
+				p_state = [1,0,0]
+				i_state = [1,1,0]
 			###########################################################################
 		elif state == 	 [1,       1,       1,         1,        1,       0]: # active
-			p_state = [1,1,1]
+			if targ_reached:
+				print("p:full i:busy -> same")
+				p_state = [9,9,9]
+				i_state = [9,9,9]
 		elif state == 	 [1,       0,       1,         1,        1,       0]:
-			p_state = [1,0,1]
+			if targ_reached:
+				print("p:oh i:busy -> same")
+				p_state = [9,9,9]
+				i_state = [9,9,9]
 		elif state == 	 [1,       1,       0,         1,        1,       0]:
-			p_state = [1,1,0]
+			if targ_reached:
+				print("p:ph i:busy -> same")
+				p_state = [9,9,9]
+				i_state = [9,9,9]
 		elif state == 	 [1,       0,       0,         1,        1,       0]:
-			p_state = [1,0,0]
+			if targ_reached:
+				print("p:empty i:busy -> same")
+				p_state = [9,9,9]
+				i_state = [9,9,9]
 			###########################################################################				
 		elif state == 	 [1,       1,       1,         1,        0,       1]: # laden
-			p_state = [1,1,1]
+			if targ_reached:
+				print("p:full i:laden -> same")
+				p_state = [9,9,9]
+				i_state = [9,9,9]
 			action = 0
 		elif state == 	 [1,       0,       1,         1,        0,       1]:
-			p_state = [1,1,1]
-			action = 1
+			if targ_reached:
+				print("p:oh i:laden -> p:full i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				action = 1
 		elif state ==	 [1,       1,       0,         1,        0,       1]:
-			p_state = [1,1,1]
-			action = 2
+			if targ_reached:
+				print("p:ph i:laden -> p:full i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				action = 2
 		elif state ==	 [1,       0,       0,         1,        0,       1]:
-			p_state = [1,1,0]
-			action = 1
+			if targ_reached:
+				print("p:empty i:laden -> p:ph i:idle")
+				p_state = [1,1,0]
+				i_state = [1,0,0]
+				action = 1
 		###########################################################################		
 		else:																 # edge cases
-			pass
-
-func update_states(cname):
-	var p_state = player_state
-	var i_state = interactable_state
-	var state = player_state+interactable_state
-	var action = 0 # 0=no action, 1=ph pick up, 2=oh pick up, 3=ph set down, 4=oh set down, 5=ph swap, 6=oh swap
-											#   what should object hold, what should player hold
+			print("decision tree edge case")
+	return p_state + i_state
+			
+func update_states(cname, state_array, targ_reached):
+	var state = []
+	var p_state = []
+	var i_state = []
 	
 	if cname == "dd_left" or cname == "dd_right":
-		dd_state_decision(cname, p_state, i_state, action)
+		state = dd_state_decision(cname, targ_reached)
+	else:
+		print("yo")
 	
-	state_change("player", p_state)
-	state_change(cname, i_state)
+	p_state = state.slice(0,3)
+	if state_array != []:
+		i_state = state_array
+	else:
+		i_state =  state.slice(3,state.size())
+	if (p_state != [] and i_state != []):
+		state_change("player", p_state)
+		state_change(cname, i_state)
 
 func state_change(sname, state_array):
 	state_changed.emit(sname, state_array)
@@ -257,12 +304,13 @@ func _on_player_reached_interactable(target: Vector2):
 			cmd_name = key
 	if cmd_name == null:
 		return
-	update_states(cmd_name)
+	var targ_reached = true
+	update_states(cmd_name,[],targ_reached)
 	cmd_count_decrement(cmd_name)
 	manage_cmd_icons(cmd_name)
 	emit_signal(cmd_name)
 	
-			
+# Command icon visibility management
 func manage_cmd_icons(cname):
 	var count = cmd_count[cname]
 	if cname in checkmarks:
@@ -309,7 +357,6 @@ func cmd_seek(csname, pos):
 		previous_command = null
 	return closest_command
 
-	
 func cmd_count_decrement(ccdname):
 	# Make sure command doesn't have too many counts.
 	if cmd_count[ccdname] >= cmd_count_max[ccdname]:
@@ -331,10 +378,17 @@ func cmd_count_increment(cciname):
 	else:
 		cmd_count[cciname] += 1
 
+func _on_player_state_changed(state_array_p):
+	player_state = state_array_p
 
-func _on_player_state_changed(state_array):
-	player_state = state_array
-
-
-func _on_timer_timer_expired(timer_id: String):
+func _on_interactables_state_changed(cname, state_array_i):
+	interactable_state = state_array_i
+	print("local interactable state: ",interactable_state)
+	var targ_reached = false
+	update_states(cname, state_array_i, targ_reached)
+	
+func _on_timer_timer_expired(state_array_i, timer_id: String):
 	state_change(timer_id, [1,0,1])
+	var targ_reached = false
+	update_states(timer_id, state_array_i, targ_reached)
+	emit_signal(timer_id)

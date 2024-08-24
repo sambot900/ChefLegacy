@@ -26,6 +26,7 @@ signal o_2
 signal o_3
 signal o_4
 
+var keys = []
 var states = {}
 
 func _ready():
@@ -51,26 +52,28 @@ func _ready():
 	states["o_3"] = [1,0,0]
 	states["o_4"] = [1,0,0]
 	for key in states.keys():
-		emit_state(states[key])
+		keys.append(key)
+		emit_state(key)
 	
 	# Add more initial states as necessary
 
 func emit_state(cname):
 	var state = get_state(cname)
-	state_changed.emit(state)
+	state_changed.emit(cname, state)
 
 func _on__burgers_state_changed(cname: String, state_array: Array):
-	if cname == "player":
-		return
-	# Store the state in the dictionary
-	states[cname] = state_array
-	
-	# Emit the signal if it exists
-	if has_signal(cname):
-		emit_signal(cname, state_array)
-		print(cname, ":", get_state(cname))
-	else:
-		print("Signal not found for:", cname)
+	if state_array != [9,9,9]:
+		if cname == "player":
+			return
+		# Store the state in the dictionary
+		states[cname] = state_array
+		
+		# Emit the signal if it exists
+		if has_signal(cname):
+			emit_signal(cname, state_array)
+			print(cname, ":i:", get_state(cname))
+		else:
+			print("Signal not found for:", cname)
 
 func get_state(cname: String) -> Array:
 	# Return the state of the specified interactable
@@ -78,4 +81,5 @@ func get_state(cname: String) -> Array:
 		return states[cname]
 	else:
 		print("No state found for:", cname)
-		return []
+		return [3,3,3]
+
