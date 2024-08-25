@@ -105,8 +105,14 @@ var cmd_count_max = {
 
 var checkmarks = {}
 var player_state = []
-var interactable_state = []
+var interactable_state = {}
+var interactables_accepts = {}
+var interactables_objects = {}
 var previous_command
+var order_1 = []
+var order_2 = []
+var order_3 = []
+var order_4 = []
 
 
 #region Declarations
@@ -178,9 +184,47 @@ func _ready():
 		"o_3": [o_3_check1],
 		"o_4": [o_4_check1]
 	}
+	
+	interactables_accepts["dd_left"] = []
+	interactables_accepts["dd_right"] = []
+	interactables_accepts["ms_left"] = []
+	interactables_accepts["ms_right"] = []
+	interactables_accepts["s_left"] = ["raw_patty_1", "raw_patty_2"]
+	interactables_accepts["s_right"] = ["raw_patty_1", "raw_patty_2"]
+	interactables_accepts["ts_1"] = ["cooked_patty1", "cooked_patty2", "bacon_1", "lettuce_1"]
+	interactables_accepts["ts_2"] = ["cooked_patty1", "cooked_patty2", "cheese_1", "lettuce_1"]
+	interactables_accepts["ts_3"] = ["cooked_patty1", "cooked_patty2", "cheese_1", "bacon_1"]
+	interactables_accepts["f_1"] = ["frozen_fries_1", "frozen_fries_2", "frozen_rings_1", "frozen_rings_2"]
+	interactables_accepts["f_2"] = ["frozen_fries_1", "frozen_fries_2", "frozen_rings_1", "frozen_rings_2"]
+	interactables_accepts["fs_1"] = []
+	interactables_accepts["fs_2"] = []
+	interactables_accepts["t_1"] = "any"
+	interactables_accepts["t_2"] = "any"
+	interactables_accepts["bob"] = []
+	interactables_accepts["o_1"] = order_1
+	interactables_accepts["o_2"] = order_2
+	interactables_accepts["o_3"] = order_3
+	interactables_accepts["o_4"] = order_4
+	
+	interactables_objects["dd_left"] = []
+	interactables_objects["dd_right"] = []
+	interactables_objects["ms_left"] = []
+	interactables_objects["ms_right"] = []
+	interactables_objects["s_left"] = []
+	interactables_objects["s_right"] = []
+	interactables_objects["ts_1"] = []
+	interactables_objects["ts_2"] = []
+	interactables_objects["ts_3"] = []
+	interactables_objects["f_1"] = []
+	interactables_objects["f_2"] = []
+	interactables_objects["fs_1"] = []
+	interactables_objects["fs_2"] = []
+	interactables_objects["t_1"] = []
+	interactables_objects["t_2"] = []
+	interactables_objects["bob"] = []
 
-	print("player state:<<init>> ", player_state)
-	print("interactable state:<<init>> ", interactable_state)
+	#print("player state:<<init>> ", player_state)
+	#print("interactable state:<<init>> ", interactable_state)
 
 func _input(_event):
 	pass
@@ -194,9 +238,13 @@ func start_camera_pan():
 func dd_state_decision(cname, targ_reached):
 	var action = 0 # 0=no action, 1=ph pick up, 2=oh pick up, 3=ph set down, 4=oh set down, 5=ph swap, 6=oh swap
 	var p_state = player_state
-	var i_state = interactable_state
+	var i_state = interactable_state[cname]
 	var state = p_state+i_state
-	print("decision state: ",state)
+	var p_skip = false
+	var i_skip = false
+	print("-----------------------------------------")
+	print("COMMAND: ",cname)
+	print("decision state before: ",state)
 						##########################################################
 						# player  | player | player || object  | object | object #
 	if state:			# enabled | PH     | OH     || enabled | active | laden  #
@@ -206,48 +254,67 @@ func dd_state_decision(cname, targ_reached):
 				print("p:full i:idle -> i:active")
 				p_state = [1,1,1]
 				i_state = [1,1,0]
+			print("targ_reached = ", targ_reached)
+			
 		elif state ==	 [1,       0,       1,         1,        0,       0]:
 			if targ_reached:
 				print("p:oh i:idle -> i:active")
 				p_state = [1,0,1]
 				i_state = [1,1,0]
+			print("targ_reached = ", targ_reached)
+			
 		elif state == 	 [1,       1,       0,         1,        0,       0]:
 			if targ_reached:
 				print("p:ph i:idle -> i:active")
 				p_state = [1,1,0]
 				i_state = [1,1,0]
+			print("targ_reached = ", targ_reached)
 		elif state == 	 [1,       0,       0,         1,        0,       0]:
 			if targ_reached:
 				print("p:empty i:idle -> i:active")
 				p_state = [1,0,0]
 				i_state = [1,1,0]
+			print("targ_reached = ", targ_reached)
 			###########################################################################
 		elif state == 	 [1,       1,       1,         1,        1,       0]: # active
 			if targ_reached:
 				print("p:full i:busy -> same")
-				p_state = [9,9,9]
-				i_state = [9,9,9]
+				p_skip = true
+				i_skip = true
+			print("targ_reached = ", targ_reached)
+			
 		elif state == 	 [1,       0,       1,         1,        1,       0]:
 			if targ_reached:
 				print("p:oh i:busy -> same")
-				p_state = [9,9,9]
-				i_state = [9,9,9]
+				p_skip = true
+				i_skip = true
+			print("targ_reached = ", targ_reached)
+			
 		elif state == 	 [1,       1,       0,         1,        1,       0]:
 			if targ_reached:
 				print("p:ph i:busy -> same")
-				p_state = [9,9,9]
-				i_state = [9,9,9]
+				p_skip = true
+				i_skip = true
+			print("targ_reached = ", targ_reached)
+			
 		elif state == 	 [1,       0,       0,         1,        1,       0]:
 			if targ_reached:
 				print("p:empty i:busy -> same")
-				p_state = [9,9,9]
-				i_state = [9,9,9]
+				p_skip = true
+				i_skip = true
+			print("targ_reached = ", targ_reached)
+			
 			###########################################################################				
 		elif state == 	 [1,       1,       1,         1,        0,       1]: # laden
 			if targ_reached:
 				print("p:full i:laden -> same")
-				p_state = [9,9,9]
-				i_state = [9,9,9]
+				p_skip = true
+				i_skip = true
+			else:
+				p_skip = true
+				i_skip = true
+			print("targ_reached = ", targ_reached)
+			
 			action = 0
 		elif state == 	 [1,       0,       1,         1,        0,       1]:
 			if targ_reached:
@@ -255,41 +322,46 @@ func dd_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_state = [1,0,0]
 				action = 1
+			print("targ_reached = ", targ_reached)
+			
 		elif state ==	 [1,       1,       0,         1,        0,       1]:
 			if targ_reached:
 				print("p:ph i:laden -> p:full i:idle")
 				p_state = [1,1,1]
 				i_state = [1,0,0]
 				action = 2
+			print("targ_reached = ", targ_reached)
+			
 		elif state ==	 [1,       0,       0,         1,        0,       1]:
 			if targ_reached:
 				print("p:empty i:laden -> p:ph i:idle")
 				p_state = [1,1,0]
 				i_state = [1,0,0]
 				action = 1
+			print("targ_reached = ", targ_reached)
+			
 		###########################################################################		
 		else:																 # edge cases
 			print("decision tree edge case")
-	return p_state + i_state
+	
+	if (p_skip == false):
+		player_state = p_state
+	if (i_skip == false):
+		interactable_state[cname] = i_state
+		
+	if p_skip==true and i_skip==true:
+		pass
+	else:
+		state_change("player", player_state)
+		state_change(cname, interactable_state[cname])
+	print("decision state after: ",player_state + interactable_state[cname])
 			
-func update_states(cname, state_array, targ_reached):
-	var state = []
-	var p_state = []
-	var i_state = []
-	
+func update_states(cname, targ_reached):
 	if cname == "dd_left" or cname == "dd_right":
-		state = dd_state_decision(cname, targ_reached)
+		dd_state_decision(cname, targ_reached)
 	else:
-		print("yo")
-	
-	p_state = state.slice(0,3)
-	if state_array != []:
-		i_state = state_array
-	else:
-		i_state =  state.slice(3,state.size())
-	if (p_state != [] and i_state != []):
-		state_change("player", p_state)
-		state_change(cname, i_state)
+		print("cname not found: ", cname)
+
 
 func state_change(sname, state_array):
 	state_changed.emit(sname, state_array)
@@ -305,7 +377,7 @@ func _on_player_reached_interactable(target: Vector2):
 	if cmd_name == null:
 		return
 	var targ_reached = true
-	update_states(cmd_name,[],targ_reached)
+	update_states(cmd_name,targ_reached)
 	cmd_count_decrement(cmd_name)
 	manage_cmd_icons(cmd_name)
 	emit_signal(cmd_name)
@@ -382,13 +454,12 @@ func _on_player_state_changed(state_array_p):
 	player_state = state_array_p
 
 func _on_interactables_state_changed(cname, state_array_i):
-	interactable_state = state_array_i
-	print("local interactable state: ",interactable_state)
+	interactable_state[cname] = state_array_i
 	var targ_reached = false
-	update_states(cname, state_array_i, targ_reached)
+	update_states(cname, targ_reached)
 	
-func _on_timer_timer_expired(state_array_i, timer_id: String):
-	state_change(timer_id, [1,0,1])
+func _on_timer_timer_expired(timer_id: String):
+	interactable_state[timer_id] = [1,0,1]
 	var targ_reached = false
-	update_states(timer_id, state_array_i, targ_reached)
+	update_states(timer_id, targ_reached)
 	emit_signal(timer_id)

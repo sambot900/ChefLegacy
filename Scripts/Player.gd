@@ -45,7 +45,9 @@ var oh_laden
 @onready var c_o2: TouchScreenButton = $"../CMDs/c_o2"
 @onready var c_o3: TouchScreenButton = $"../CMDs/c_o3"
 @onready var c_o4: TouchScreenButton = $"../CMDs/c_o4"
-@onready var animated_sprite: AnimatedSprite2D = $anim
+@onready var anim_torso: AnimatedSprite2D = $avatar/torso
+@onready var anim_legs: AnimatedSprite2D = $avatar/legs
+@onready var anim_avatar: AnimatedSprite2D = $avatar
 #endregion
 
 
@@ -191,13 +193,13 @@ func _physics_process(delta):
 		if current_command != null:
 			reached_interactable.emit(current_command)
 		current_command = null;
-		animated_sprite.play("idle")
+		anim_legs.play("idle")
 	
 # Locomotion & Orientation
 	if not finished:
 		var direction = (agent.get_next_path_position() - global_position).normalized()
 		if direction.x > 0 or direction.x < 0 or direction.y > 0 or direction.y < 0:
-			animated_sprite.play("L-walk")
+			anim_legs.play("L-walk")
 
 # Orientation Common Case
 		orientation_common_case(direction)
@@ -275,16 +277,20 @@ func orientation_common_case(direction):
 
 	if orientation_lock == false:
 		if direction.x > 0:
-			animated_sprite.flip_h = true
+			anim_torso.flip_h = true
+			anim_legs.flip_h = true
 		elif direction.x < 0:
-			animated_sprite.flip_h = false
+			anim_legs.flip_h = false
+			anim_torso.flip_h = false
 	else:
 		if orientation_edge_case_l:
-			if animated_sprite.flip_h == true:
-				animated_sprite.flip_h = false
+			if anim_legs.flip_h == true:
+				anim_torso.flip_h = false
+				anim_legs.flip_h = false
 		elif orientation_edge_case_r:
-			if animated_sprite.flip_h == false:
-				animated_sprite.flip_h = true
+			if anim_legs.flip_h == false:
+				anim_torso.flip_h = true
+				anim_legs.flip_h = true
 
 func emit_state():
 	var state = get_state()
@@ -316,5 +322,3 @@ func _on__burgers_state_changed(cmd, state_array):
 			pass
 		elif state_array == [0,1,1]:
 			pass
-			
-		print("player:", state_array)

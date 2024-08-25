@@ -71,7 +71,7 @@ func _on__burgers_state_changed(cname: String, state_array: Array):
 		# Emit the signal if it exists
 		if has_signal(cname):
 			emit_signal(cname, state_array)
-			print(cname, ":i:", get_state(cname))
+			#print(cname, ":i:", get_state(cname))
 		else:
 			print("Signal not found for:", cname)
 

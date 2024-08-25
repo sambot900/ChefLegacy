@@ -72,7 +72,6 @@ func _active_sounds():
 func _inactive_sounds():
 	var audio_player7 = $ddaudio7
 	var sound7 = load("res://Sounds/click_2.mp3")
-	print("now laden ", cmd_name)
 	audio_player7.stream = sound7
 	audio_player7.play()
 
