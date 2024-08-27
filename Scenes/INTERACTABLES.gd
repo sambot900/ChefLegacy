@@ -33,8 +33,8 @@ func _ready():
 	# Initialize states for all interactables (if needed)
 	states["dd_left"] = [1,0,0]
 	states["dd_right"] = [1,0,0]
-	states["ms_left"] = [1,0,0]
-	states["ms_right"] = [0,0,0]
+	states["ms_left"] = [1,0,1]
+	states["ms_right"] = [1,0,1]
 	states["s_left"] = [1,0,0]
 	states["s_right"] = [1,0,0]
 	states["ts_1"] = [1,0,0] # enabled for testing

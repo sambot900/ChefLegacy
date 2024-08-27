@@ -44,7 +44,6 @@ func start_round_timer():
 func _on_interactables_dd_left(state_array):
 	if state_array and (state_array != [9,9,9]):
 		if 	state_array ==  [1,0,0]: # common case: enabled, inactive, unladen
-			_inactive_sounds()
 			cup_oj.visible = 	false
 			cup_empty.visible = false
 		elif state_array== [1,1,0]: # common case: enabled, active, unladen
@@ -55,6 +54,7 @@ func _on_interactables_dd_left(state_array):
 			# dispensing animation
 			pass
 		elif state_array== [1,0,1]: # common case: enabled, inactive, laden
+			_inactive_sounds()
 			cup_oj.visible = true
 			cup_empty.visible = false
 		elif state_array== [0,0,0]: # case: disabled
@@ -63,7 +63,8 @@ func _on_interactables_dd_left(state_array):
 			print("error: state error")
 
 func _on_timer_expired(timer_id: String):
-	if timer_id == cmd_name:
-		_inactive_sounds()
-		cup_empty.visible = false
-		cup_oj.visible = true
+	pass
+	#if timer_id == cmd_name:
+		#_inactive_sounds()
+		#cup_empty.visible = false
+		#cup_oj.visible = true
