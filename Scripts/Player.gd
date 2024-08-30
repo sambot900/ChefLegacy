@@ -50,8 +50,14 @@ var previous_player_state = []
 @onready var anim_torso: AnimatedSprite2D = $avatar/torso
 @onready var anim_legs: AnimatedSprite2D = $avatar/legs
 @onready var anim_avatar: AnimatedSprite2D = $avatar
-@onready var ph_plate: Sprite2D = $avatar/torso/ph_plate
-@onready var oh_plate: Sprite2D = $avatar/torso/oh_plate
+@onready var anim_left_arm_idle: Sprite2D = $avatar/left_arm_idle
+@onready var anim_right_arm_idle: Sprite2D = $avatar/right_arm_idle
+@onready var anim_left_arm_plate: Sprite2D =  $avatar/left_arm_plate
+@onready var anim_right_arm_plate: Sprite2D = $avatar/right_arm_plate
+@onready var freezer_fries: Sprite2D = $"../INTERACTABLES/Freezer/FreezerFries"
+@onready var freezer_fries_rings: Sprite2D = $"../INTERACTABLES/Freezer/FreezerFries&Rings"
+
+
 #endregion
 
 
@@ -212,26 +218,6 @@ func _physics_process(delta):
 		velocity = velocity.lerp(direction * speed, accel * delta)
 		move_and_slide()
 		
-		# right
-		if char_facing_left == false:
-			ph_plate.visible = false
-			oh_plate.visible = false
-			for child in anim_avatar.get_children():
-				if child is Sprite2D:
-					if child.position.x == 71:
-						child.position.x = -45
-					if child.position.x == -46:
-						child.position.x = 70
-					
-		# left
-		if char_facing_left == true:
-			for child in anim_avatar.get_children():
-					if child is Sprite2D:
-						print("X2: ",child.position.x)
-						if child.position.x == 70:
-							child.position.x = -46
-						if child.position.x == -45:
-							child.position.x = 71
 
 func _on_nav_ag_navigation_finished():
 	finished = true
@@ -250,12 +236,20 @@ func z_sort():
 		anim_legs.z_index = 14
 	elif global_position.y > 168 and global_position.y < 384:
 		#z_index = 12
-		anim_torso.z_index = 12
+		anim_torso.z_index = 14
 		anim_legs.z_index = 12
 	elif global_position.y < 160:
 		#z_index = 5
 		anim_torso.z_index = 5
 		anim_legs.z_index = 5
+		
+	anim_left_arm_idle.z_index = anim_torso.z_index + 1
+	anim_right_arm_idle.z_index = anim_torso.z_index + 1
+	anim_left_arm_plate.z_index = anim_torso.z_index + 1
+	anim_right_arm_plate.z_index = anim_torso.z_index + 1
+	freezer_fries.z_index = anim_legs.z_index + 1
+	freezer_fries_rings.z_index = anim_legs.z_index + 1
+	
 		
 
 func orientation_edge_case():
@@ -266,10 +260,10 @@ func orientation_edge_case():
 	# ---------------------------------------------------------------------------------------------------------
 	# R2
 	# If you are in general right, and your command is far top-right
-	# (global_position.x > 610) and (current_command.x < 645)
+	# (global_position.x > 610) and (current_command.x < 625)
 	# ---------------------------------------------------------------------------------------------------------
 	if current_command.y < 38:
-		if (global_position.x > 598) and (current_command.x < 645) and (orientation_edge_case_r == false):
+		if (global_position.x > 598) and (current_command.x < 625) and (orientation_edge_case_r == false):
 			orientation_edge_case_r = false
 			#print("edge case R2 VOID")
 	# ---------------------------------------------------------------------------------------------------------
@@ -278,7 +272,7 @@ func orientation_edge_case():
 	# (global_position.x > 620) and (current_command.x > 652 and current_command.y > 37)
 	# ---------------------------------------------------------------------------------------------------------
 	elif current_command.y < 122:
-		if (global_position.x > 598) and (current_command.x > 644 and current_command.y > 37) and (orientation_edge_case_r == false):
+		if (global_position.x > 598) and (current_command.x > 624 and current_command.y > 37) and (orientation_edge_case_r == false):
 			orientation_edge_case_r = true
 			#print("edge case R3")
 	# ---------------------------------------------------------------------------------------------------------
@@ -286,7 +280,7 @@ func orientation_edge_case():
 	# If you're command is below the topping station
 	# You are in general right and command is far right, and your command is below box o buns.
 	elif current_command.y > 121:
-		if (global_position.x > 620) and (current_command.x > 644 and current_command.y > 80) and (orientation_edge_case_r == false):
+		if (global_position.x > 620) and (current_command.x > 624 and current_command.y > 80) and (orientation_edge_case_r == false):
 			orientation_edge_case_r = true
 			# LOCK RIGHT
 			#print("edge case R4")
@@ -307,12 +301,11 @@ func orientation_common_case(direction):
 			orientation_lock = true
 			
 # Change orientation depending on which way avatar is moving
-
 	if orientation_lock == false: # right
 		if direction.x > 0:
 			anim_torso.flip_h = true
 			anim_legs.flip_h = true
-			anim_legs.offset.x = 29
+			anim_legs.offset.x = 39
 			char_facing_left = false
 			
 			
@@ -325,13 +318,15 @@ func orientation_common_case(direction):
 					
 	else:
 		if orientation_edge_case_l:
-			if anim_legs.flip_h == true:
+			if anim_legs.flip_h == true: # right
 				anim_torso.flip_h = false
 				anim_legs.flip_h = false
+				anim_legs.offset.x = 39
 		elif orientation_edge_case_r:
-			if anim_legs.flip_h == false:
+			if anim_legs.flip_h == false: # left
 				anim_torso.flip_h = true
-			anim_legs.flip_h = true
+				anim_legs.flip_h = true
+				anim_legs.offset.x = 39
 
 func emit_state():
 	var state = get_state()
@@ -348,15 +343,9 @@ func _on__burgers_go_here(coords):
 func _on__burgers_obj_changed(cmd, obj_array, action):
 	if cmd == "player":
 		if action == "ph_up":
-			if char_facing_left == true:
-				add_item_sprites(obj_array, Vector2(-46,-62))
-			elif char_facing_left == false:
-				add_item_sprites(obj_array, Vector2(70,-62))
+			add_item_sprites(obj_array, Vector2(-46,-55))
 		elif action == "oh_up":
-			if char_facing_left == true:
-				add_item_sprites(obj_array, Vector2(71, -62))
-			if char_facing_left == false:
-				add_item_sprites(obj_array, Vector2(-45, -62))
+			add_item_sprites(obj_array, Vector2(74, -51))
 		else:
 			pass
 		
@@ -382,6 +371,30 @@ func add_item_sprites(item_texture_paths: Array, start_position: Vector2):
 		# Update y-offset to stack the next sprite on top of the previous one
 		y_offset -= item_sprite.texture.get_size().y / 2 * item_sprite.scale.y  # Adjust based on scaled height
 
+func _avatar_unladen():
+	anim_left_arm_idle.visible = true
+	anim_right_arm_idle.visible = true
+	anim_left_arm_plate.visible = false
+	anim_right_arm_plate.visible = false
+	
+func _avatar_ph():
+	anim_left_arm_idle.visible = false
+	anim_right_arm_idle.visible = true
+	anim_left_arm_plate.visible = true
+	anim_right_arm_plate.visible = false
+	
+func _avatar_oh():
+	anim_left_arm_idle.visible = true
+	anim_right_arm_idle.visible = false
+	anim_left_arm_plate.visible = false
+	anim_right_arm_plate.visible = true
+	
+func _avatar_both():
+	anim_left_arm_idle.visible = false
+	anim_right_arm_idle.visible = false
+	anim_left_arm_plate.visible = true
+	anim_right_arm_plate.visible = true
+
 func _on__burgers_state_changed(cmd, state_array):
 	if cmd == "ms_left":
 		_hand_sounds()
@@ -390,21 +403,21 @@ func _on__burgers_state_changed(cmd, state_array):
 			_hand_sounds()
 	if state_array and (cmd == "player"):
 		if state_array == [1,0,0]:
-			anim_torso.play("idle")
+			_avatar_unladen()
 		elif state_array == [1,1,0]:
-			anim_torso.play("ph")
+			_avatar_ph()
 		elif state_array == [1,0,1]:
-			anim_torso.play("oh")
+			_avatar_oh()
 		elif state_array == [1,1,1]:
-			anim_torso.play("both")
+			_avatar_both()
 		elif state_array == [0,0,0]:
-			anim_torso.play("idle")
+			_avatar_unladen()
 		elif state_array == [0,1,0]:
-			anim_torso.play("ph")
+			_avatar_ph()
 		elif state_array == [0,0,1]:
-			anim_torso.play("oh")
+			_avatar_oh()
 		elif state_array == [0,1,1]:
-			anim_torso.play("both")
+			_avatar_both()
 		previous_player_state = state_array
 
 func _hand_sounds():
