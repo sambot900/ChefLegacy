@@ -250,6 +250,174 @@ func start_camera_pan():
 	else:
 		print("Camera and AnimationPlayer not found")
 
+
+func s_state_decision(cname, targ_reached):
+	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
+	var p_state = player_state
+	var i_state = interactable_state[cname]
+	var state = p_state+i_state
+	var p_skip = false
+	var i_skip = false
+	print("-----------------------------------------")
+	print("COMMAND: ",cname)
+	print("decision state before: ",state)
+						##########################################################
+						# player  | player | player || object  | object | object #
+	if state:			# enabled | PH     | OH     || enabled | active | laden  #
+			###########################################################################
+		# p:both i:idle
+		if state ==	 	 [1,       1,       1,         1,        0,       0]:
+			if targ_reached:
+				if stored_objects["player_ph"] in interactables_accepts["s_left"]:
+					print("p:both i:idle -> i:active laden")
+					p_state = [1,0,1]
+					i_state = [1,1,1]
+					action = "ph_down"
+				elif stored_objects["player_oh"] in interactables_accepts["s_left"]:
+					print("p:both i:idle -> i:active laden")
+					p_state = [1,1,0]
+					i_state = [1,1,1]
+					action = "oh_down"
+				else:
+					pass
+					# ERROR SOUND?
+				print("p:full i:idle -> i:active")
+				p_skip = true
+				i_skip = true
+			print("targ_reached = ", targ_reached)
+			
+		# p:oh i:idle
+		elif state ==	 [1,       0,       1,         1,        0,       0]:
+			if targ_reached:
+				if stored_objects["player_oh"] in interactables_accepts["s_left"]:
+					print("p:oh i:idle -> i:active laden")
+					p_state = [1,0,0]
+					i_state = [1,1,1]
+					action = "oh_down"
+				else:
+					pass
+					# ERROR SOUND?
+				print("p:full i:idle -> i:active")
+				p_skip = true
+				i_skip = true
+			print("targ_reached = ", targ_reached)
+			
+		# p:ph i:idle
+		elif state == 	 [1,       1,       0,         1,        0,       0]:
+			if targ_reached:
+				if stored_objects["player_ph"] in interactables_accepts["s_left"]:
+					print("p:ph i:idle -> i:active laden")
+					p_state = [1,0,0]
+					i_state = [1,1,1]
+					action = "ph_down"
+				else:
+					pass
+					# ERROR SOUND?
+				print("p:full i:idle -> i:active")
+				p_skip = true
+				i_skip = true
+			print("targ_reached = ", targ_reached)
+			###########################################################################
+		
+		# p:both i:active and laden
+		elif state == 	 [1,       1,       1,         1,        1,       1]:
+			if targ_reached:
+				print("p:both i:active and laden -> same")
+				p_skip = true
+				i_skip = true
+			print("targ_reached = ", targ_reached)
+			
+		# p:oh i:active and laden
+		elif state == 	 [1,       0,       1,         1,        1,       1]:
+			if targ_reached:
+				print("p:oh i:active and laden -> p:both i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				action = "ph_up"
+			print("targ_reached = ", targ_reached)
+			
+		# p:ph i:active and laden
+		elif state == 	 [1,       1,       0,         1,        1,       1]:
+			if targ_reached:
+				print("p:ph i:active and laden -> p:both i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				action = "oh_up"
+			print("targ_reached = ", targ_reached)
+			
+		# p:free i:active and laden
+		elif state == 	 [1,       0,       0,         0,        0,       1]:
+			if targ_reached:
+				print("p:free i:active and laden -> p:ph i:idle")
+				p_state = [1,1,0]
+				i_state = [1,0,0]
+				action = "ph_up"
+			print("targ_reached = ", targ_reached)
+			
+		# p:full i:cooked
+		elif state == 	 [1,       1,       1,         0,        1,       1]:
+			if targ_reached:
+				print("p:full i:cooked -> same")
+				p_skip = true
+				i_skip = true
+			print("targ_reached = ", targ_reached)
+			
+		# p:full i:cooked
+		elif state == 	 [1,       0,       1,         0,        1,       1]:
+			if targ_reached:
+				print("p:oh i:cooked -> p:full i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+			print("targ_reached = ", targ_reached)
+			
+		elif state == 	 [1,       1,       1,         1,        0,       1]:
+			if targ_reached:
+				print("p:full i:laden -> same")
+				p_skip = true
+				i_skip = true
+			else:
+				p_skip = true
+				i_state = [1,0,1]
+			print("targ_reached = ", targ_reached)
+		elif state == 	 [1,       0,       1,         1,        0,       1]:
+			if targ_reached:
+				print("p:oh i:laden -> p:full i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				action = "ph_up"
+			print("targ_reached = ", targ_reached)
+			
+		elif state ==	 [1,       1,       0,         1,        0,       1]:
+			if targ_reached:
+				print("p:ph i:laden -> p:full i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				action = "oh_up"
+			print("targ_reached = ", targ_reached)
+			
+		elif state ==	 [1,       0,       0,         1,        0,       1]:
+			if targ_reached:
+				print("p:empty i:laden -> p:ph i:idle")
+				p_state = [1,1,0]
+				i_state = [1,0,0]
+				action = "ph_up"
+			print("targ_reached = ", targ_reached)
+		###########################################################################		
+		else:																 # edge cases
+			print("decision tree edge case")
+	
+	if (p_skip == false):
+		player_state = p_state
+	if (i_skip == false):
+		interactable_state[cname] = i_state
+	if p_skip==true and i_skip==true:
+		pass
+	else:
+		state_change("player", player_state)
+		state_change(cname, interactable_state[cname])
+	print("decision state after: ",player_state + interactable_state[cname])
+	return action
+
 func dd_state_decision(cname, targ_reached):
 	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
 	var p_state = player_state
