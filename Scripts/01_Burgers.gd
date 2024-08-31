@@ -142,10 +142,10 @@ var obj_cola_drink = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
 @onready var fs_1_check2 = $"INTERACTABLES/Freezer/fs_1/CMD icons/check1"
 @onready var fs_2_check1 = $"INTERACTABLES/Freezer/fs_2/CMD icons/check2"
 @onready var fs_2_check2 = $"INTERACTABLES/Freezer/fs_2/CMD icons/check1"
-@onready var s_left_check1 = $"INTERACTABLES/Stove/s1_left/CMD icons/check2"
-@onready var s_left_check2 = $"INTERACTABLES/Stove/s1_left/CMD icons/check1"
-@onready var s_right_check1 = $"INTERACTABLES/Stove/s1_right/CMD icons/check2"
-@onready var s_right_check2 = $"INTERACTABLES/Stove/s1_right/CMD icons/check1"
+@onready var s_left_check1 = $"INTERACTABLES/Stove/s_left/CMD icons/check2"
+@onready var s_left_check2 = $"INTERACTABLES/Stove/s_left/CMD icons/check1"
+@onready var s_right_check1 = $"INTERACTABLES/Stove/s_right/CMD icons/check2"
+@onready var s_right_check2 = $"INTERACTABLES/Stove/s_right/CMD icons/check1"
 @onready var ts_1_check1 = $"INTERACTABLES/TOPPING STATION/TsBoardCheese/CMD icons/check2"
 @onready var ts_1_check2 = $"INTERACTABLES/TOPPING STATION/TsBoardCheese/CMD icons/check1"
 @onready var ts_2_check1 = $"INTERACTABLES/TOPPING STATION/TsBoardBacon/CMD icons/check2"
@@ -204,8 +204,8 @@ func _ready():
 	interactables_accepts["dd_right"] = []
 	interactables_accepts["ms_left"] = []
 	interactables_accepts["ms_right"] = []
-	interactables_accepts["s_left"] = ["raw_patty_1", "raw_patty_2"]
-	interactables_accepts["s_right"] = ["raw_patty_1", "raw_patty_2"]
+	interactables_accepts["s_left"] = [obj_raw_patty_1, obj_raw_patty_2]
+	interactables_accepts["s_right"] = [obj_raw_patty_1, obj_raw_patty_2]
 	interactables_accepts["ts_1"] = ["cooked_patty1", "cooked_patty2", "bacon_1", "lettuce_1"]
 	interactables_accepts["ts_2"] = ["cooked_patty1", "cooked_patty2", "cheese_1", "lettuce_1"]
 	interactables_accepts["ts_3"] = ["cooked_patty1", "cooked_patty2", "cheese_1", "bacon_1"]
@@ -262,8 +262,8 @@ func s_state_decision(cname, targ_reached):
 	print("COMMAND: ",cname)
 	print("decision state before: ",state)
 						##########################################################
-						# player  | player | player || object  | object | object #
-	if state:			# enabled | PH     | OH     || enabled | active | laden  #
+						# player  | player | player || object    | object | object #
+	if state:			# enabled | PH     | OH     || uncooked  | active | laden  #
 			###########################################################################
 		# p:both i:idle
 		if state ==	 	 [1,       1,       1,         1,        0,       0]:
@@ -278,13 +278,13 @@ func s_state_decision(cname, targ_reached):
 					p_state = [1,1,0]
 					i_state = [1,1,1]
 					action = "oh_down"
-				else:
-					pass
-					# ERROR SOUND?
+			else:
+				pass
+				# ERROR SOUND?
 				print("p:full i:idle -> i:active")
 				p_skip = true
 				i_skip = true
-			print("targ_reached = ", targ_reached)
+			
 			
 		# p:oh i:idle
 		elif state ==	 [1,       0,       1,         1,        0,       0]:
@@ -294,29 +294,39 @@ func s_state_decision(cname, targ_reached):
 					p_state = [1,0,0]
 					i_state = [1,1,1]
 					action = "oh_down"
-				else:
-					pass
-					# ERROR SOUND?
+					print("targ_reached = ", targ_reached)
+			else:
+				pass
+				# ERROR SOUND?
 				print("p:full i:idle -> i:active")
 				p_skip = true
 				i_skip = true
-			print("targ_reached = ", targ_reached)
+			
 			
 		# p:ph i:idle
 		elif state == 	 [1,       1,       0,         1,        0,       0]:
 			if targ_reached:
-				if stored_objects["player_ph"] in interactables_accepts["s_left"]:
+				print("targ_reached = ", targ_reached)
+				print("ph = ", stored_objects["player_ph"], "accepts: ", interactables_accepts["s_left"])
+				if stored_objects["player_ph"][0] in interactables_accepts["s_left"]:
 					print("p:ph i:idle -> i:active laden")
 					p_state = [1,0,0]
 					i_state = [1,1,1]
 					action = "ph_down"
-				else:
-					pass
-					# ERROR SOUND?
+			else:
+				pass
+				# ERROR SOUND?
 				print("p:full i:idle -> i:active")
 				p_skip = true
 				i_skip = true
-			print("targ_reached = ", targ_reached)
+			
+		# p:free i:idle
+		elif state == 	 [1,       0,       0,         1,        0,       0]:
+			if targ_reached:
+				print("p:free i:idle -> same")
+				p_skip = true
+				i_skip = true
+				print("targ_reached = ", targ_reached)
 			###########################################################################
 		
 		# p:both i:active and laden
@@ -325,7 +335,10 @@ func s_state_decision(cname, targ_reached):
 				print("p:both i:active and laden -> same")
 				p_skip = true
 				i_skip = true
-			print("targ_reached = ", targ_reached)
+				print("targ_reached = ", targ_reached)
+			else:
+				p_skip = true
+				i_state = [0,1,1]
 			
 		# p:oh i:active and laden
 		elif state == 	 [1,       0,       1,         1,        1,       1]:
@@ -334,7 +347,10 @@ func s_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_state = [1,0,0]
 				action = "ph_up"
-			print("targ_reached = ", targ_reached)
+				print("targ_reached = ", targ_reached)
+			else:
+				p_skip = true
+				i_state = [0,1,1]
 			
 		# p:ph i:active and laden
 		elif state == 	 [1,       1,       0,         1,        1,       1]:
@@ -343,16 +359,22 @@ func s_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_state = [1,0,0]
 				action = "oh_up"
-			print("targ_reached = ", targ_reached)
+				print("targ_reached = ", targ_reached)
+			else:
+				p_skip = true
+				i_state = [0,1,1]
 			
 		# p:free i:active and laden
-		elif state == 	 [1,       0,       0,         0,        0,       1]:
+		elif state == 	 [1,       0,       0,         1,        1,       1]:
 			if targ_reached:
 				print("p:free i:active and laden -> p:ph i:idle")
 				p_state = [1,1,0]
 				i_state = [1,0,0]
 				action = "ph_up"
-			print("targ_reached = ", targ_reached)
+				print("targ_reached = ", targ_reached)
+			else:
+				p_skip = true
+				i_state = [0,1,1]
 			
 		# p:full i:cooked
 		elif state == 	 [1,       1,       1,         0,        1,       1]:
@@ -360,51 +382,83 @@ func s_state_decision(cname, targ_reached):
 				print("p:full i:cooked -> same")
 				p_skip = true
 				i_skip = true
-			print("targ_reached = ", targ_reached)
+				print("targ_reached = ", targ_reached)
+			else:
+				p_skip = true
+				i_state = [1,0,1]
+				print("i:cooked -> i:burnt")
 			
-		# p:full i:cooked
+		# p:oh i:cooked
 		elif state == 	 [1,       0,       1,         0,        1,       1]:
 			if targ_reached:
 				print("p:oh i:cooked -> p:full i:idle")
 				p_state = [1,1,1]
 				i_state = [1,0,0]
-			print("targ_reached = ", targ_reached)
-			
-		elif state == 	 [1,       1,       1,         1,        0,       1]:
-			if targ_reached:
-				print("p:full i:laden -> same")
-				p_skip = true
-				i_skip = true
+				print("targ_reached = ", targ_reached)
 			else:
 				p_skip = true
 				i_state = [1,0,1]
-			print("targ_reached = ", targ_reached)
-		elif state == 	 [1,       0,       1,         1,        0,       1]:
+				print("i:cooked -> i:burnt")
+			
+		# p:ph i:cooked
+		elif state == 	 [1,       1,       0,         0,        1,       1]:
 			if targ_reached:
-				print("p:oh i:laden -> p:full i:idle")
+				print("p:ph i:cooked -> p:full i:idle")
 				p_state = [1,1,1]
 				i_state = [1,0,0]
-				action = "ph_up"
-			print("targ_reached = ", targ_reached)
-			
-		elif state ==	 [1,       1,       0,         1,        0,       1]:
+				print("targ_reached = ", targ_reached)
+			else:
+				p_skip = true
+				i_state = [1,0,1]
+				print("i:cooked -> i:burnt")
+				
+		# p:free i:cooked
+		elif state == 	 [1,       0,       0,         0,        1,       1]:
 			if targ_reached:
-				print("p:ph i:laden -> p:full i:idle")
-				p_state = [1,1,1]
-				i_state = [1,0,0]
-				action = "oh_up"
-			print("targ_reached = ", targ_reached)
-			
-		elif state ==	 [1,       0,       0,         1,        0,       1]:
-			if targ_reached:
-				print("p:empty i:laden -> p:ph i:idle")
+				print("p:free i:laden -> p:ph i:idle")
 				p_state = [1,1,0]
 				i_state = [1,0,0]
 				action = "ph_up"
-			print("targ_reached = ", targ_reached)
+				print("targ_reached = ", targ_reached)
+			else:
+				p_skip = true
+				i_state = [1,0,1]
+				print("i:cooked -> i:burnt")
+			
+			
+		# p:full i:burnt
+		elif state ==	 [1,       1,       1,         1,        0,       1]:
+			if targ_reached:
+				print("p:full i:burnt -> same")
+				p_skip = true
+				i_skip = true
+				print("targ_reached = ", targ_reached)
+			
+		# p:oh i:burnt
+		elif state ==	 [1,       0,       1,         1,        0,       1]:
+			if targ_reached:
+				print("p:oh i:burnt -> p:full i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				print("targ_reached = ", targ_reached)
+				
+		# p:ph i:burnt
+		elif state ==	 [1,       1,       0,         1,        0,       1]:
+			if targ_reached:
+				print("p:ph i:burnt -> p:full i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				print("targ_reached = ", targ_reached)
+		# p:free i:burnt
+		elif state ==	 [1,       1,       0,         1,        0,       1]:
+			if targ_reached:
+				print("p:free i:burnt -> p:ph i:idle")
+				p_state = [1,1,0]
+				i_state = [1,0,0]
+				print("targ_reached = ", targ_reached)
 		###########################################################################		
 		else:																 # edge cases
-			print("decision tree edge case")
+			print("s decision tree edge case")
 	
 	if (p_skip == false):
 		player_state = p_state
@@ -598,7 +652,7 @@ func ms_state_decision(cname, targ_reached):
 func update_states(cname, targ_reached):
 	var action
 	
-	# dd_left
+##### dd_left	
 	if cname == "dd_left":
 		action = dd_state_decision(cname, targ_reached)
 		# pick up oj
@@ -614,8 +668,24 @@ func update_states(cname, targ_reached):
 			print("action is 1: ",stored_objects["player_oh"], action)
 			obj_change("player", stored_objects["player_oh"], action)
 			obj_change(cname, stored_objects[cname], action)
+##### dd_right	
+	elif cname == "dd_right":
+		action = dd_state_decision(cname, targ_reached)
+		# pick up cola
+		if action == "ph_up":
+			stored_objects["player_ph"] = [obj_cola_drink]
+			stored_objects[cname] = []
+			print("action is 1: ",stored_objects["player_ph"], action)
+			obj_change("player", stored_objects["player_ph"], action)
+			obj_change(cname, stored_objects[cname], action)
+		elif action == "oh_up":
+			stored_objects["player_oh"] = [obj_cola_drink]
+			stored_objects[cname] = []
+			print("action is 1: ",stored_objects["player_oh"], action)
+			obj_change("player", stored_objects["player_oh"], action)
+			obj_change(cname, stored_objects[cname], action)
 			
-	# ms_left	
+##### ms_left	
 	elif cname == "ms_left":
 		action = ms_state_decision(cname, targ_reached)
 		print("ms_left confirmed. action: ", action)
@@ -630,8 +700,7 @@ func update_states(cname, targ_reached):
 			print("action is ph_up: ",stored_objects["player_oh"], action)
 			obj_change("player", stored_objects["player_oh"], action)
 			obj_change(cname, stored_objects[cname], action)
-		
-	# ms_right
+##### ms_right
 	elif cname == "ms_right":
 		action = ms_state_decision(cname, targ_reached)
 		print("ms_right confirmed. action: ", action)
@@ -644,6 +713,33 @@ func update_states(cname, targ_reached):
 			stored_objects["player_oh"] = [obj_raw_patty_2]
 			stored_objects[cname] = []
 			print("action is ph_up: ",stored_objects["player_oh"], action)
+			obj_change("player", stored_objects["player_oh"], action)
+			obj_change(cname, stored_objects[cname], action)
+##### s_left
+	elif cname == "s_left":
+		action = s_state_decision(cname, targ_reached)
+		print("s_left confirmed. action: ", action)
+		if action == "ph_up_raw":
+			stored_objects["player_ph"] = [obj_raw_patty_1]
+			print("action is ph_up_raw: ",stored_objects["player_ph"], action)
+			obj_change("player", stored_objects["player_ph"], action)
+			obj_change(cname, stored_objects[cname], action)
+		elif action == "oh_up_raw":
+			stored_objects["player_oh"] = [obj_raw_patty_1]
+			stored_objects[cname] = []
+			print("action is oh_up_raw: ",stored_objects["player_oh"], action)
+			obj_change("player", stored_objects["player_oh"], action)
+			obj_change(cname, stored_objects[cname], action)
+		elif action == "ph_down":
+			stored_objects[cname] = stored_objects["player_ph"]
+			stored_objects["player_ph"] = []
+			print("action is ph_down: ",stored_objects["player_ph"], action)
+			obj_change("player", stored_objects["player_ph"], action)
+			obj_change(cname, stored_objects[cname], action)
+		elif action == "oh_down":
+			stored_objects[cname] = stored_objects["player_oh"]
+			stored_objects["player_oh"] = []
+			print("action is oh_down: ",stored_objects["player_oh"], action)
 			obj_change("player", stored_objects["player_oh"], action)
 			obj_change(cname, stored_objects[cname], action)
 	else:
@@ -746,7 +842,11 @@ func _on_interactables_state_changed(cname, state_array_i):
 	interactable_state[cname] = state_array_i
 	
 func _on_timer_timer_expired(timer_id: String):
-	interactable_state[timer_id] = [1,0,1]
+	if (timer_id == "dd_left") or (timer_id == "dd_right"):
+		interactable_state[timer_id] = [1,0,1]
+	if (timer_id == "s_left") or (timer_id == "s_right"):
+		print("timer went off: ", timer_id)
+		interactable_state[timer_id] = [1,1,1]
 	var targ_reached = false
 	update_states(timer_id, targ_reached)
 	#emit_signal(timer_id)
