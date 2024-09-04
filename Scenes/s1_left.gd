@@ -44,33 +44,20 @@ func _inactive_sounds():
 func start_round_timer():
 	timer_manager.start_timer("round")
 
-func _on_interactables_s_left(state_array):
+func _on_interactables_s_left(state_array, held_obj):
 	if state_array and (state_array != [9,9,9]):
 		if 	state_array ==  [1,0,0]: # common case: enabled, inactive, unladen
-			raw_patty_1.visible = false
-			raw_patty_2.visible = false
-			burnt_patty_1.visible = false
-			cooked_patty_1.visible = false
+			# draw sprite?
+			pass
 		elif state_array == [1,1,1]: # common case: enabled, active, laden (raw)
 			timer_manager.start_timer(cmd_name)
 			_active_sounds()
-			raw_patty_1.visible = true
-			raw_patty_2.visible = false
-			burnt_patty_1.visible = false
-			cooked_patty_1.visible = false
 			# dispensing animation
 			pass
 		elif state_array == [0,1,1]: # common case: enabled, active, laden (cooked)
 			_inactive_sounds()
-			raw_patty_1.visible = false
-			raw_patty_2.visible = false
-			burnt_patty_1.visible = false
-			cooked_patty_1.visible = true
 		elif state_array == [1,0,1]: # common case: enabled, inactive, laden (burnt)
 			_inactive_sounds()
-			raw_patty_1.visible = false
-			raw_patty_2.visible = false
-			burnt_patty_1.visible = true
 		elif state_array == [0,0,0]: # case: disabled
 			pass
 		else:					    # case: else

@@ -104,6 +104,8 @@ var cmd_count_max = {
 	}
 #endregion
 
+#region Declarations
+
 var checkmarks = {}
 var player_state = []
 var interactable_state = {}
@@ -127,9 +129,10 @@ var obj_frozen_rings_1 = ""
 var obj_frozen_rings_2 = ""
 var obj_orange_drink = "res://Sprites/Levels/01_Burgers/Food/oj_full.png"
 var obj_cola_drink = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
+#endregion
 
 
-#region Declarations
+#region onready Declarations
 @onready var dd_left_check1 = $"INTERACTABLES/DrinkDispenser/dd_left/CMD icons/check2"
 @onready var dd_left_check2 = $"INTERACTABLES/DrinkDispenser/dd_left/CMD icons/check1"
 @onready var dd_right_check1 = $"INTERACTABLES/DrinkDispenser/dd_right/CMD icons/check2"
@@ -172,6 +175,8 @@ var obj_cola_drink = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
 @onready var camera_animation_player = $CameraAnimationPlayer
 @onready var dd = $INTERACTABLES/DrinkDispenser
 @onready var freezer = $INTERACTABLES/Freezer
+@onready var dd_left = $INTERACTABLES/DrinkDispenser/dd_left
+@onready var dd_right = $INTERACTABLES/DrinkDispenser/dd_right
 #endregion
 
 func _ready():
@@ -251,13 +256,14 @@ func start_camera_pan():
 		print("Camera and AnimationPlayer not found")
 
 
-func s_state_decision(cname, targ_reached):
+func s_state_decision(cname, targ_reached, p_obj, i_obj):
 	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
 	var p_state = player_state
 	var i_state = interactable_state[cname]
 	var state = p_state+i_state
 	var p_skip = false
 	var i_skip = false
+
 	print("-----------------------------------------")
 	print("COMMAND: ",cname)
 	print("decision state before: ",state)
@@ -467,18 +473,20 @@ func s_state_decision(cname, targ_reached):
 	if p_skip==true and i_skip==true:
 		pass
 	else:
-		state_change("player", player_state)
-		state_change(cname, interactable_state[cname])
+		state_change("player", player_state, p_obj)
+		state_change(cname, interactable_state[cname], i_obj)
 	print("decision state after: ",player_state + interactable_state[cname])
 	return action
 
-func dd_state_decision(cname, targ_reached):
+func dd_state_decision(cname, targ_reached, p_obj, i_obj):
 	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
 	var p_state = player_state
 	var i_state = interactable_state[cname]
 	var state = p_state+i_state
 	var p_skip = false
 	var i_skip = false
+	var p_obj
+	var i_obj
 	print("-----------------------------------------")
 	print("COMMAND: ",cname)
 	print("decision state before: ",state)
@@ -585,12 +593,12 @@ func dd_state_decision(cname, targ_reached):
 	if p_skip==true and i_skip==true:
 		pass
 	else:
-		state_change("player", player_state)
-		state_change(cname, interactable_state[cname])
+		state_change("player", player_state, p_obj)
+		state_change(cname, interactable_state[cname], i_obj)
 	print("decision state after: ",player_state + interactable_state[cname])
 	return action
 	
-func ms_state_decision(cname, targ_reached):
+func ms_state_decision(cname, targ_reached, p_obj, i_obj):
 	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
 	var p_state = player_state
 	var i_state = interactable_state[cname]
@@ -644,8 +652,8 @@ func ms_state_decision(cname, targ_reached):
 	if p_skip==true and i_skip==true:
 		pass
 	else:
-		state_change("player", player_state)
-		state_change(cname, interactable_state[cname])
+		state_change("player", player_state, p_obj)
+		state_change(cname, interactable_state[cname], i_obj)
 	print("a: ",player_state + interactable_state[cname])
 	return action	
 			
@@ -684,7 +692,6 @@ func update_states(cname, targ_reached):
 			print("action is 1: ",stored_objects["player_oh"], action)
 			obj_change("player", stored_objects["player_oh"], action)
 			obj_change(cname, stored_objects[cname], action)
-			
 ##### ms_left	
 	elif cname == "ms_left":
 		action = ms_state_decision(cname, targ_reached)
@@ -718,7 +725,6 @@ func update_states(cname, targ_reached):
 ##### s_left
 	elif cname == "s_left":
 		action = s_state_decision(cname, targ_reached)
-		print("s_left confirmed. action: ", action)
 		if action == "ph_up_raw":
 			stored_objects["player_ph"] = [obj_raw_patty_1]
 			print("action is ph_up_raw: ",stored_objects["player_ph"], action)
@@ -745,11 +751,34 @@ func update_states(cname, targ_reached):
 	else:
 		print("cname not found: ", cname)
 
+# stored objects
+func add_item_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
+	var y_offset = 0  # Initialize y-offset for stacking
+	var base_z_index = 100  # Set a base z_index
+
+	for texture_path in item_texture_paths:
+		var item_sprite = Sprite2D.new()  # Create a new Sprite2D node for each item
+		item_sprite.texture = load(texture_path)  # Load the texture from the path
+		
+		# Set the scale of each sprite to 0.5 for both x and y axes
+		item_sprite.scale = Vector2(0.5, 0.5)
+
+		# Ensure each sprite has a higher z_index than the previous one
+		item_sprite.z_index = base_z_index  
+		base_z_index += 1
+		
+		item_sprite.position = start_position + Vector2(0, y_offset)  # Set the position with offset
+		target_node.add_child(item_sprite)  # Add the sprite as a child of the specified node
+
+		# Update y-offset to stack the next sprite on top of the previous one
+		y_offset -= item_sprite.texture.get_size().y / 2 * item_sprite.scale.y  # Adjust based on scaled height
+
+
 func obj_change(sname, obj_array, action):
 	obj_changed.emit(sname, obj_array, action)
 
-func state_change(sname, state_array):
-	state_changed.emit(sname, state_array)
+func state_change(sname, state_array, obj):
+	state_changed.emit(sname, state_array, obj)
 
 func _on_player_reached_interactable(target: Vector2):
 	# Parameter is where the player's last CMD was.
