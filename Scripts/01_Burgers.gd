@@ -58,56 +58,24 @@ var coordinate_key = {
 
 #region Dictionary Init: cmd_count
 var cmd_count = {
-	"dd_left": 0,
-	"dd_right": 0,
-	"ms_left": 0,
-	"ms_right": 0,
-	"fs_1": 0,
-	"fs_2": 0,
-	"s_left": 0,
-	"s_right": 0,
-	"ts_1": 0,
-	"ts_2": 0,
-	"ts_3": 0,
-	"f_1": 0,
-	"f_2": 0,
-	"t_1": 0,
-	"t_2": 0,
-	"bob": 0,
-	"o_1": 0,
-	"o_2": 0,
-	"o_3": 0,
-	"o_4": 0
+	"dd_left": 0, "dd_right": 0, "ms_left": 0, "ms_right": 0,
+	"fs_1": 0, "fs_2": 0, "s_left": 0, "s_right": 0,
+	"ts_1": 0, "ts_2": 0, "ts_3": 0, "f_1": 0, "f_2": 0,
+	"t_1": 0, "t_2": 0, "bob": 0, "o_1": 0, "o_2": 0, "o_3": 0, "o_4": 0
 }
 
 var cmd_count_max = {
-	"dd_left": 2,
-	"dd_right": 2,
-	"ms_left": 2,
-	"ms_right": 2,
-	"fs_1": 2,
-	"fs_2": 2,
-	"s_left": 2,
-	"s_right": 2,
-	"ts_1": 2,
-	"ts_2": 2,
-	"ts_3": 2,
-	"f_1": 2,
-	"f_2": 2,
-	"t_1": 2,
-	"t_2": 2,
-	"bob": 2,
-	"o_1": 1,
-	"o_2": 1,
-	"o_3": 1,
-	"o_4": 1
-	}
+	"dd_left": 2, "dd_right": 2, "ms_left": 2, "ms_right": 2,
+	"fs_1": 2, "fs_2": 2, "s_left": 2, "s_right": 2,
+	"ts_1": 2, "ts_2": 2, "ts_3": 2, "f_1": 2, "f_2": 2,
+	"t_1": 2, "t_2": 2, "bob": 2, "o_1": 1, "o_2": 1, "o_3": 1, "o_4": 1
+}
 #endregion
 
 #region Declarations
 
-var checkmarks = {}
 var player_state = []
+var i_node = {}
 var interactable_state = {}
 var interactables_accepts = {}
 var stored_objects = {}
@@ -116,6 +84,8 @@ var order_1 = []
 var order_2 = []
 var order_3 = []
 var order_4 = []
+
+
 var obj_raw_patty_1 = "res://Sprites/Levels/01_Burgers/Food/raw_patty_1.png"
 var obj_raw_patty_2 = "res://Sprites/Levels/01_Burgers/Food/raw_patty_2.png"
 var obj_cooked_patty1 = ""
@@ -129,80 +99,43 @@ var obj_frozen_rings_1 = ""
 var obj_frozen_rings_2 = ""
 var obj_orange_drink = "res://Sprites/Levels/01_Burgers/Food/oj_full.png"
 var obj_cola_drink = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
+var obj_empty_drink = "res://Sprites/Levels/01_Burgers/Food/cup_empty.png"
 #endregion
 
 
 #region onready Declarations
-@onready var dd_left_check1 = $"INTERACTABLES/DrinkDispenser/dd_left/CMD icons/check2"
-@onready var dd_left_check2 = $"INTERACTABLES/DrinkDispenser/dd_left/CMD icons/check1"
-@onready var dd_right_check1 = $"INTERACTABLES/DrinkDispenser/dd_right/CMD icons/check2"
-@onready var dd_right_check2 = $"INTERACTABLES/DrinkDispenser/dd_right/CMD icons/check1"
-@onready var ms_left_check1 = $"INTERACTABLES/MeatSource1/Ms1/CMD icons/check2"
-@onready var ms_left_check2 = $"INTERACTABLES/MeatSource1/Ms1/CMD icons/check1"
-@onready var ms_right_check1 = $"INTERACTABLES/MeatSource2/Ms2/CMD icons/check2"
-@onready var ms_right_check2 = $"INTERACTABLES/MeatSource2/Ms2/CMD icons/check1"
-@onready var fs_1_check1 = $"INTERACTABLES/Freezer/fs_1/CMD icons/check2"
-@onready var fs_1_check2 = $"INTERACTABLES/Freezer/fs_1/CMD icons/check1"
-@onready var fs_2_check1 = $"INTERACTABLES/Freezer/fs_2/CMD icons/check2"
-@onready var fs_2_check2 = $"INTERACTABLES/Freezer/fs_2/CMD icons/check1"
-@onready var s_left_check1 = $"INTERACTABLES/Stove/s_left/CMD icons/check2"
-@onready var s_left_check2 = $"INTERACTABLES/Stove/s_left/CMD icons/check1"
-@onready var s_right_check1 = $"INTERACTABLES/Stove/s_right/CMD icons/check2"
-@onready var s_right_check2 = $"INTERACTABLES/Stove/s_right/CMD icons/check1"
-@onready var ts_1_check1 = $"INTERACTABLES/TOPPING STATION/TsBoardCheese/CMD icons/check2"
-@onready var ts_1_check2 = $"INTERACTABLES/TOPPING STATION/TsBoardCheese/CMD icons/check1"
-@onready var ts_2_check1 = $"INTERACTABLES/TOPPING STATION/TsBoardBacon/CMD icons/check2"
-@onready var ts_2_check2 = $"INTERACTABLES/TOPPING STATION/TsBoardBacon/CMD icons/check1"
-@onready var ts_3_check1 = $"INTERACTABLES/TOPPING STATION/TsBoardLettuce/CMD icons/check2"
-@onready var ts_3_check2 = $"INTERACTABLES/TOPPING STATION/TsBoardLettuce/CMD icons/check1"
-@onready var f_1_check1 = $"INTERACTABLES/Fryer/f_1/CMD icons/check2"
-@onready var f_1_check2 = $"INTERACTABLES/Fryer/f_1/CMD icons/check1"
-@onready var f_2_check1 = $"INTERACTABLES/Fryer/f_2/CMD icons/check2"
-@onready var f_2_check2 = $"INTERACTABLES/Fryer/f_2/CMD icons/check1"
-@onready var t_1_check1 = $"INTERACTABLES/HelperTray1/HelperTray/CMD icons/check2"
-@onready var t_1_check2 = $"INTERACTABLES/HelperTray1/HelperTray/CMD icons/check1"
-@onready var t_2_check1 = $"INTERACTABLES/HelperTray2/HelperTray/CMD icons/check2"
-@onready var t_2_check2 = $"INTERACTABLES/HelperTray2/HelperTray/CMD icons/check1"
-@onready var bob_check1 = $"INTERACTABLES/BOB/CMD icons/check2"
-@onready var bob_check2 = $"INTERACTABLES/BOB/CMD icons/check1"
-@onready var o_1_check1 = $"INTERACTABLES/o_1/CMD icons/check1"
-@onready var o_2_check1 = $"INTERACTABLES/o_2/CMD icons/check1"
-@onready var o_3_check1 = $"INTERACTABLES/o_3/CMD icons/check1"
-@onready var o_4_check1 = $"INTERACTABLES/o_4/CMD icons/check1"
+@onready var timer_manager = $Timer
 @onready var cook_avatar = $Player
 @onready var cmds_node = $CMDs
 @onready var round_camera = $RoundCamera
 @onready var camera_animation_player = $CameraAnimationPlayer
 @onready var dd = $INTERACTABLES/DrinkDispenser
 @onready var freezer = $INTERACTABLES/Freezer
-@onready var dd_left = $INTERACTABLES/DrinkDispenser/dd_left
-@onready var dd_right = $INTERACTABLES/DrinkDispenser/dd_right
 #endregion
 
 func _ready():
-	# Initialize the checkmarks dictionary
-	checkmarks = {
-		"dd_left": [dd_left_check1, dd_left_check2],
-		"dd_right": [dd_right_check1, dd_right_check2],
-		"ms_left": [ms_left_check1, ms_left_check2],
-		"ms_right": [ms_right_check1, ms_right_check2],
-		"fs_1": [fs_1_check1, fs_1_check2],
-		"fs_2": [fs_2_check1, fs_2_check2],
-		"s_left": [s_left_check1, s_left_check2],
-		"s_right": [s_right_check1, s_right_check2],
-		"ts_1": [ts_1_check1, ts_1_check2],
-		"ts_2": [ts_2_check1, ts_2_check2],
-		"ts_3": [ts_3_check1, ts_3_check2],
-		"f_1": [f_1_check1, f_1_check2],
-		"f_2": [f_2_check1, f_2_check2],
-		"t_1": [t_1_check1, t_1_check2],
-		"t_2": [t_2_check1, t_2_check2],
-		"bob": [bob_check1, bob_check2],
-		"o_1": [o_1_check1],
-		"o_2": [o_2_check1],
-		"o_3": [o_3_check1],
-		"o_4": [o_4_check1]
-	}
+	timer_manager.connect("timer_expired", Callable(self, "_on_timer_expired"))
+	
+	i_node["dd_left"] = $INTERACTABLES/DrinkDispenser/dd_left
+	i_node["dd_right"] = $INTERACTABLES/DrinkDispenser/dd_right
+	i_node["ms_left"] = $INTERACTABLES/MeatSource1
+	i_node["ms_right"] = $INTERACTABLES/MeatSource2
+	i_node["s_left"] = $INTERACTABLES/Stove/s_left
+	i_node["s_right"] = $INTERACTABLES/Stove/s_right
+	i_node["ts_1"] = $"INTERACTABLES/TOPPING STATIONS/topping_station_1"
+	i_node["ts_2"] = $"INTERACTABLES/TOPPING STATIONS/topping_station_2"
+	i_node["ts_3"] = $"INTERACTABLES/TOPPING STATIONS/topping_station_3"
+	i_node["f_1"] = $INTERACTABLES/Fryer/f_1
+	i_node["f_2"] = $INTERACTABLES/Fryer/f_2
+	i_node["fs_1"] = $INTERACTABLES/Freezer/fs_1
+	i_node["fs_2"] = $INTERACTABLES/Freezer/fs_2
+	i_node["t_1"] = $INTERACTABLES/HelperTray1
+	i_node["t_2"] = $INTERACTABLES/HelperTray2
+	i_node["bob"] = $INTERACTABLES/BOB
+	i_node["o_1"] = $INTERACTABLES/o_1
+	i_node["o_2"] = $INTERACTABLES/o_2
+	i_node["o_3"] = $INTERACTABLES/o_3
+	i_node["o_4"] = $INTERACTABLES/o_4
 	
 	
 	interactables_accepts["dd_left"] = []
@@ -242,6 +175,10 @@ func _ready():
 	stored_objects["t_1"] = []
 	stored_objects["t_2"] = []
 	stored_objects["bob"] = []
+	stored_objects["o_1"] = []
+	stored_objects["o_2"] = []
+	stored_objects["o_3"] = []
+	stored_objects["o_4"] = []
 	
 	stored_objects["player_ph"] = []
 	stored_objects["player_oh"] = []
@@ -256,8 +193,8 @@ func start_camera_pan():
 		print("Camera and AnimationPlayer not found")
 
 
-func s_state_decision(cname, targ_reached, p_obj, i_obj):
-	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
+func s_state_decision(cname, targ_reached):
+	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap", "timer"
 	var p_state = player_state
 	var i_state = interactable_state[cname]
 	var state = p_state+i_state
@@ -269,65 +206,47 @@ func s_state_decision(cname, targ_reached, p_obj, i_obj):
 	print("decision state before: ",state)
 						##########################################################
 						# player  | player | player || object    | object | object #
-	if state:			# enabled | PH     | OH     || uncooked  | active | laden  #
+	if state:			# enabled | PH     | OH     || cooked    | active | laden  #
 			###########################################################################
 		# p:both i:idle
-		if state ==	 	 [1,       1,       1,         1,        0,       0]:
+		if state ==	 	 [1,       1,       1,         0,        0,       0]:
 			if targ_reached:
 				if stored_objects["player_ph"] in interactables_accepts["s_left"]:
 					print("p:both i:idle -> i:active laden")
 					p_state = [1,0,1]
-					i_state = [1,1,1]
+					i_state = [0,1,1]
 					action = "ph_down"
 				elif stored_objects["player_oh"] in interactables_accepts["s_left"]:
 					print("p:both i:idle -> i:active laden")
 					p_state = [1,1,0]
-					i_state = [1,1,1]
+					i_state = [0,1,1]
 					action = "oh_down"
-			else:
-				pass
-				# ERROR SOUND?
-				print("p:full i:idle -> i:active")
-				p_skip = true
-				i_skip = true
 			
 			
 		# p:oh i:idle
-		elif state ==	 [1,       0,       1,         1,        0,       0]:
+		elif state ==	 [1,       0,       1,         0,        0,       0]:
 			if targ_reached:
 				if stored_objects["player_oh"] in interactables_accepts["s_left"]:
 					print("p:oh i:idle -> i:active laden")
 					p_state = [1,0,0]
-					i_state = [1,1,1]
+					i_state = [0,1,1]
 					action = "oh_down"
 					print("targ_reached = ", targ_reached)
-			else:
-				pass
-				# ERROR SOUND?
-				print("p:full i:idle -> i:active")
-				p_skip = true
-				i_skip = true
 			
 			
 		# p:ph i:idle
-		elif state == 	 [1,       1,       0,         1,        0,       0]:
+		elif state == 	 [1,       1,       0,         0,        0,       0]:
 			if targ_reached:
 				print("targ_reached = ", targ_reached)
 				print("ph = ", stored_objects["player_ph"], "accepts: ", interactables_accepts["s_left"])
 				if stored_objects["player_ph"][0] in interactables_accepts["s_left"]:
 					print("p:ph i:idle -> i:active laden")
 					p_state = [1,0,0]
-					i_state = [1,1,1]
+					i_state = [0,1,1]
 					action = "ph_down"
-			else:
-				pass
-				# ERROR SOUND?
-				print("p:full i:idle -> i:active")
-				p_skip = true
-				i_skip = true
 			
 		# p:free i:idle
-		elif state == 	 [1,       0,       0,         1,        0,       0]:
+		elif state == 	 [1,       0,       0,         0,        0,       0]:
 			if targ_reached:
 				print("p:free i:idle -> same")
 				p_skip = true
@@ -336,104 +255,114 @@ func s_state_decision(cname, targ_reached, p_obj, i_obj):
 			###########################################################################
 		
 		# p:both i:active and laden
-		elif state == 	 [1,       1,       1,         1,        1,       1]:
+		elif state == 	 [1,       1,       1,         0,        1,       1]:
 			if targ_reached:
 				print("p:both i:active and laden -> same")
 				p_skip = true
 				i_skip = true
 				print("targ_reached = ", targ_reached)
 			else:
+				action = "timer"
 				p_skip = true
 				i_state = [0,1,1]
 			
 		# p:oh i:active and laden
-		elif state == 	 [1,       0,       1,         1,        1,       1]:
+		elif state == 	 [1,       0,       1,         0,        1,       1]:
 			if targ_reached:
 				print("p:oh i:active and laden -> p:both i:idle")
 				p_state = [1,1,1]
-				i_state = [1,0,0]
+				i_state = [0,0,0]
 				action = "ph_up"
 				print("targ_reached = ", targ_reached)
 			else:
+				action = "timer"
 				p_skip = true
-				i_state = [0,1,1]
+				i_state = [1,1,1]
 			
 		# p:ph i:active and laden
-		elif state == 	 [1,       1,       0,         1,        1,       1]:
+		elif state == 	 [1,       1,       0,         0,        1,       1]:
 			if targ_reached:
 				print("p:ph i:active and laden -> p:both i:idle")
 				p_state = [1,1,1]
-				i_state = [1,0,0]
+				i_state = [0,0,0]
 				action = "oh_up"
 				print("targ_reached = ", targ_reached)
 			else:
+				action = "timer"
 				p_skip = true
 				i_state = [0,1,1]
 			
 		# p:free i:active and laden
-		elif state == 	 [1,       0,       0,         1,        1,       1]:
+		elif state == 	 [1,       0,       0,         0,        1,       1]:
 			if targ_reached:
 				print("p:free i:active and laden -> p:ph i:idle")
 				p_state = [1,1,0]
-				i_state = [1,0,0]
+				i_state = [0,0,0]
 				action = "ph_up"
 				print("targ_reached = ", targ_reached)
 			else:
+				# _dd_active_sounds()
+				timer_manager.start_timer("s_left_cooked")
+				action = "timer"
 				p_skip = true
 				i_state = [0,1,1]
 			
 		# p:full i:cooked
-		elif state == 	 [1,       1,       1,         0,        1,       1]:
+		elif state == 	 [1,       1,       1,         1,        1,       1]:
 			if targ_reached:
 				print("p:full i:cooked -> same")
 				p_skip = true
 				i_skip = true
 				print("targ_reached = ", targ_reached)
 			else:
+				action = "timer2"
 				p_skip = true
-				i_state = [1,0,1]
+				i_state = [0,0,1]
 				print("i:cooked -> i:burnt")
 			
 		# p:oh i:cooked
-		elif state == 	 [1,       0,       1,         0,        1,       1]:
+		elif state == 	 [1,       0,       1,         1,        1,       1]:
 			if targ_reached:
 				print("p:oh i:cooked -> p:full i:idle")
 				p_state = [1,1,1]
-				i_state = [1,0,0]
+				i_state = [0,0,0]
 				print("targ_reached = ", targ_reached)
 			else:
+				action = "timer2"
 				p_skip = true
-				i_state = [1,0,1]
+				i_state = [0,0,1]
 				print("i:cooked -> i:burnt")
 			
 		# p:ph i:cooked
-		elif state == 	 [1,       1,       0,         0,        1,       1]:
+		elif state == 	 [1,       1,       0,         1,        1,       1]:
 			if targ_reached:
 				print("p:ph i:cooked -> p:full i:idle")
 				p_state = [1,1,1]
-				i_state = [1,0,0]
+				i_state = [0,0,0]
 				print("targ_reached = ", targ_reached)
 			else:
+				action = "timer2"
 				p_skip = true
-				i_state = [1,0,1]
+				i_state = [0,0,1]
 				print("i:cooked -> i:burnt")
 				
 		# p:free i:cooked
-		elif state == 	 [1,       0,       0,         0,        1,       1]:
+		elif state == 	 [1,       0,       0,         1,        1,       1]:
 			if targ_reached:
 				print("p:free i:laden -> p:ph i:idle")
 				p_state = [1,1,0]
-				i_state = [1,0,0]
+				i_state = [0,0,0]
 				action = "ph_up"
 				print("targ_reached = ", targ_reached)
 			else:
+				action = "timer2"
 				p_skip = true
-				i_state = [1,0,1]
+				i_state = [0,0,1]
 				print("i:cooked -> i:burnt")
 			
 			
 		# p:full i:burnt
-		elif state ==	 [1,       1,       1,         1,        0,       1]:
+		elif state ==	 [1,       1,       1,         0,        0,       1]:
 			if targ_reached:
 				print("p:full i:burnt -> same")
 				p_skip = true
@@ -441,30 +370,33 @@ func s_state_decision(cname, targ_reached, p_obj, i_obj):
 				print("targ_reached = ", targ_reached)
 			
 		# p:oh i:burnt
-		elif state ==	 [1,       0,       1,         1,        0,       1]:
+		elif state ==	 [1,       0,       1,         0,        0,       1]:
 			if targ_reached:
 				print("p:oh i:burnt -> p:full i:idle")
 				p_state = [1,1,1]
-				i_state = [1,0,0]
+				i_state = [0,0,0]
+				action = "ph_up"
 				print("targ_reached = ", targ_reached)
 				
 		# p:ph i:burnt
-		elif state ==	 [1,       1,       0,         1,        0,       1]:
+		elif state ==	 [1,       1,       0,         0,        0,       1]:
 			if targ_reached:
 				print("p:ph i:burnt -> p:full i:idle")
 				p_state = [1,1,1]
-				i_state = [1,0,0]
+				i_state = [0,0,0]
+				action = "oh_up"
 				print("targ_reached = ", targ_reached)
 		# p:free i:burnt
-		elif state ==	 [1,       1,       0,         1,        0,       1]:
+		elif state ==	 [1,       0,       0,         0,        0,       1]:
 			if targ_reached:
 				print("p:free i:burnt -> p:ph i:idle")
 				p_state = [1,1,0]
-				i_state = [1,0,0]
+				i_state = [0,0,0]
+				action = "ph_up"
 				print("targ_reached = ", targ_reached)
 		###########################################################################		
 		else:																 # edge cases
-			print("s decision tree edge case")
+			print("s decision tree error case")
 	
 	if (p_skip == false):
 		player_state = p_state
@@ -473,20 +405,18 @@ func s_state_decision(cname, targ_reached, p_obj, i_obj):
 	if p_skip==true and i_skip==true:
 		pass
 	else:
-		state_change("player", player_state, p_obj)
-		state_change(cname, interactable_state[cname], i_obj)
+		state_change("player", player_state)
+		state_change(cname, interactable_state[cname])
 	print("decision state after: ",player_state + interactable_state[cname])
 	return action
 
-func dd_state_decision(cname, targ_reached, p_obj, i_obj):
-	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
+func dd_state_decision(cname, targ_reached):
+	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap", "activate"
 	var p_state = player_state
 	var i_state = interactable_state[cname]
 	var state = p_state+i_state
 	var p_skip = false
 	var i_skip = false
-	var p_obj
-	var i_obj
 	print("-----------------------------------------")
 	print("COMMAND: ",cname)
 	print("decision state before: ",state)
@@ -496,27 +426,39 @@ func dd_state_decision(cname, targ_reached, p_obj, i_obj):
 			###########################################################################
 		if state ==	 	 [1,       1,       1,         1,        0,       0]: # idle
 			if targ_reached:
+				timer_manager.start_timer(cname)
+				_dd_active_sounds()
 				print("p:full i:idle -> i:active")
+				action = "activate"
 				p_state = [1,1,1]
 				i_state = [1,1,0]
 			print("targ_reached = ", targ_reached)
 			
 		elif state ==	 [1,       0,       1,         1,        0,       0]:
 			if targ_reached:
+				timer_manager.start_timer(cname)
+				_dd_active_sounds()
 				print("p:oh i:idle -> i:active")
+				action = "activate"
 				p_state = [1,0,1]
 				i_state = [1,1,0]
 			print("targ_reached = ", targ_reached)
 			
 		elif state == 	 [1,       1,       0,         1,        0,       0]:
 			if targ_reached:
+				timer_manager.start_timer(cname)
+				_dd_active_sounds()
 				print("p:ph i:idle -> i:active")
+				action = "activate"
 				p_state = [1,1,0]
 				i_state = [1,1,0]
 			print("targ_reached = ", targ_reached)
 		elif state == 	 [1,       0,       0,         1,        0,       0]:
 			if targ_reached:
+				timer_manager.start_timer(cname)
+				_dd_active_sounds()
 				print("p:empty i:idle -> i:active")
+				action = "activate"
 				p_state = [1,0,0]
 				i_state = [1,1,0]
 			print("targ_reached = ", targ_reached)
@@ -555,17 +497,24 @@ func dd_state_decision(cname, targ_reached, p_obj, i_obj):
 				print("p:full i:laden -> same")
 				p_skip = true
 				i_skip = true
+				print("targ_reached = ", targ_reached)
 			else:
+				action = "timer"
+				_dd_inactive_sounds()
 				p_skip = true
 				i_state = [1,0,1]
-			print("targ_reached = ", targ_reached)
 		elif state == 	 [1,       0,       1,         1,        0,       1]:
 			if targ_reached:
 				print("p:oh i:laden -> p:full i:idle")
 				p_state = [1,1,1]
 				i_state = [1,0,0]
 				action = "ph_up"
-			print("targ_reached = ", targ_reached)
+				print("targ_reached = ", targ_reached)
+			else:
+				action = "timer"
+				_dd_inactive_sounds()
+				p_skip = true
+				i_state = [1,0,1]
 			
 		elif state ==	 [1,       1,       0,         1,        0,       1]:
 			if targ_reached:
@@ -573,7 +522,12 @@ func dd_state_decision(cname, targ_reached, p_obj, i_obj):
 				p_state = [1,1,1]
 				i_state = [1,0,0]
 				action = "oh_up"
-			print("targ_reached = ", targ_reached)
+				print("targ_reached = ", targ_reached)
+			else:
+				action = "timer"
+				_dd_inactive_sounds()
+				p_skip = true
+				i_state = [1,0,1]
 			
 		elif state ==	 [1,       0,       0,         1,        0,       1]:
 			if targ_reached:
@@ -581,7 +535,12 @@ func dd_state_decision(cname, targ_reached, p_obj, i_obj):
 				p_state = [1,1,0]
 				i_state = [1,0,0]
 				action = "ph_up"
-			print("targ_reached = ", targ_reached)
+				print("targ_reached = ", targ_reached)
+			else:
+				action = "timer"
+				_dd_inactive_sounds()
+				p_skip = true
+				i_state = [1,0,1]
 		###########################################################################		
 		else:																 # edge cases
 			print("decision tree edge case")
@@ -593,12 +552,12 @@ func dd_state_decision(cname, targ_reached, p_obj, i_obj):
 	if p_skip==true and i_skip==true:
 		pass
 	else:
-		state_change("player", player_state, p_obj)
-		state_change(cname, interactable_state[cname], i_obj)
+		state_change("player", player_state)
+		state_change(cname, interactable_state[cname])
 	print("decision state after: ",player_state + interactable_state[cname])
 	return action
 	
-func ms_state_decision(cname, targ_reached, p_obj, i_obj):
+func ms_state_decision(cname, targ_reached):
 	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
 	var p_state = player_state
 	var i_state = interactable_state[cname]
@@ -652,8 +611,8 @@ func ms_state_decision(cname, targ_reached, p_obj, i_obj):
 	if p_skip==true and i_skip==true:
 		pass
 	else:
-		state_change("player", player_state, p_obj)
-		state_change(cname, interactable_state[cname], i_obj)
+		state_change("player", player_state)
+		state_change(cname, interactable_state[cname])
 	print("a: ",player_state + interactable_state[cname])
 	return action	
 			
@@ -661,124 +620,125 @@ func update_states(cname, targ_reached):
 	var action
 	
 ##### dd_left	
-	if cname == "dd_left":
+	if (cname == "dd_left") or (cname == "dd_right"):
 		action = dd_state_decision(cname, targ_reached)
-		# pick up oj
-		if action == "ph_up":
-			stored_objects["player_ph"] = [obj_orange_drink]
-			stored_objects[cname] = []
-			print("action is 1: ",stored_objects["player_ph"], action)
-			obj_change("player", stored_objects["player_ph"], action)
-			obj_change(cname, stored_objects[cname], action)
-		elif action == "oh_up":
-			stored_objects["player_oh"] = [obj_orange_drink]
-			stored_objects[cname] = []
-			print("action is 1: ",stored_objects["player_oh"], action)
-			obj_change("player", stored_objects["player_oh"], action)
-			obj_change(cname, stored_objects[cname], action)
-##### dd_right	
-	elif cname == "dd_right":
-		action = dd_state_decision(cname, targ_reached)
-		# pick up cola
-		if action == "ph_up":
-			stored_objects["player_ph"] = [obj_cola_drink]
-			stored_objects[cname] = []
-			print("action is 1: ",stored_objects["player_ph"], action)
-			obj_change("player", stored_objects["player_ph"], action)
-			obj_change(cname, stored_objects[cname], action)
-		elif action == "oh_up":
-			stored_objects["player_oh"] = [obj_cola_drink]
-			stored_objects[cname] = []
-			print("action is 1: ",stored_objects["player_oh"], action)
-			obj_change("player", stored_objects["player_oh"], action)
-			obj_change(cname, stored_objects[cname], action)
+		var drink
+		if cname == "dd_left":
+			drink = obj_orange_drink
+		else:
+			drink = obj_cola_drink
+		
+		print("action is ",action)
+		
+		# pick up
+		match action:
+			"activate":
+				stored_objects[cname] = [obj_empty_drink]
+			"ph_up":
+				stored_objects["player_ph"] = stored_objects[cname]
+				stored_objects[cname] = []
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_up":
+				stored_objects["player_oh"] = stored_objects[cname]
+				stored_objects[cname] = []
+				obj_change("player", stored_objects["player_oh"], action)
+			"timer":
+				stored_objects[cname] = [drink]
+		obj_change(cname, stored_objects[cname], action)
+
 ##### ms_left	
-	elif cname == "ms_left":
+	elif (cname == "ms_left") or (cname == "ms_right"):
 		action = ms_state_decision(cname, targ_reached)
-		print("ms_left confirmed. action: ", action)
-		if action == "ph_up":
-			stored_objects["player_ph"] = [obj_raw_patty_1]
-			print("action is ph_up: ",stored_objects["player_ph"], action)
-			obj_change("player", stored_objects["player_ph"], action)
-			obj_change(cname, stored_objects[cname], action)
-		elif action == "oh_up":
-			stored_objects["player_oh"] = [obj_raw_patty_1]
-			stored_objects[cname] = []
-			print("action is ph_up: ",stored_objects["player_oh"], action)
-			obj_change("player", stored_objects["player_oh"], action)
-			obj_change(cname, stored_objects[cname], action)
-##### ms_right
-	elif cname == "ms_right":
-		action = ms_state_decision(cname, targ_reached)
-		print("ms_right confirmed. action: ", action)
-		if action == "ph_up":
-			stored_objects["player_ph"] = [obj_raw_patty_2]
-			print("action is ph_up: ",stored_objects["player_ph"], action)
-			obj_change("player", stored_objects["player_ph"], action)
-			obj_change(cname, stored_objects[cname], action)
-		elif action == "oh_up":
-			stored_objects["player_oh"] = [obj_raw_patty_2]
-			stored_objects[cname] = []
-			print("action is ph_up: ",stored_objects["player_oh"], action)
-			obj_change("player", stored_objects["player_oh"], action)
-			obj_change(cname, stored_objects[cname], action)
+		var raw_patty
+		if cname == "ms_left":
+			raw_patty = obj_raw_patty_1
+		else:
+			raw_patty = obj_raw_patty_2
+
+		print("action is ",action)
+	
+		# pick up
+		match action:
+			"ph_up":
+				stored_objects["player_ph"] = [raw_patty]
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_up":
+				stored_objects["player_oh"] = [raw_patty]
+				stored_objects[cname] = []
+				obj_change("player", stored_objects["player_oh"], action)
+		obj_change(cname, stored_objects[cname], action)
+
 ##### s_left
-	elif cname == "s_left":
+	elif (cname == "s_left") or (cname == "s_right"):
 		action = s_state_decision(cname, targ_reached)
-		if action == "ph_up_raw":
-			stored_objects["player_ph"] = [obj_raw_patty_1]
-			print("action is ph_up_raw: ",stored_objects["player_ph"], action)
-			obj_change("player", stored_objects["player_ph"], action)
-			obj_change(cname, stored_objects[cname], action)
-		elif action == "oh_up_raw":
-			stored_objects["player_oh"] = [obj_raw_patty_1]
-			stored_objects[cname] = []
-			print("action is oh_up_raw: ",stored_objects["player_oh"], action)
-			obj_change("player", stored_objects["player_oh"], action)
-			obj_change(cname, stored_objects[cname], action)
-		elif action == "ph_down":
-			stored_objects[cname] = stored_objects["player_ph"]
-			stored_objects["player_ph"] = []
-			print("action is ph_down: ",stored_objects["player_ph"], action)
-			obj_change("player", stored_objects["player_ph"], action)
-			obj_change(cname, stored_objects[cname], action)
-		elif action == "oh_down":
-			stored_objects[cname] = stored_objects["player_oh"]
-			stored_objects["player_oh"] = []
-			print("action is oh_down: ",stored_objects["player_oh"], action)
-			obj_change("player", stored_objects["player_oh"], action)
-			obj_change(cname, stored_objects[cname], action)
+		
+		print("action is ", action)
+		
+		# pick up
+		match action:
+			"ph_up":
+				stored_objects["player_ph"] = stored_objects[cname]
+				stored_objects[cname] = []
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_up":
+				stored_objects["player_oh"] = [obj_raw_patty_1]
+				stored_objects[cname] = []
+				obj_change("player", stored_objects["player_oh"], action)
+			"ph_down":
+				stored_objects[cname] = stored_objects["player_ph"]
+				stored_objects["player_ph"] = []
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_down":
+				stored_objects[cname] = stored_objects["player_oh"]
+				stored_objects["player_oh"] = []
+				obj_change("player", stored_objects["player_oh"], action)
+		obj_change(cname, stored_objects[cname], action)
 	else:
 		print("cname not found: ", cname)
 
 # stored objects
-func add_item_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
-	var y_offset = 0  # Initialize y-offset for stacking
-	var base_z_index = 100  # Set a base z_index
+func update_i_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
+	# Remove all existing Sprite2D children from target_node
+	for child in target_node.get_children():
+		if child is Sprite2D:
+			child.queue_free()
 
+	# Return early if the array is empty
+	if item_texture_paths.size() == 0:
+		return
+
+	var y_offset = 0  # Initialize y-offset for stacking
+	var base_z_index = target_node.z_index  # Set a base z_index
+
+	# Iterate through texture paths and create new sprites
 	for texture_path in item_texture_paths:
-		var item_sprite = Sprite2D.new()  # Create a new Sprite2D node for each item
-		item_sprite.texture = load(texture_path)  # Load the texture from the path
+		var item_sprite = Sprite2D.new()
+		item_sprite.texture = load(texture_path)
 		
-		# Set the scale of each sprite to 0.5 for both x and y axes
+		# Set scale
 		item_sprite.scale = Vector2(0.5, 0.5)
 
-		# Ensure each sprite has a higher z_index than the previous one
-		item_sprite.z_index = base_z_index  
+		# Set z_index of each array obj
+		item_sprite.z_index = 0
 		base_z_index += 1
 		
-		item_sprite.position = start_position + Vector2(0, y_offset)  # Set the position with offset
-		target_node.add_child(item_sprite)  # Add the sprite as a child of the specified node
+		item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
+		target_node.add_child(item_sprite)  # Add sprite to parent
 
 		# Update y-offset to stack the next sprite on top of the previous one
-		y_offset -= item_sprite.texture.get_size().y / 2 * item_sprite.scale.y  # Adjust based on scaled height
+		y_offset -= item_sprite.texture.get_size().y / 2 * item_sprite.scale.y  # Adjust scaled height
+
+
 
 
 func obj_change(sname, obj_array, action):
+	print("sname: ", sname)
+	if sname != "player":
+		update_i_sprites(i_node[sname], obj_array, Vector2(0,0))
 	obj_changed.emit(sname, obj_array, action)
 
-func state_change(sname, state_array, obj):
-	state_changed.emit(sname, state_array, obj)
+func state_change(sname, state_array):
+	state_changed.emit(sname, state_array)
 
 func _on_player_reached_interactable(target: Vector2):
 	# Parameter is where the player's last CMD was.
@@ -793,33 +753,17 @@ func _on_player_reached_interactable(target: Vector2):
 	var targ_reached = true
 	update_states(cmd_name,targ_reached)
 	cmd_count_decrement(cmd_name)
-	manage_cmd_icons(cmd_name)
 	emit_signal(cmd_name)
-	
-# Command icon visibility management
-func manage_cmd_icons(cname):
-	var count = cmd_count[cname]
-	if cname in checkmarks:
-		var checks = checkmarks[cname]
-		if checks.size() == 2:
-			checks[0].visible = count >= 1
-			checks[1].visible = count >= 2
-		elif checks.size() == 1:
-			checks[0].visible = count >= 1
-	else:
-		print("ERROR - manage_cmd_vis: unknown command ", cname)
 
 # Tell avatar where to go
 func _on_player_where(pname, pos):
 	if (pname == "o_1") or (pname == "o_2") or (pname == "o_3") or (pname == "o_4"):
 		var chosen_cmd = cmd_seek(pname, pos)
 		cmd_count_increment(pname)
-		manage_cmd_icons(pname)
 		go_here.emit(chosen_cmd)
 	elif cmd_count[pname] < cmd_count_max[pname]:
 		var chosen_cmd = cmd_seek(pname, pos)
 		cmd_count_increment(pname)
-		manage_cmd_icons(pname)
 		go_here.emit(chosen_cmd)
 
 # Find shortest distance coordinate
@@ -864,6 +808,7 @@ func cmd_count_increment(cciname):
 	else:
 		cmd_count[cciname] += 1
 
+# Update global player state array
 func _on_player_state_changed(state_array_p):
 	player_state = state_array_p
 
@@ -873,9 +818,45 @@ func _on_interactables_state_changed(cname, state_array_i):
 func _on_timer_timer_expired(timer_id: String):
 	if (timer_id == "dd_left") or (timer_id == "dd_right"):
 		interactable_state[timer_id] = [1,0,1]
+		# stove activating / raw laden
 	if (timer_id == "s_left") or (timer_id == "s_right"):
+		print("timer went off: ", timer_id)
+		interactable_state[timer_id] = [0,1,1]
+	if (timer_id == "s_left_cooked") or (timer_id == "s_right_cooked"):
 		print("timer went off: ", timer_id)
 		interactable_state[timer_id] = [1,1,1]
 	var targ_reached = false
 	update_states(timer_id, targ_reached)
-	#emit_signal(timer_id)
+
+
+func _dd_active_sounds():
+	var audio_player = $Sounds/dd_aud_1
+	var sound = load("res://Sounds/fire_2.mp3")
+	audio_player.stream = sound
+	audio_player.play()
+	var audio_player2 = $Sounds/dd_aud_2
+	var sound2 = load("res://Sounds/click_1.mp3")
+	audio_player2.stream = sound2
+	audio_player2.play()
+	
+func _dd_inactive_sounds():
+	var audio_player3 = $Sounds/dd_aud_3
+	var sound3 = load("res://Sounds/click_2.mp3")
+	audio_player3.stream = sound3
+	audio_player3.play()
+
+func _s_active_sounds():
+	var audio_player = $Sounds/s_aud_1
+	var sound = load("res://Sounds/fire_2.mp3")
+	audio_player.stream = sound
+	audio_player.play()
+	var audio_player2 = $Sounds/s_aud_2
+	var sound2 = load("res://Sounds/click_1.mp3")
+	audio_player2.stream = sound2
+	audio_player2.play()
+	
+func _s_inactive_sounds():
+	var audio_player3 = $Sounds/s_aud_3
+	var sound3 = load("res://Sounds/click_2.mp3")
+	audio_player3.stream = sound3
+	audio_player3.play()

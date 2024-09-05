@@ -16,6 +16,8 @@ func initialize_timers():
 	initial_durations["dd_right"] = 4.1
 	initial_durations["s_left"] = 4.1
 	initial_durations["s_right"] = 4.1
+	initial_durations["s_left_cooked"] = 6.0
+	initial_durations["s_right_cooked"] = 6.0
 	initial_durations["ts_1"] = 6.0
 	initial_durations["ts_2"] = 6.0
 	initial_durations["ts_3"] = 6.0
