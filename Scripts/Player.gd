@@ -62,7 +62,6 @@ var previous_player_state = []
 
 #endregion
 
-
 func _ready():
 	enabled = true
 	ph_laden = false
@@ -98,7 +97,6 @@ func get_state() -> Array:
 
 func enqueue_command(target: Vector2):
 	command_queue.append(target)
-
 
 #region *OnPress Movement Command Functions
 # returns:
@@ -220,7 +218,6 @@ func _physics_process(delta):
 		velocity = velocity.lerp(direction * speed, accel * delta)
 		move_and_slide()
 		
-
 func _on_nav_ag_navigation_finished():
 	finished = true
 
@@ -249,8 +246,6 @@ func z_sort():
 	freezer_fries.z_index = anim_legs.z_index + 1
 	freezer_fries_rings.z_index = anim_legs.z_index + 1
 	
-		
-
 func orientation_edge_case():
 # Reset edge case detection for each command
 	orientation_edge_case_r = false
@@ -413,11 +408,6 @@ func _avatar_both():
 	anim_right_arm_plate.visible = true
 
 func _on__burgers_state_changed(cmd, state_array):
-	if cmd == "ms_left":
-		_hand_sounds()
-	if (previous_player_state.size() == 3) and (state_array.size() == 3) and (cmd == "player"):
-		if (state_array[0] + state_array[1] + state_array[2]) != (previous_player_state[0] + previous_player_state[1] + previous_player_state[2]):
-			_hand_sounds()
 	if state_array and (cmd == "player"):
 		if state_array == [1,0,0]:
 			_avatar_unladen()
@@ -436,9 +426,3 @@ func _on__burgers_state_changed(cmd, state_array):
 		elif state_array == [0,1,1]:
 			_avatar_both()
 		previous_player_state = state_array
-
-func _hand_sounds():
-	var audio_player = $hand
-	var sound = load("res://Sounds/swing.wav")
-	audio_player.stream = sound
-	audio_player.play()

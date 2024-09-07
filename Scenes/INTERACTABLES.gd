@@ -46,7 +46,7 @@ func _ready():
 	states["fs_2"] = [0,0,0]
 	states["t_1"] = [1,0,0]
 	states["t_2"] = [1,0,0]
-	states["bob"] = [1,0,0]
+	states["bob"] = [1,0,1]
 	states["o_1"] = [1,0,0] # enabled when a customer is there... but for now...
 	states["o_2"] = [1,0,0]
 	states["o_3"] = [1,0,0]

@@ -92,6 +92,8 @@ var obj_cooked_patty_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_patty_1.pn
 var obj_cooked_patty_2 = "res://Sprites/Levels/01_Burgers/Food/cooked_patty_2.png"
 var obj_burnt_patty_1 = "res://Sprites/Levels/01_Burgers/Food/burnt_patty_1.png"
 var obj_burnt_patty_2 = "res://Sprites/Levels/01_Burgers/Food/burnt_patty_2.png"
+var obj_top_bun = "res://Sprites/Levels/01_Burgers/Food/top_bun.png"
+var obj_bot_bun = "res://Sprites/Levels/01_Burgers/Food/bot_bun.png"
 var obj_cheese_1 = ""
 var obj_bacon_1 = ""
 var obj_lettuce_1 = ""
@@ -119,6 +121,47 @@ var obj_empty_drink = "res://Sprites/Levels/01_Burgers/Food/cup_empty.png"
 func _ready():
 	timer_manager.connect("timer_expired", Callable(self, "_on_timer_expired"))
 	
+	interactables_accepts["dd_left"] = []
+	interactables_accepts["dd_right"] = []
+	interactables_accepts["ms_left"] = []
+	interactables_accepts["ms_right"] = []
+	interactables_accepts["s_left"] = [obj_raw_patty_1, obj_raw_patty_2]
+	interactables_accepts["s_right"] = [obj_raw_patty_1, obj_raw_patty_2]
+	interactables_accepts["ts_1"] = ["cooked_patty1", "cooked_patty2", "bacon_1", "lettuce_1"]
+	interactables_accepts["ts_2"] = ["cooked_patty1", "cooked_patty2", "cheese_1", "lettuce_1"]
+	interactables_accepts["ts_3"] = ["cooked_patty1", "cooked_patty2", "cheese_1", "bacon_1"]
+	interactables_accepts["f_1"] = ["frozen_fries_1", "frozen_fries_2", "frozen_rings_1", "frozen_rings_2"]
+	interactables_accepts["f_2"] = ["frozen_fries_1", "frozen_fries_2", "frozen_rings_1", "frozen_rings_2"]
+	interactables_accepts["fs_1"] = []
+	interactables_accepts["fs_2"] = []
+	interactables_accepts["t_1"] = "any"
+	interactables_accepts["t_2"] = "any"
+	
+	interactables_accepts["bob"] = [
+	[obj_cooked_patty_1],  # Just the patty
+	[obj_cooked_patty_1, obj_cheese_1],  # Patty with cheese
+	[obj_cooked_patty_1, obj_bacon_1],  # Patty with bacon
+	[obj_cooked_patty_1, obj_lettuce_1],  # Patty with lettuce
+	[obj_cooked_patty_1, obj_cheese_1, obj_bacon_1],  # Patty with cheese and bacon
+	[obj_cooked_patty_1, obj_cheese_1, obj_lettuce_1],  # Patty with cheese and lettuce
+	[obj_cooked_patty_1, obj_bacon_1, obj_lettuce_1],  # Patty with bacon and lettuce
+	[obj_cooked_patty_1, obj_cheese_1, obj_bacon_1, obj_lettuce_1],  # Patty with cheese, bacon, and lettuce
+
+	[obj_cooked_patty_2],  # Second patty
+	[obj_cooked_patty_2, obj_cheese_1],  # Patty 2 with cheese
+	[obj_cooked_patty_2, obj_bacon_1],  # Patty 2 with bacon
+	[obj_cooked_patty_2, obj_lettuce_1],  # Patty 2 with lettuce
+	[obj_cooked_patty_2, obj_cheese_1, obj_bacon_1],  # Patty 2 with cheese and bacon
+	[obj_cooked_patty_2, obj_cheese_1, obj_lettuce_1],  # Patty 2 with cheese and lettuce
+	[obj_cooked_patty_2, obj_bacon_1, obj_lettuce_1],  # Patty 2 with bacon and lettuce
+	[obj_cooked_patty_2, obj_cheese_1, obj_bacon_1, obj_lettuce_1]  # Patty 2 with cheese, bacon, and lettuce
+]
+	
+	interactables_accepts["o_1"] = order_1
+	interactables_accepts["o_2"] = order_2
+	interactables_accepts["o_3"] = order_3
+	interactables_accepts["o_4"] = order_4
+	
 	i_node["dd_left"] = $INTERACTABLES/DrinkDispenser/dd_left
 	i_node["dd_right"] = $INTERACTABLES/DrinkDispenser/dd_right
 	i_node["ms_left"] = $INTERACTABLES/MeatSource1
@@ -140,32 +183,10 @@ func _ready():
 	i_node["o_3"] = $INTERACTABLES/o_3
 	i_node["o_4"] = $INTERACTABLES/o_4
 	
-	
-	interactables_accepts["dd_left"] = []
-	interactables_accepts["dd_right"] = []
-	interactables_accepts["ms_left"] = []
-	interactables_accepts["ms_right"] = []
-	interactables_accepts["s_left"] = [obj_raw_patty_1, obj_raw_patty_2]
-	interactables_accepts["s_right"] = [obj_raw_patty_1, obj_raw_patty_2]
-	interactables_accepts["ts_1"] = ["cooked_patty1", "cooked_patty2", "bacon_1", "lettuce_1"]
-	interactables_accepts["ts_2"] = ["cooked_patty1", "cooked_patty2", "cheese_1", "lettuce_1"]
-	interactables_accepts["ts_3"] = ["cooked_patty1", "cooked_patty2", "cheese_1", "bacon_1"]
-	interactables_accepts["f_1"] = ["frozen_fries_1", "frozen_fries_2", "frozen_rings_1", "frozen_rings_2"]
-	interactables_accepts["f_2"] = ["frozen_fries_1", "frozen_fries_2", "frozen_rings_1", "frozen_rings_2"]
-	interactables_accepts["fs_1"] = []
-	interactables_accepts["fs_2"] = []
-	interactables_accepts["t_1"] = "any"
-	interactables_accepts["t_2"] = "any"
-	interactables_accepts["bob"] = []
-	interactables_accepts["o_1"] = order_1
-	interactables_accepts["o_2"] = order_2
-	interactables_accepts["o_3"] = order_3
-	interactables_accepts["o_4"] = order_4
-	
 	stored_objects["dd_left"] = []
 	stored_objects["dd_right"] = []
-	stored_objects["ms_left"] = []
-	stored_objects["ms_right"] = []
+	stored_objects["ms_left"] = [obj_raw_patty_1]
+	stored_objects["ms_right"] = [obj_raw_patty_2]
 	stored_objects["s_left"] = []
 	stored_objects["s_right"] = []
 	stored_objects["ts_1"] = []
@@ -177,7 +198,7 @@ func _ready():
 	stored_objects["fs_2"] = []
 	stored_objects["t_1"] = []
 	stored_objects["t_2"] = []
-	stored_objects["bob"] = []
+	stored_objects["bob"] = [obj_bot_bun, obj_top_bun]
 	stored_objects["o_1"] = []
 	stored_objects["o_2"] = []
 	stored_objects["o_3"] = []
@@ -194,7 +215,6 @@ func start_camera_pan():
 		camera_animation_player.play("PanCamera")
 	else:
 		print("Camera and AnimationPlayer not found")
-
 
 func s_state_decision(cname, targ_reached):
 	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap", "timer"
@@ -457,7 +477,6 @@ func dd_state_decision(cname, targ_reached):
 		if state ==	 	 [1,       1,       1,         1,        0,       0]: # idle
 			if targ_reached:
 				timer_manager.start_timer(cname)
-				_dd_active_sounds()
 				print("p:full i:idle -> i:active")
 				action = "activate"
 				p_state = [1,1,1]
@@ -466,7 +485,6 @@ func dd_state_decision(cname, targ_reached):
 		elif state ==	 [1,       0,       1,         1,        0,       0]:
 			if targ_reached:
 				timer_manager.start_timer(cname)
-				_dd_active_sounds()
 				print("p:oh i:idle -> i:active")
 				action = "activate"
 				p_state = [1,0,1]
@@ -475,7 +493,6 @@ func dd_state_decision(cname, targ_reached):
 		elif state == 	 [1,       1,       0,         1,        0,       0]:
 			if targ_reached:
 				timer_manager.start_timer(cname)
-				_dd_active_sounds()
 				print("p:ph i:idle -> i:active")
 				action = "activate"
 				p_state = [1,1,0]
@@ -483,7 +500,6 @@ func dd_state_decision(cname, targ_reached):
 		elif state == 	 [1,       0,       0,         1,        0,       0]:
 			if targ_reached:
 				timer_manager.start_timer(cname)
-				_dd_active_sounds()
 				print("p:empty i:idle -> i:active")
 				action = "activate"
 				p_state = [1,0,0]
@@ -521,7 +537,6 @@ func dd_state_decision(cname, targ_reached):
 				i_skip = true
 			else:
 				action = "timer"
-				_dd_inactive_sounds()
 				p_skip = true
 				i_state = [1,0,1]
 		elif state == 	 [1,       0,       1,         1,        0,       1]:
@@ -532,7 +547,6 @@ func dd_state_decision(cname, targ_reached):
 				action = "ph_up"
 			else:
 				action = "timer"
-				_dd_inactive_sounds()
 				p_skip = true
 				i_state = [1,0,1]
 			
@@ -544,7 +558,6 @@ func dd_state_decision(cname, targ_reached):
 				action = "oh_up"
 			else:
 				action = "timer"
-				_dd_inactive_sounds()
 				p_skip = true
 				i_state = [1,0,1]
 			
@@ -556,7 +569,6 @@ func dd_state_decision(cname, targ_reached):
 				action = "ph_up"
 			else:
 				action = "timer"
-				_dd_inactive_sounds()
 				p_skip = true
 				i_state = [1,0,1]
 		###########################################################################		
@@ -629,6 +641,76 @@ func ms_state_decision(cname, targ_reached):
 		state_change(cname, interactable_state[cname])
 	return action	
 			
+func bob_state_decision(cname, targ_reached):
+	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
+	var p_state = player_state
+	var i_state = interactable_state[cname]
+	var state = p_state+i_state
+	var p_skip = false
+	var i_skip = false
+	print("-----------------------------------------")
+	print("COMMAND: ",cname)
+	print("b: ",state)
+						##########################################################
+						# player  | player | player || object  | object | object #
+	if state:			# enabled | PH     | OH     || enabled | active | laden  #
+			###########################################################################
+		if state ==	 	 [1,       1,       1,         1,        0,       1]: # laden
+			if targ_reached:
+				print("p:full i:laden-> same")
+				if (stored_objects["player_ph"] in interactables_accepts["bob"]):
+					action = "ph_up"
+					p_state = [1,1,1]
+					i_skip = true
+				elif (stored_objects["player_oh"] in interactables_accepts["bob"]):
+					action = "oh_up"
+					p_state = [1,1,1]
+					i_skip = true
+				else:
+					p_skip = true
+					i_skip = true
+			
+		elif state ==	 [1,       0,       1,         1,        0,       1]:
+			if targ_reached:
+				if (stored_objects["player_oh"] in interactables_accepts["bob"]):
+					action = "oh_up"
+					p_state = [1,0,1]
+					i_skip = true
+				else:
+					p_skip = true
+					i_skip = true
+			
+		elif state == 	 [1,       1,       0,         1,        0,       1]:
+			if targ_reached:
+				if (stored_objects["player_ph"] in interactables_accepts["bob"]):
+					action = "ph_up"
+					p_state = [1,1,0]
+					i_skip = true
+				else:
+					print(stored_objects["player_ph"]," not in ", interactables_accepts["bob"])
+					p_skip = true
+					i_skip = true
+				
+				
+		elif state == 	 [1,       0,       0,         1,        0,       1]:
+			if targ_reached:
+				p_skip = true
+				i_skip = true
+		###########################################################################		
+		else:																 # edge cases
+			print("decision tree edge case")
+	
+	if (p_skip == false):
+		player_state = p_state
+	if (i_skip == false):
+		interactable_state[cname] = i_state
+	if p_skip==true and i_skip==true:
+		pass
+	else:
+		state_change("player", player_state)
+		state_change(cname, interactable_state[cname])
+	return action	
+	
 func update_states(cname, targ_reached):
 	var action
 	
@@ -646,16 +728,20 @@ func update_states(cname, targ_reached):
 		# pick up
 		match action:
 			"activate":
+				_dd_active_sounds()
 				stored_objects[cname] = [obj_empty_drink]
 			"ph_up":
+				_hand_sounds()
 				stored_objects["player_ph"] = stored_objects[cname]
 				stored_objects[cname] = []
 				obj_change("player", stored_objects["player_ph"], action)
 			"oh_up":
+				_hand_sounds()
 				stored_objects["player_oh"] = stored_objects[cname]
 				stored_objects[cname] = []
 				obj_change("player", stored_objects["player_oh"], action)
 			"timer":
+				_dd_inactive_sounds()
 				stored_objects[cname] = [drink]
 		obj_change(cname, stored_objects[cname], action)
 
@@ -673,11 +759,12 @@ func update_states(cname, targ_reached):
 		# pick up
 		match action:
 			"ph_up":
+				_hand_sounds()
 				stored_objects["player_ph"] = [raw_patty]
 				obj_change("player", stored_objects["player_ph"], action)
 			"oh_up":
+				_hand_sounds()
 				stored_objects["player_oh"] = [raw_patty]
-				stored_objects[cname] = []
 				obj_change("player", stored_objects["player_oh"], action)
 		obj_change(cname, stored_objects[cname], action)
 
@@ -690,10 +777,14 @@ func update_states(cname, targ_reached):
 		# pick up
 		match action:
 			"ph_up":
+				_s_stop_sounds()
+				_hand_sounds()
 				stored_objects["player_ph"] = stored_objects[cname]
 				stored_objects[cname] = []
 				obj_change("player", stored_objects["player_ph"], action)
 			"oh_up":
+				_s_stop_sounds()
+				_hand_sounds()
 				stored_objects["player_oh"] = stored_objects[cname]
 				stored_objects[cname] = []
 				obj_change("player", stored_objects["player_oh"], action)
@@ -710,29 +801,55 @@ func update_states(cname, targ_reached):
 				obj_change("player", stored_objects["player_oh"], action)
 				timer_manager.start_timer(cname)
 			"ph_swap":
+				_s_restart_sounds()
+				_hand_sounds()
 				var temp_obj_array = stored_objects[cname]
 				stored_objects[cname] = stored_objects["player_ph"]
 				stored_objects["player_ph"] = temp_obj_array
 				obj_change("player", stored_objects["player_ph"], action)
 				timer_manager.start_timer(cname)
 			"oh_swap":
+				_s_restart_sounds()
+				_hand_sounds()
 				var temp_obj_array = stored_objects[cname]
 				stored_objects[cname] = stored_objects["player_oh"]
 				stored_objects["player_oh"] = temp_obj_array
 				obj_change("player", stored_objects["player_oh"], action)
 				timer_manager.start_timer(cname)
 			"timer":
-				print("1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",stored_objects[cname])
 				_s_inactive_sounds()
 				stored_objects[cname] = patty_reference(stored_objects[cname][0])
 			"timer2":
-				print("2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",stored_objects[cname])
 				stored_objects[cname] = patty_reference(stored_objects[cname][0])
 				
 		obj_change(cname, stored_objects[cname], action)
+	
+##### bob
+	elif (cname == "bob"):
+		action = bob_state_decision(cname, targ_reached)
+		
+		print("action is ", action)
+		
+		# pick up
+		match action:
+			"ph_up":
+				_hand_sounds()
+				stored_objects["player_ph"] = bunify(stored_objects["player_ph"])
+				print("here ph ", stored_objects["player_ph"])
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_up":
+				_hand_sounds()
+				stored_objects["player_oh"] = bunify(stored_objects["player_oh"])
+				print("here oh ",stored_objects["player_oh"])
+				obj_change("player", stored_objects["player_oh"], action)
+	
 	else:
 		print("cname not found: ", cname)
 
+func bunify(input_array):
+	input_array.insert(0, obj_bot_bun)
+	input_array.append(obj_top_bun)
+	return input_array
 
 func patty_reference(input):
 	if input == obj_raw_patty_1:
@@ -746,7 +863,6 @@ func patty_reference(input):
 
 # stored objects
 func update_i_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
-	print("update_i_sprites: ", target_node, item_texture_paths)
 	# Remove all existing Sprite2D children from target_node
 	for child in target_node.get_children():
 		if child is Sprite2D:
@@ -778,7 +894,6 @@ func update_i_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		y_offset -= item_sprite.texture.get_size().y / 2 * item_sprite.scale.y  # Adjust scaled height
 
 func obj_change(sname, obj_array, action):
-	print("sname: ", sname)
 	if sname != "player":
 		update_i_sprites(i_node[sname], obj_array, Vector2(0,0))
 	obj_changed.emit(sname, obj_array, action)
@@ -864,17 +979,23 @@ func _on_interactables_state_changed(cname, state_array_i):
 func _on_timer_timer_expired(timer_id: String):
 	if (timer_id == "dd_left") or (timer_id == "dd_right"):
 		interactable_state[timer_id] = [1,0,1]
-		# stove activating / raw laden
+		
 	if (timer_id == "s_left") or (timer_id == "s_right"):
-		print("timer went off: ", timer_id, interactable_state[timer_id])
+		# stove activating / raw laden
 		if interactable_state[timer_id] == [0,1,1]:
-			print("3!!!!!!!!!!!!!!!!!!!!!!!!!!",stored_objects[timer_id])
 			interactable_state[timer_id] = [1,1,1]
 			timer_manager.start_timer(timer_id)
+		# stove activating / cooked laden
 		elif interactable_state[timer_id] == [1,1,1]:
 			interactable_state[timer_id] = [0,0,1]
 	var targ_reached = false
 	update_states(timer_id, targ_reached)
+
+func _hand_sounds():
+	var audio_player = $Sounds/hand
+	var sound = load("res://Sounds/swing.wav")
+	audio_player.stream = sound
+	audio_player.play()
 
 func _dd_active_sounds():
 	var audio_player = $Sounds/dd_aud_1
@@ -907,3 +1028,21 @@ func _s_inactive_sounds():
 	var sound3 = load("res://Sounds/click_2.mp3")
 	audio_player3.stream = sound3
 	audio_player3.play()
+
+func _s_stop_sounds():
+	var audio_player = $Sounds/s_aud_1
+	if audio_player.is_playing():
+		audio_player.stop()
+	var audio_player2 = $Sounds/s_aud_2
+	if audio_player2.is_playing():
+		audio_player2.stop()
+		
+func _s_restart_sounds():
+	var audio_player = $Sounds/s_aud_1
+	var sound = load("res://Sounds/fire_2.mp3")
+	audio_player.stream = sound
+	audio_player.play()
+	var audio_player2 = $Sounds/s_aud_2
+	var sound2 = load("res://Sounds/click_1.mp3")
+	audio_player2.stream = sound2
+	audio_player2.play()
