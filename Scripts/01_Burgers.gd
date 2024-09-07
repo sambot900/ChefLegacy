@@ -111,6 +111,7 @@ var obj_empty_drink = "res://Sprites/Levels/01_Burgers/Food/cup_empty.png"
 @onready var camera_animation_player = $CameraAnimationPlayer
 @onready var dd = $INTERACTABLES/DrinkDispenser
 @onready var freezer = $INTERACTABLES/Freezer
+@onready var player = $Player
 #endregion
 
 func _ready():
@@ -211,12 +212,12 @@ func s_state_decision(cname, targ_reached):
 		# p:both i:idle
 		if state ==	 	 [1,       1,       1,         0,        0,       0]:
 			if targ_reached:
-				if stored_objects["player_ph"] in interactables_accepts["s_left"]:
+				if stored_objects["player_ph"][0] in interactables_accepts["s_left"]:
 					print("p:both i:idle -> i:active laden")
 					p_state = [1,0,1]
 					i_state = [0,1,1]
 					action = "ph_down"
-				elif stored_objects["player_oh"] in interactables_accepts["s_left"]:
+				elif stored_objects["player_oh"][0] in interactables_accepts["s_left"]:
 					print("p:both i:idle -> i:active laden")
 					p_state = [1,1,0]
 					i_state = [0,1,1]
@@ -226,7 +227,7 @@ func s_state_decision(cname, targ_reached):
 		# p:oh i:idle
 		elif state ==	 [1,       0,       1,         0,        0,       0]:
 			if targ_reached:
-				if stored_objects["player_oh"] in interactables_accepts["s_left"]:
+				if stored_objects["player_oh"][0] in interactables_accepts["s_left"]:
 					print("p:oh i:idle -> i:active laden")
 					p_state = [1,0,0]
 					i_state = [0,1,1]
@@ -257,10 +258,21 @@ func s_state_decision(cname, targ_reached):
 		# p:both i:active and laden
 		elif state == 	 [1,       1,       1,         0,        1,       1]:
 			if targ_reached:
-				print("p:both i:active and laden -> same")
-				p_skip = true
-				i_skip = true
-				print("targ_reached = ", targ_reached)
+				if (stored_objects["player_ph"][0] in interactables_accepts["s_left"]) and stored_objects["player_ph"][0] != stored_objects[cname][0]:
+					print("p:both i:active and laden -> ph_swap")
+					action = "ph_swap"
+					p_state = [1,0,0]
+					i_state = [1,1,1]
+				elif (stored_objects["player_oh"][0] in interactables_accepts["s_left"]) and stored_objects["player_oh"][0] != stored_objects[cname][0]:
+					print("p:both i:active and laden -> oh_swap")
+					action = "oh_swap"
+					p_state = [1,0,0]
+					i_state = [1,1,1]
+				else:
+					print("p:both i:active and laden -> same")
+					p_skip = true
+					i_skip = true
+					print("targ_reached = ", targ_reached)
 			else:
 				action = "timer"
 				p_skip = true
@@ -302,7 +314,6 @@ func s_state_decision(cname, targ_reached):
 				print("targ_reached = ", targ_reached)
 			else:
 				# _dd_active_sounds()
-				timer_manager.start_timer("s_left_cooked")
 				action = "timer"
 				p_skip = true
 				i_state = [0,1,1]
@@ -310,10 +321,21 @@ func s_state_decision(cname, targ_reached):
 		# p:full i:cooked
 		elif state == 	 [1,       1,       1,         1,        1,       1]:
 			if targ_reached:
-				print("p:full i:cooked -> same")
-				p_skip = true
-				i_skip = true
-				print("targ_reached = ", targ_reached)
+				if (stored_objects["player_ph"][0] in interactables_accepts["s_left"]) and stored_objects["player_ph"][0] != stored_objects[cname][0]:
+					print("p:both i:cooked and laden -> ph_swap")
+					action = "ph_swap"
+					p_state = [1,0,0]
+					i_state = [1,1,1]
+				elif (stored_objects["player_oh"][0] in interactables_accepts["s_left"]) and stored_objects["player_oh"][0] != stored_objects[cname][0]:
+					print("p:both i:cooked and laden -> oh_swap")
+					action = "oh_swap"
+					p_state = [1,0,0]
+					i_state = [1,1,1]
+				else:
+					print("p:full i:cooked -> same")
+					p_skip = true
+					i_skip = true
+					print("targ_reached = ", targ_reached)
 			else:
 				action = "timer2"
 				p_skip = true
@@ -364,10 +386,21 @@ func s_state_decision(cname, targ_reached):
 		# p:full i:burnt
 		elif state ==	 [1,       1,       1,         0,        0,       1]:
 			if targ_reached:
-				print("p:full i:burnt -> same")
-				p_skip = true
-				i_skip = true
-				print("targ_reached = ", targ_reached)
+				if (stored_objects["player_ph"][0] in interactables_accepts["s_left"]) and stored_objects["player_ph"][0] != stored_objects[cname][0]:
+					print("p:both i:cooked and laden -> ph_swap")
+					action = "ph_swap"
+					p_state = [1,0,0]
+					i_state = [1,1,1]
+				elif (stored_objects["player_oh"][0] in interactables_accepts["s_left"]) and stored_objects["player_oh"][0] != stored_objects[cname][0]:
+					print("p:both i:cooked and laden -> oh_swap")
+					action = "oh_swap"
+					p_state = [1,0,0]
+					i_state = [1,1,1]
+				else:
+					print("p:full i:burnt -> same")
+					p_skip = true
+					i_skip = true
+					print("targ_reached = ", targ_reached)
 			
 		# p:oh i:burnt
 		elif state ==	 [1,       0,       1,         0,        0,       1]:
@@ -619,7 +652,7 @@ func ms_state_decision(cname, targ_reached):
 func update_states(cname, targ_reached):
 	var action
 	
-##### dd_left	
+##### dd	
 	if (cname == "dd_left") or (cname == "dd_right"):
 		action = dd_state_decision(cname, targ_reached)
 		var drink
@@ -646,7 +679,7 @@ func update_states(cname, targ_reached):
 				stored_objects[cname] = [drink]
 		obj_change(cname, stored_objects[cname], action)
 
-##### ms_left	
+##### ms	
 	elif (cname == "ms_left") or (cname == "ms_right"):
 		action = ms_state_decision(cname, targ_reached)
 		var raw_patty
@@ -668,7 +701,7 @@ func update_states(cname, targ_reached):
 				obj_change("player", stored_objects["player_oh"], action)
 		obj_change(cname, stored_objects[cname], action)
 
-##### s_left
+##### s
 	elif (cname == "s_left") or (cname == "s_right"):
 		action = s_state_decision(cname, targ_reached)
 		
@@ -681,23 +714,50 @@ func update_states(cname, targ_reached):
 				stored_objects[cname] = []
 				obj_change("player", stored_objects["player_ph"], action)
 			"oh_up":
-				stored_objects["player_oh"] = [obj_raw_patty_1]
+				stored_objects["player_oh"] = stored_objects[cname]
 				stored_objects[cname] = []
 				obj_change("player", stored_objects["player_oh"], action)
 			"ph_down":
+				timer_manager.start_timer("s_left_cooked")
+				_s_active_sounds()
 				stored_objects[cname] = stored_objects["player_ph"]
 				stored_objects["player_ph"] = []
 				obj_change("player", stored_objects["player_ph"], action)
 			"oh_down":
+				timer_manager.start_timer("s_left_cooked")
+				_s_active_sounds()
 				stored_objects[cname] = stored_objects["player_oh"]
 				stored_objects["player_oh"] = []
 				obj_change("player", stored_objects["player_oh"], action)
+			"ph_swap":
+				timer_manager.start_timer("s_left_cooked")
+				var temp_obj_array = stored_objects[cname]
+				stored_objects[cname] = stored_objects["player_ph"]
+				stored_objects["player_ph"] = temp_obj_array
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_swap":
+				timer_manager.start_timer("s_left_cooked")
+				var temp_obj_array = stored_objects[cname]
+				stored_objects[cname] = stored_objects["player_oh"]
+				stored_objects["player_oh"] = temp_obj_array
+				obj_change("player", stored_objects["player_oh"], action)
+			"timer":
+				_s_inactive_sounds()
+				stored_objects[cname] = patty_reference(stored_objects[cname][0])
 		obj_change(cname, stored_objects[cname], action)
 	else:
 		print("cname not found: ", cname)
 
+
+func patty_reference(input):
+	if input == obj_raw_patty_1:
+		return obj_cooked_patty1
+	elif input == obj_raw_patty_2:
+		return obj_cooked_patty2
+
 # stored objects
 func update_i_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
+	print("update_i_sprites: ", target_node, item_texture_paths)
 	# Remove all existing Sprite2D children from target_node
 	for child in target_node.get_children():
 		if child is Sprite2D:
@@ -719,7 +779,7 @@ func update_i_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		item_sprite.scale = Vector2(0.5, 0.5)
 
 		# Set z_index of each array obj
-		item_sprite.z_index = 0
+		item_sprite.z_index = target_node.z_index + 1
 		base_z_index += 1
 		
 		item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
@@ -727,9 +787,6 @@ func update_i_sprites(target_node: Node, item_texture_paths: Array, start_positi
 
 		# Update y-offset to stack the next sprite on top of the previous one
 		y_offset -= item_sprite.texture.get_size().y / 2 * item_sprite.scale.y  # Adjust scaled height
-
-
-
 
 func obj_change(sname, obj_array, action):
 	print("sname: ", sname)
@@ -827,7 +884,6 @@ func _on_timer_timer_expired(timer_id: String):
 		interactable_state[timer_id] = [1,1,1]
 	var targ_reached = false
 	update_states(timer_id, targ_reached)
-
 
 func _dd_active_sounds():
 	var audio_player = $Sounds/dd_aud_1

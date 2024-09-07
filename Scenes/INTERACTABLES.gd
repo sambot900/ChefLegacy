@@ -35,8 +35,8 @@ func _ready():
 	states["dd_right"] = [1,0,0]
 	states["ms_left"] = [1,0,1]
 	states["ms_right"] = [1,0,1]
-	states["s_left"] = [1,0,0]
-	states["s_right"] = [1,0,0]
+	states["s_left"] = [0,0,0]
+	states["s_right"] = [0,0,0]
 	states["ts_1"] = [1,0,0] # enabled for testing
 	states["ts_2"] = [0,0,0] # disabled for testing
 	states["ts_3"] = [0,0,0] # disabled for testing

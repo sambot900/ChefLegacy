@@ -50,10 +50,12 @@ var previous_player_state = []
 @onready var anim_torso: AnimatedSprite2D = $avatar/torso
 @onready var anim_legs: AnimatedSprite2D = $avatar/legs
 @onready var anim_avatar: AnimatedSprite2D = $avatar
-@onready var anim_left_arm_idle: Sprite2D = $avatar/left_arm_idle
-@onready var anim_right_arm_idle: Sprite2D = $avatar/right_arm_idle
-@onready var anim_left_arm_plate: Sprite2D =  $avatar/left_arm_plate
-@onready var anim_right_arm_plate: Sprite2D = $avatar/right_arm_plate
+@onready var anim_left_arm_idle: Sprite2D = $avatar/arms/left_arm_idle
+@onready var anim_right_arm_idle: Sprite2D = $avatar/arms/right_arm_idle
+@onready var anim_left_arm_plate: Sprite2D =  $avatar/arms/left_arm_plate
+@onready var anim_right_arm_plate: Sprite2D = $avatar/arms/right_arm_plate
+@onready var anim_arm_ph: Node2D = $avatar/arms/ph_obj
+@onready var anim_arm_oh: Node2D = $avatar/arms/oh_obj
 @onready var freezer_fries: Sprite2D = $"../INTERACTABLES/Freezer/FreezerFries"
 @onready var freezer_fries_rings: Sprite2D = $"../INTERACTABLES/Freezer/FreezerFries&Rings"
 
@@ -231,17 +233,14 @@ func edge_case_exists():
 
 func z_sort():
 	if global_position.y > 383:
-		#z_index = 20
 		anim_torso.z_index = 20
 		anim_legs.z_index = 14
 	elif global_position.y > 168 and global_position.y < 384:
-		#z_index = 12
 		anim_torso.z_index = 14
 		anim_legs.z_index = 12
 	elif global_position.y < 160:
-		#z_index = 5
-		anim_torso.z_index = 5
-		anim_legs.z_index = 5
+		anim_torso.z_index = 7
+		anim_legs.z_index = 7
 		
 	anim_left_arm_idle.z_index = anim_torso.z_index + 1
 	anim_right_arm_idle.z_index = anim_torso.z_index + 1
@@ -342,34 +341,52 @@ func _on__burgers_go_here(coords):
 
 func _on__burgers_obj_changed(cmd, obj_array, action):
 	if cmd == "player":
-		if action == "ph_up":
-			add_item_sprites(obj_array, Vector2(-46,-55))
-		elif action == "oh_up":
-			add_item_sprites(obj_array, Vector2(74, -51))
-		else:
-			pass
-		
-		
-func add_item_sprites(item_texture_paths: Array, start_position: Vector2):
-	var y_offset = 0  # Initialize y-offset for stacking
-	var base_z_index = 100  # Set a base z_index
+		match action:
+			"ph_up":
+				update_p_sprites(anim_arm_ph, obj_array, Vector2(-46,-55))
+			"ph_down":
+				update_p_sprites(anim_arm_ph, obj_array, Vector2(-46,-55))
+			"ph_swap":
+				update_p_sprites(anim_arm_ph, obj_array, Vector2(-46,-55))
+			"oh_up":
+				update_p_sprites(anim_arm_oh, obj_array, Vector2(74, -51))
+			"oh_down":
+				update_p_sprites(anim_arm_oh, obj_array, Vector2(74, -51))
+			"oh_swap":
+				update_p_sprites(anim_arm_oh, obj_array, Vector2(74, -51))
+			
+# stored objects
+func update_p_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
+	print("update_i_sprites: ", target_node, item_texture_paths)
+	# Remove all existing Sprite2D children from target_node
+	for child in target_node.get_children():
+		if child is Sprite2D:
+			child.queue_free()
 
+	# Return early if the array is empty
+	if item_texture_paths.size() == 0:
+		return
+
+	var y_offset = 0  # Initialize y-offset for stacking
+	var base_z_index = target_node.z_index  # Set a base z_index
+
+	# Iterate through texture paths and create new sprites
 	for texture_path in item_texture_paths:
-		var item_sprite = Sprite2D.new()  # Create a new Sprite2D node for each item
-		item_sprite.texture = load(texture_path)  # Load the texture from the path
+		var item_sprite = Sprite2D.new()
+		item_sprite.texture = load(texture_path)
 		
-		# Set the scale of each sprite to 0.5 for both x and y axes
+		# Set scale
 		item_sprite.scale = Vector2(0.5, 0.5)
 
-		# Ensure each sprite has a higher z_index than the previous one
-		item_sprite.z_index = base_z_index  
+		# Set z_index of each array obj
+		item_sprite.z_index = 100
 		base_z_index += 1
 		
-		item_sprite.position = start_position + Vector2(0, y_offset)  # Set the position with offset
-		anim_avatar.add_child(item_sprite)  # Add the sprite as a child of the anim_avatar
+		item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
+		target_node.add_child(item_sprite)  # Add sprite to parent
 
 		# Update y-offset to stack the next sprite on top of the previous one
-		y_offset -= item_sprite.texture.get_size().y / 2 * item_sprite.scale.y  # Adjust based on scaled height
+		y_offset -= item_sprite.texture.get_size().y / 2 * item_sprite.scale.y  # Adjust scaled height
 
 func _avatar_unladen():
 	anim_left_arm_idle.visible = true
