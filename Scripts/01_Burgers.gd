@@ -88,8 +88,10 @@ var order_4 = []
 
 var obj_raw_patty_1 = "res://Sprites/Levels/01_Burgers/Food/raw_patty_1.png"
 var obj_raw_patty_2 = "res://Sprites/Levels/01_Burgers/Food/raw_patty_2.png"
-var obj_cooked_patty1 = ""
-var obj_cooked_patty2 = ""
+var obj_cooked_patty_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_patty_1.png"
+var obj_cooked_patty_2 = "res://Sprites/Levels/01_Burgers/Food/cooked_patty_2.png"
+var obj_burnt_patty_1 = "res://Sprites/Levels/01_Burgers/Food/burnt_patty_1.png"
+var obj_burnt_patty_2 = "res://Sprites/Levels/01_Burgers/Food/burnt_patty_2.png"
 var obj_cheese_1 = ""
 var obj_bacon_1 = ""
 var obj_lettuce_1 = ""
@@ -223,7 +225,6 @@ func s_state_decision(cname, targ_reached):
 					i_state = [0,1,1]
 					action = "oh_down"
 			
-			
 		# p:oh i:idle
 		elif state ==	 [1,       0,       1,         0,        0,       0]:
 			if targ_reached:
@@ -232,14 +233,10 @@ func s_state_decision(cname, targ_reached):
 					p_state = [1,0,0]
 					i_state = [0,1,1]
 					action = "oh_down"
-					print("targ_reached = ", targ_reached)
-			
-			
+	
 		# p:ph i:idle
 		elif state == 	 [1,       1,       0,         0,        0,       0]:
 			if targ_reached:
-				print("targ_reached = ", targ_reached)
-				print("ph = ", stored_objects["player_ph"], "accepts: ", interactables_accepts["s_left"])
 				if stored_objects["player_ph"][0] in interactables_accepts["s_left"]:
 					print("p:ph i:idle -> i:active laden")
 					p_state = [1,0,0]
@@ -252,7 +249,6 @@ func s_state_decision(cname, targ_reached):
 				print("p:free i:idle -> same")
 				p_skip = true
 				i_skip = true
-				print("targ_reached = ", targ_reached)
 			###########################################################################
 		
 		# p:both i:active and laden
@@ -272,11 +268,10 @@ func s_state_decision(cname, targ_reached):
 					print("p:both i:active and laden -> same")
 					p_skip = true
 					i_skip = true
-					print("targ_reached = ", targ_reached)
 			else:
 				action = "timer"
 				p_skip = true
-				i_state = [0,1,1]
+				i_state = [1,1,1]
 			
 		# p:oh i:active and laden
 		elif state == 	 [1,       0,       1,         0,        1,       1]:
@@ -285,7 +280,6 @@ func s_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_state = [0,0,0]
 				action = "ph_up"
-				print("targ_reached = ", targ_reached)
 			else:
 				action = "timer"
 				p_skip = true
@@ -298,11 +292,10 @@ func s_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_state = [0,0,0]
 				action = "oh_up"
-				print("targ_reached = ", targ_reached)
 			else:
 				action = "timer"
 				p_skip = true
-				i_state = [0,1,1]
+				i_state = [1,1,1]
 			
 		# p:free i:active and laden
 		elif state == 	 [1,       0,       0,         0,        1,       1]:
@@ -311,12 +304,10 @@ func s_state_decision(cname, targ_reached):
 				p_state = [1,1,0]
 				i_state = [0,0,0]
 				action = "ph_up"
-				print("targ_reached = ", targ_reached)
 			else:
-				# _dd_active_sounds()
 				action = "timer"
 				p_skip = true
-				i_state = [0,1,1]
+				i_state = [1,1,1]
 			
 		# p:full i:cooked
 		elif state == 	 [1,       1,       1,         1,        1,       1]:
@@ -335,9 +326,8 @@ func s_state_decision(cname, targ_reached):
 					print("p:full i:cooked -> same")
 					p_skip = true
 					i_skip = true
-					print("targ_reached = ", targ_reached)
 			else:
-				action = "timer2"
+				action = "timer"
 				p_skip = true
 				i_state = [0,0,1]
 				print("i:cooked -> i:burnt")
@@ -348,9 +338,8 @@ func s_state_decision(cname, targ_reached):
 				print("p:oh i:cooked -> p:full i:idle")
 				p_state = [1,1,1]
 				i_state = [0,0,0]
-				print("targ_reached = ", targ_reached)
 			else:
-				action = "timer2"
+				action = "timer"
 				p_skip = true
 				i_state = [0,0,1]
 				print("i:cooked -> i:burnt")
@@ -361,9 +350,8 @@ func s_state_decision(cname, targ_reached):
 				print("p:ph i:cooked -> p:full i:idle")
 				p_state = [1,1,1]
 				i_state = [0,0,0]
-				print("targ_reached = ", targ_reached)
 			else:
-				action = "timer2"
+				action = "timer"
 				p_skip = true
 				i_state = [0,0,1]
 				print("i:cooked -> i:burnt")
@@ -375,9 +363,8 @@ func s_state_decision(cname, targ_reached):
 				p_state = [1,1,0]
 				i_state = [0,0,0]
 				action = "ph_up"
-				print("targ_reached = ", targ_reached)
 			else:
-				action = "timer2"
+				action = "timer"
 				p_skip = true
 				i_state = [0,0,1]
 				print("i:cooked -> i:burnt")
@@ -389,18 +376,21 @@ func s_state_decision(cname, targ_reached):
 				if (stored_objects["player_ph"][0] in interactables_accepts["s_left"]) and stored_objects["player_ph"][0] != stored_objects[cname][0]:
 					print("p:both i:cooked and laden -> ph_swap")
 					action = "ph_swap"
-					p_state = [1,0,0]
-					i_state = [1,1,1]
+					p_state = [1,1,1]
+					i_state = [0,1,1]
 				elif (stored_objects["player_oh"][0] in interactables_accepts["s_left"]) and stored_objects["player_oh"][0] != stored_objects[cname][0]:
 					print("p:both i:cooked and laden -> oh_swap")
 					action = "oh_swap"
-					p_state = [1,0,0]
-					i_state = [1,1,1]
+					p_state = [1,1,1]
+					i_state = [0,1,1]
 				else:
 					print("p:full i:burnt -> same")
 					p_skip = true
 					i_skip = true
-					print("targ_reached = ", targ_reached)
+			else:
+				action = "timer2"
+				p_skip = true
+				i_skip = true
 			
 		# p:oh i:burnt
 		elif state ==	 [1,       0,       1,         0,        0,       1]:
@@ -409,7 +399,6 @@ func s_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_state = [0,0,0]
 				action = "ph_up"
-				print("targ_reached = ", targ_reached)
 				
 		# p:ph i:burnt
 		elif state ==	 [1,       1,       0,         0,        0,       1]:
@@ -418,7 +407,11 @@ func s_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_state = [0,0,0]
 				action = "oh_up"
-				print("targ_reached = ", targ_reached)
+			else:
+				action = "timer2"
+				p_skip = true
+				i_skip = true
+				
 		# p:free i:burnt
 		elif state ==	 [1,       0,       0,         0,        0,       1]:
 			if targ_reached:
@@ -426,7 +419,11 @@ func s_state_decision(cname, targ_reached):
 				p_state = [1,1,0]
 				i_state = [0,0,0]
 				action = "ph_up"
-				print("targ_reached = ", targ_reached)
+			else:
+				action = "timer2"
+				p_skip = true
+				i_skip = true
+				
 		###########################################################################		
 		else:																 # edge cases
 			print("s decision tree error case")
@@ -465,7 +462,6 @@ func dd_state_decision(cname, targ_reached):
 				action = "activate"
 				p_state = [1,1,1]
 				i_state = [1,1,0]
-			print("targ_reached = ", targ_reached)
 			
 		elif state ==	 [1,       0,       1,         1,        0,       0]:
 			if targ_reached:
@@ -475,7 +471,6 @@ func dd_state_decision(cname, targ_reached):
 				action = "activate"
 				p_state = [1,0,1]
 				i_state = [1,1,0]
-			print("targ_reached = ", targ_reached)
 			
 		elif state == 	 [1,       1,       0,         1,        0,       0]:
 			if targ_reached:
@@ -485,7 +480,6 @@ func dd_state_decision(cname, targ_reached):
 				action = "activate"
 				p_state = [1,1,0]
 				i_state = [1,1,0]
-			print("targ_reached = ", targ_reached)
 		elif state == 	 [1,       0,       0,         1,        0,       0]:
 			if targ_reached:
 				timer_manager.start_timer(cname)
@@ -494,35 +488,30 @@ func dd_state_decision(cname, targ_reached):
 				action = "activate"
 				p_state = [1,0,0]
 				i_state = [1,1,0]
-			print("targ_reached = ", targ_reached)
 			###########################################################################
 		elif state == 	 [1,       1,       1,         1,        1,       0]: # active
 			if targ_reached:
 				print("p:full i:busy -> same")
 				p_skip = true
 				i_skip = true
-			print("targ_reached = ", targ_reached)
 			
 		elif state == 	 [1,       0,       1,         1,        1,       0]:
 			if targ_reached:
 				print("p:oh i:busy -> same")
 				p_skip = true
 				i_skip = true
-			print("targ_reached = ", targ_reached)
 			
 		elif state == 	 [1,       1,       0,         1,        1,       0]:
 			if targ_reached:
 				print("p:ph i:busy -> same")
 				p_skip = true
 				i_skip = true
-			print("targ_reached = ", targ_reached)
 			
 		elif state == 	 [1,       0,       0,         1,        1,       0]:
 			if targ_reached:
 				print("p:empty i:busy -> same")
 				p_skip = true
 				i_skip = true
-			print("targ_reached = ", targ_reached)
 			
 			###########################################################################				
 		elif state == 	 [1,       1,       1,         1,        0,       1]: # laden
@@ -530,7 +519,6 @@ func dd_state_decision(cname, targ_reached):
 				print("p:full i:laden -> same")
 				p_skip = true
 				i_skip = true
-				print("targ_reached = ", targ_reached)
 			else:
 				action = "timer"
 				_dd_inactive_sounds()
@@ -542,7 +530,6 @@ func dd_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_state = [1,0,0]
 				action = "ph_up"
-				print("targ_reached = ", targ_reached)
 			else:
 				action = "timer"
 				_dd_inactive_sounds()
@@ -555,7 +542,6 @@ func dd_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_state = [1,0,0]
 				action = "oh_up"
-				print("targ_reached = ", targ_reached)
 			else:
 				action = "timer"
 				_dd_inactive_sounds()
@@ -568,7 +554,6 @@ func dd_state_decision(cname, targ_reached):
 				p_state = [1,1,0]
 				i_state = [1,0,0]
 				action = "ph_up"
-				print("targ_reached = ", targ_reached)
 			else:
 				action = "timer"
 				_dd_inactive_sounds()
@@ -609,7 +594,6 @@ func ms_state_decision(cname, targ_reached):
 				print("p:full i:laden-> same")
 				p_skip = true
 				i_skip = true
-			print("targ_reached = ", targ_reached)
 			
 		elif state ==	 [1,       0,       1,         1,        0,       1]:
 			if targ_reached:
@@ -617,7 +601,6 @@ func ms_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_skip = true
 				action = "ph_up"
-			print("targ_reached = ", targ_reached)
 			
 		elif state == 	 [1,       1,       0,         1,        0,       1]:
 			if targ_reached:
@@ -625,14 +608,12 @@ func ms_state_decision(cname, targ_reached):
 				p_state = [1,1,1]
 				i_skip = true
 				action = "oh_up"
-			print("targ_reached = ", targ_reached)
 		elif state == 	 [1,       0,       0,         1,        0,       1]:
 			if targ_reached:
 				print("p:empty i:laden -> p:ph")
 				p_state = [1,1,0]
 				i_skip = true
 				action = "ph_up"
-			print("targ_reached = ", targ_reached)
 		###########################################################################		
 		else:																 # edge cases
 			print("decision tree edge case")
@@ -646,7 +627,6 @@ func ms_state_decision(cname, targ_reached):
 	else:
 		state_change("player", player_state)
 		state_change(cname, interactable_state[cname])
-	print("a: ",player_state + interactable_state[cname])
 	return action	
 			
 func update_states(cname, targ_reached):
@@ -718,32 +698,37 @@ func update_states(cname, targ_reached):
 				stored_objects[cname] = []
 				obj_change("player", stored_objects["player_oh"], action)
 			"ph_down":
-				timer_manager.start_timer("s_left_cooked")
 				_s_active_sounds()
 				stored_objects[cname] = stored_objects["player_ph"]
 				stored_objects["player_ph"] = []
 				obj_change("player", stored_objects["player_ph"], action)
+				timer_manager.start_timer(cname)
 			"oh_down":
-				timer_manager.start_timer("s_left_cooked")
 				_s_active_sounds()
 				stored_objects[cname] = stored_objects["player_oh"]
 				stored_objects["player_oh"] = []
 				obj_change("player", stored_objects["player_oh"], action)
+				timer_manager.start_timer(cname)
 			"ph_swap":
-				timer_manager.start_timer("s_left_cooked")
 				var temp_obj_array = stored_objects[cname]
 				stored_objects[cname] = stored_objects["player_ph"]
 				stored_objects["player_ph"] = temp_obj_array
 				obj_change("player", stored_objects["player_ph"], action)
+				timer_manager.start_timer(cname)
 			"oh_swap":
-				timer_manager.start_timer("s_left_cooked")
 				var temp_obj_array = stored_objects[cname]
 				stored_objects[cname] = stored_objects["player_oh"]
 				stored_objects["player_oh"] = temp_obj_array
 				obj_change("player", stored_objects["player_oh"], action)
+				timer_manager.start_timer(cname)
 			"timer":
+				print("1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",stored_objects[cname])
 				_s_inactive_sounds()
 				stored_objects[cname] = patty_reference(stored_objects[cname][0])
+			"timer2":
+				print("2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",stored_objects[cname])
+				stored_objects[cname] = patty_reference(stored_objects[cname][0])
+				
 		obj_change(cname, stored_objects[cname], action)
 	else:
 		print("cname not found: ", cname)
@@ -751,9 +736,13 @@ func update_states(cname, targ_reached):
 
 func patty_reference(input):
 	if input == obj_raw_patty_1:
-		return obj_cooked_patty1
+		return [obj_cooked_patty_1]
 	elif input == obj_raw_patty_2:
-		return obj_cooked_patty2
+		return [obj_cooked_patty_2]
+	elif input == obj_cooked_patty_1:
+		return [obj_burnt_patty_1]
+	elif input == obj_cooked_patty_2:
+		return [obj_burnt_patty_2]
 
 # stored objects
 func update_i_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
@@ -877,11 +866,13 @@ func _on_timer_timer_expired(timer_id: String):
 		interactable_state[timer_id] = [1,0,1]
 		# stove activating / raw laden
 	if (timer_id == "s_left") or (timer_id == "s_right"):
-		print("timer went off: ", timer_id)
-		interactable_state[timer_id] = [0,1,1]
-	if (timer_id == "s_left_cooked") or (timer_id == "s_right_cooked"):
-		print("timer went off: ", timer_id)
-		interactable_state[timer_id] = [1,1,1]
+		print("timer went off: ", timer_id, interactable_state[timer_id])
+		if interactable_state[timer_id] == [0,1,1]:
+			print("3!!!!!!!!!!!!!!!!!!!!!!!!!!",stored_objects[timer_id])
+			interactable_state[timer_id] = [1,1,1]
+			timer_manager.start_timer(timer_id)
+		elif interactable_state[timer_id] == [1,1,1]:
+			interactable_state[timer_id] = [0,0,1]
 	var targ_reached = false
 	update_states(timer_id, targ_reached)
 
