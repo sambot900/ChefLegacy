@@ -38,8 +38,8 @@ func _ready():
 	states["s_left"] = [0,0,0]
 	states["s_right"] = [0,0,0]
 	states["ts_1"] = [1,0,0] # enabled for testing
-	states["ts_2"] = [0,0,0] # disabled for testing
-	states["ts_3"] = [0,0,0] # disabled for testing
+	states["ts_2"] = [1,0,0] # disabled for testing
+	states["ts_3"] = [1,0,0] # disabled for testing
 	states["f_1"] = [1,0,0]
 	states["f_2"] = [1,0,0]
 	states["fs_1"] = [1,0,0]

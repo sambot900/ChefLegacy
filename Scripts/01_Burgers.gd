@@ -94,9 +94,9 @@ var obj_burnt_patty_1 = "res://Sprites/Levels/01_Burgers/Food/burnt_patty_1.png"
 var obj_burnt_patty_2 = "res://Sprites/Levels/01_Burgers/Food/burnt_patty_2.png"
 var obj_top_bun = "res://Sprites/Levels/01_Burgers/Food/top_bun.png"
 var obj_bot_bun = "res://Sprites/Levels/01_Burgers/Food/bot_bun.png"
-var obj_cheese_1 = ""
-var obj_bacon_1 = ""
-var obj_lettuce_1 = ""
+var obj_cheese_1 = "res://Sprites/Levels/01_Burgers/Food/oj_full.png"
+var obj_bacon_1 = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
+var obj_lettuce_1 = "res://Sprites/Levels/01_Burgers/Food/cup_empty.png"
 var obj_frozen_fries_1 = ""
 var obj_frozen_fries_2 = ""
 var obj_frozen_rings_1 = ""
@@ -127,9 +127,42 @@ func _ready():
 	interactables_accepts["ms_right"] = []
 	interactables_accepts["s_left"] = [obj_raw_patty_1, obj_raw_patty_2]
 	interactables_accepts["s_right"] = [obj_raw_patty_1, obj_raw_patty_2]
-	interactables_accepts["ts_1"] = ["cooked_patty1", "cooked_patty2", "bacon_1", "lettuce_1"]
-	interactables_accepts["ts_2"] = ["cooked_patty1", "cooked_patty2", "cheese_1", "lettuce_1"]
-	interactables_accepts["ts_3"] = ["cooked_patty1", "cooked_patty2", "cheese_1", "bacon_1"]
+	
+	interactables_accepts["ts_1"] = [
+	[obj_cooked_patty_1],
+	[obj_cooked_patty_1, obj_bacon_1, obj_lettuce_1],
+	[obj_cooked_patty_1, obj_lettuce_1],
+	[obj_cooked_patty_1, obj_bacon_1],
+	
+	[obj_cooked_patty_2],
+	[obj_cooked_patty_2, obj_bacon_1, obj_lettuce_1],
+	[obj_cooked_patty_2, obj_lettuce_1],
+	[obj_cooked_patty_2, obj_bacon_1],
+	]
+	
+	interactables_accepts["ts_2"] = [
+	[obj_cooked_patty_1],
+	[obj_cooked_patty_1, obj_cheese_1, obj_lettuce_1],
+	[obj_cooked_patty_1, obj_lettuce_1],
+	[obj_cooked_patty_1, obj_cheese_1],
+	
+	[obj_cooked_patty_2],
+	[obj_cooked_patty_2, obj_cheese_1, obj_lettuce_1],
+	[obj_cooked_patty_2, obj_lettuce_1],
+	[obj_cooked_patty_2, obj_cheese_1],
+	]
+	interactables_accepts["ts_3"] = [
+	[obj_cooked_patty_1],
+	[obj_cooked_patty_1, obj_cheese_1, obj_bacon_1],
+	[obj_cooked_patty_1, obj_bacon_1],
+	[obj_cooked_patty_1, obj_cheese_1],
+	
+	[obj_cooked_patty_2],
+	[obj_cooked_patty_2, obj_cheese_1, obj_bacon_1],
+	[obj_cooked_patty_2, obj_bacon_1],
+	[obj_cooked_patty_2, obj_cheese_1],
+	]
+	
 	interactables_accepts["f_1"] = ["frozen_fries_1", "frozen_fries_2", "frozen_rings_1", "frozen_rings_2"]
 	interactables_accepts["f_2"] = ["frozen_fries_1", "frozen_fries_2", "frozen_rings_1", "frozen_rings_2"]
 	interactables_accepts["fs_1"] = []
@@ -640,7 +673,142 @@ func ms_state_decision(cname, targ_reached):
 		state_change("player", player_state)
 		state_change(cname, interactable_state[cname])
 	return action	
+		
+func ts_state_decision(cname, targ_reached):
+	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap", "activate"
+	var p_state = player_state
+	var i_state = interactable_state[cname]
+	var state = p_state+i_state
+	var p_skip = false
+	var i_skip = false
+	print("-----------------------------------------")
+	print("COMMAND: ",cname)
+	print("decision state before: ",state)
+						##########################################################
+						# player  | player | player || object  | object | object #
+	if state:			# enabled | PH     | OH     || enabled | active | laden  #
+			###########################################################################
+		if state ==	 	 [1,       1,       1,         1,        0,       0]: # idle
+			if targ_reached:
+				if stored_objects["player_ph"] in interactables_accepts[cname]:
+					timer_manager.start_timer(cname)
+					print("p:full i:idle -> i:active")
+					action = "ph_down"
+					p_state = [1,0,1]
+					i_state = [1,1,0]
+				elif stored_objects["player_oh"] in interactables_accepts[cname]:
+					timer_manager.start_timer(cname)
+					print("p:full i:idle -> i:active")
+					action = "oh_down"
+					p_state = [1,1,0]
+					i_state = [1,1,0]
 			
+		elif state ==	 [1,       0,       1,         1,        0,       0]:
+			if targ_reached:
+				if stored_objects["player_oh"] in interactables_accepts[cname]:
+					timer_manager.start_timer(cname)
+					print("p:full i:idle -> i:active")
+					action = "oh_down"
+					p_state = [1,0,0]
+					i_state = [1,1,0]
+			
+		elif state == 	 [1,       1,       0,         1,        0,       0]:
+			if targ_reached:
+				if stored_objects["player_ph"] in interactables_accepts[cname]:
+					timer_manager.start_timer(cname)
+					action = "ph_down"
+					p_state = [1,0,0]
+					i_state = [1,1,0]
+					
+		elif state == 	 [1,       0,       0,         1,        0,       0]:
+			if targ_reached:
+				p_skip = true
+				i_skip = true
+				
+			###########################################################################
+		elif state == 	 [1,       1,       1,         1,        1,       0]: # active
+			if targ_reached:
+				print("p:full i:busy -> same")
+				p_skip = true
+				i_skip = true
+				
+			
+		elif state == 	 [1,       0,       1,         1,        1,       0]:
+			if targ_reached:
+				print("p:oh i:busy -> same")
+				p_skip = true
+				i_skip = true
+			
+		elif state == 	 [1,       1,       0,         1,        1,       0]:
+			if targ_reached:
+				print("p:ph i:busy -> same")
+				p_skip = true
+				i_skip = true
+			
+		elif state == 	 [1,       0,       0,         1,        1,       0]:
+			if targ_reached:
+				print("p:empty i:busy -> same")
+				p_skip = true
+				i_skip = true
+			
+			###########################################################################				
+		elif state == 	 [1,       1,       1,         1,        0,       1]: # laden
+			if targ_reached:
+				print("p:full i:laden -> same")
+				p_skip = true
+				i_skip = true
+			else:
+				action = "timer"
+				p_skip = true
+				i_state = [1,0,1]
+		elif state == 	 [1,       0,       1,         1,        0,       1]:
+			if targ_reached:
+				print("p:oh i:laden -> p:full i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				action = "ph_up"
+			else:
+				action = "timer"
+				p_skip = true
+				i_state = [1,0,1]
+			
+		elif state ==	 [1,       1,       0,         1,        0,       1]:
+			if targ_reached:
+				print("p:ph i:laden -> p:full i:idle")
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				action = "oh_up"
+			else:
+				action = "timer"
+				p_skip = true
+				i_state = [1,0,1]
+			
+		elif state ==	 [1,       0,       0,         1,        0,       1]:
+			if targ_reached:
+				print("p:empty i:laden -> p:ph i:idle")
+				p_state = [1,1,0]
+				i_state = [1,0,0]
+				action = "ph_up"
+			else:
+				action = "timer"
+				p_skip = true
+				i_state = [1,0,1]
+		###########################################################################		
+		else:																 # edge cases
+			print("decision tree edge case")
+	
+	if (p_skip == false):
+		player_state = p_state
+	if (i_skip == false):
+		interactable_state[cname] = i_state
+	if p_skip==true and i_skip==true:
+		pass
+	else:
+		state_change("player", player_state)
+		state_change(cname, interactable_state[cname])
+	print("decision state after: ",player_state + interactable_state[cname])
+	return action
+
 func bob_state_decision(cname, targ_reached):
 	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
 	var p_state = player_state
@@ -843,8 +1011,84 @@ func update_states(cname, targ_reached):
 				print("here oh ",stored_objects["player_oh"])
 				obj_change("player", stored_objects["player_oh"], action)
 	
+##### ts	
+	if (cname == "ts_1") or (cname == "ts_2") or (cname == "ts_3"):
+		action = ts_state_decision(cname, targ_reached)
+		var topping
+		if cname == "ts_1":
+			topping = obj_cheese_1
+		elif cname == "ts_2":
+			topping = obj_bacon_1
+		else:
+			topping = obj_lettuce_1
+		
+		print("action is ",action)
+		
+		# pick up
+		match action:
+			"ph_down":
+				stored_objects[cname] = stored_objects["player_ph"]
+				stored_objects["player_ph"] = []
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_down":
+				stored_objects[cname] = stored_objects["player_oh"]
+				stored_objects["player_oh"] = []
+				obj_change("player", stored_objects["player_oh"], action)
+			"ph_up":
+				_hand_sounds()
+				stored_objects["player_ph"] = stored_objects[cname]
+				stored_objects[cname] = []
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_up":
+				_hand_sounds()
+				stored_objects["player_oh"] = stored_objects[cname]
+				stored_objects[cname] = []
+				obj_change("player", stored_objects["player_oh"], action)
+			"timer":
+				_dd_inactive_sounds()
+				stored_objects[cname] = insert_topping(stored_objects[cname], topping)
+		obj_change(cname, stored_objects[cname], action)
+		
 	else:
 		print("cname not found: ", cname)
+
+func insert_topping(input_array: Array, topping: String) -> Array:
+	var topping_order = ["cheese", "bacon", "lettuce"]
+
+	# Ensure we are not duplicating toppings
+	if topping in input_array:
+		return input_array
+
+	# If only patty, then just apend and return
+	if input_array.size() == 1:
+		input_array.append(topping)
+	# If patty and something else
+	elif input_array.size() == 2:
+		# If the array has cheese then we always append the new topping
+		if obj_cheese_1 in input_array:
+			input_array.append(topping)
+		if obj_lettuce_1 in input_array:
+			input_array.insert(1, topping)
+		# If we are adding cheese we know it must be in slot 1
+		elif topping == obj_cheese_1:
+			input_array.insert(1, topping)
+		elif topping == obj_lettuce_1:
+			input_array.append(topping)
+			
+		else:
+			print("insert_topping: ERROR array: ", input_array, "failed to insert ", topping)
+	elif input_array.size() == 3:
+		if topping == obj_cheese_1:
+			input_array.insert(1, topping)
+		elif topping == obj_bacon_1:
+			input_array.insert(2, topping)
+		elif topping == obj_lettuce_1:
+			input_array.append(topping)
+			
+		
+	return input_array
+
+
 
 func bunify(input_array):
 	input_array.insert(0, obj_bot_bun)
@@ -978,6 +1222,9 @@ func _on_interactables_state_changed(cname, state_array_i):
 	
 func _on_timer_timer_expired(timer_id: String):
 	if (timer_id == "dd_left") or (timer_id == "dd_right"):
+		interactable_state[timer_id] = [1,0,1]
+	
+	if (timer_id == "ts_1") or (timer_id == "ts_2") or (timer_id == "ts_3"):
 		interactable_state[timer_id] = [1,0,1]
 		
 	if (timer_id == "s_left") or (timer_id == "s_right"):
