@@ -23,6 +23,29 @@ var enabled
 var ph_laden
 var oh_laden
 var previous_player_state = []
+
+var obj_raw_patty_1 = "res://Sprites/Levels/01_Burgers/Food/raw_patty_1.png"
+var obj_raw_patty_2 = "res://Sprites/Levels/01_Burgers/Food/raw_patty_2.png"
+var obj_cooked_patty_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_patty_1.png"
+var obj_cooked_patty_2 = "res://Sprites/Levels/01_Burgers/Food/cooked_patty_2.png"
+var obj_burnt_patty_1 = "res://Sprites/Levels/01_Burgers/Food/burnt_patty_1.png"
+var obj_burnt_patty_2 = "res://Sprites/Levels/01_Burgers/Food/burnt_patty_2.png"
+var obj_top_bun = "res://Sprites/Levels/01_Burgers/Food/top_bun.png"
+var obj_bot_bun = "res://Sprites/Levels/01_Burgers/Food/bot_bun.png"
+var obj_cheese_1 = "res://Sprites/Levels/01_Burgers/Food/cheese_slice.png"
+var obj_bacon_1 = "res://Sprites/Levels/01_Burgers/Food/bacon_slice.png"
+var obj_lettuce_1 = "res://Sprites/Levels/01_Burgers/Food/lettuce_slice.png"
+var obj_frozen_fries_1 = ""
+var obj_frozen_fries_2 = ""
+var obj_frozen_rings_1 = ""
+var obj_frozen_rings_2 = ""
+var obj_orange_drink = "res://Sprites/Levels/01_Burgers/Food/oj_full.png"
+var obj_cola_drink = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
+var obj_empty_drink = "res://Sprites/Levels/01_Burgers/Food/cup_empty.png"
+
+
+var y_exception = 103
+var max_distance_exception_list = [Vector2(320, y_exception), Vector2(350, y_exception), Vector2(380, y_exception), Vector2(238, y_exception), Vector2(407, y_exception), Vector2(437, y_exception), Vector2(467, y_exception), Vector2(495, y_exception), Vector2(525, y_exception), Vector2(555, y_exception)]
 #endregion
 
 #region *Onready Declarations
@@ -36,6 +59,7 @@ var previous_player_state = []
 @onready var c_ts_1: TouchScreenButton = $"../CMDs/c_ts-1"
 @onready var c_ts_2: TouchScreenButton = $"../CMDs/c_ts-2"
 @onready var c_ts_3: TouchScreenButton = $"../CMDs/c_ts-3"
+@onready var c_trash: TouchScreenButton = $"../CMDs/c_trash"
 @onready var c_fs_1: TouchScreenButton = $"../CMDs/c_fs-1"
 @onready var c_fs_2: TouchScreenButton = $"../CMDs/c_fs-2"
 @onready var c_f_left: TouchScreenButton = $"../CMDs/c_f-left"
@@ -77,6 +101,7 @@ func _ready():
 	c_ts_1.pressed.connect(self._on_c_ts_1_pressed)
 	c_ts_2.pressed.connect(self._on_c_ts_2_pressed)
 	c_ts_3.pressed.connect(self._on_c_ts_3_pressed)
+	c_trash.pressed.connect(self._on_c_trash_pressed)
 	c_fs_1.pressed.connect(self._on_c_fs_1_pressed)
 	c_fs_2.pressed.connect(self._on_c_fs_2_pressed)
 	c_f_left.pressed.connect(self._on_c_f_left_pressed)
@@ -138,6 +163,10 @@ func _on_c_ts_2_pressed():
 func _on_c_ts_3_pressed():
 	name = "ts_3"
 	where.emit(name, global_position)
+	
+func _on_c_trash_pressed():
+	name = "trash"
+	where.emit(name, global_position)
 
 func _on_c_f_left_pressed():
 	name = "f_1"
@@ -196,6 +225,14 @@ func _physics_process(delta):
 			reached_interactable.emit(current_command)
 		current_command = command_queue.pop_front()
 		orientation_edge_case()
+		if current_command in max_distance_exception_list:
+			agent.set_target_desired_distance(10)
+			print("max_distance_exception_list exception ", agent.get_target_desired_distance())
+		else:
+			agent.set_target_desired_distance(68)
+			print("max_distance_exception_list common ", agent.get_target_desired_distance())
+			
+		print("COORDS!!!! ",current_command)
 		agent.target_position = current_command
 		finished = false
 		
@@ -219,6 +256,9 @@ func _physics_process(delta):
 		move_and_slide()
 		
 func _on_nav_ag_navigation_finished():
+	pass
+	
+func _on_nav_ag_target_reached():
 	finished = true
 
 func edge_case_exists():
@@ -238,7 +278,7 @@ func z_sort():
 	elif global_position.y < 160:
 		anim_torso.z_index = 7
 		anim_legs.z_index = 7
-		
+
 	anim_left_arm_idle.z_index = anim_torso.z_index + 1
 	anim_right_arm_idle.z_index = anim_torso.z_index + 1
 	anim_left_arm_plate.z_index = anim_torso.z_index + 1
@@ -352,7 +392,7 @@ func _on__burgers_obj_changed(cmd, obj_array, action):
 			
 # stored objects
 func update_p_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
-	print("update_i_sprites: ", target_node, item_texture_paths)
+	print("update_p_sprites: ", target_node, item_texture_paths)
 	# Remove all existing Sprite2D children from target_node
 	for child in target_node.get_children():
 		if child is Sprite2D:
@@ -367,6 +407,8 @@ func update_p_sprites(target_node: Node, item_texture_paths: Array, start_positi
 
 	# Iterate through texture paths and create new sprites
 	for texture_path in item_texture_paths:
+		print("TEXTURE PATH IS: ", texture_path)
+		var toppings_list = [obj_cheese_1, obj_bacon_1, obj_lettuce_1]
 		var item_sprite = Sprite2D.new()
 		item_sprite.texture = load(texture_path)
 		
@@ -377,11 +419,20 @@ func update_p_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		item_sprite.z_index = 100
 		base_z_index += 1
 		
-		item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
+		if texture_path in toppings_list:
+			if texture_path == toppings_list[0]:
+				y_offset -= 2
+				item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
+			else:
+				item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
+		elif texture_path == item_texture_paths[0]:
+			item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
+		else:
+			y_offset -= 4
+			item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
 		target_node.add_child(item_sprite)  # Add sprite to parent
 
-		# Update y-offset to stack the next sprite on top of the previous one
-		y_offset -= item_sprite.texture.get_size().y / 2 * item_sprite.scale.y  # Adjust scaled height
+		y_offset -= 3  # Adjust scaled height
 
 func _avatar_unladen():
 	anim_left_arm_idle.visible = true
@@ -426,3 +477,4 @@ func _on__burgers_state_changed(cmd, state_array):
 		elif state_array == [0,1,1]:
 			_avatar_both()
 		previous_player_state = state_array
+

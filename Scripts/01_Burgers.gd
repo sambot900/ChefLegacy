@@ -32,6 +32,9 @@ signal obj_changed(cmd, state_array: Array)
 #endregion
 
 #region Dictionary Init: coordinate_key
+var area_2d_cmd_key = {}
+
+var y_ts = 103
 var coordinate_key = {
 	"dd_left": [Vector2(307, 423), Vector2(337, 423), Vector2(367, 423)],
 	"dd_right": [Vector2(379, 423), Vector2(409, 423), Vector2(439, 423)],
@@ -41,9 +44,10 @@ var coordinate_key = {
 	"fs_2": [Vector2(625, 329), Vector2(625, 359), Vector2(625, 389)],
 	"s_left": [Vector2(318, -9), Vector2(348, -9), Vector2(378, -9)],
 	"s_right": [Vector2(444, -9), Vector2(474, -9), Vector2(504, -9)],
-	"ts_1": [Vector2(320, 55), Vector2(350, 55), Vector2(380, 55), Vector2(238, 110), Vector2(238, 140), Vector2(238, 170), Vector2(320, 180), Vector2(350, 180), Vector2(380, 180)],
-	"ts_2": [Vector2(407, 55), Vector2(437, 55), Vector2(467, 55), Vector2(407, 180), Vector2(437, 180), Vector2(467, 180)],
-	"ts_3": [Vector2(495, 55), Vector2(525, 55), Vector2(555, 55), Vector2(612, 108), Vector2(612, 138), Vector2(612, 144), Vector2(495, 180), Vector2(525, 180), Vector2(555, 180)],
+	"ts_1": [Vector2(320, y_ts), Vector2(350, y_ts), Vector2(380, y_ts), Vector2(238, y_ts), Vector2(238, 140), Vector2(238, 170), Vector2(320, 180), Vector2(350, 180), Vector2(380, 180)],
+	"ts_2": [Vector2(407, y_ts), Vector2(437, y_ts), Vector2(467, y_ts), Vector2(407, 180), Vector2(437, 180), Vector2(467, 180)],
+	"ts_3": [Vector2(495, y_ts), Vector2(525, y_ts), Vector2(555, y_ts), Vector2(612, 108), Vector2(612, 138), Vector2(612, 144), Vector2(495, 180), Vector2(525, 180), Vector2(555, 180)],
+	"trash": [Vector2(245, y_ts), Vector2(245, 180)],
 	"f_1": [Vector2(625, 133), Vector2(625, 148), Vector2(625, 163)],
 	"f_2": [Vector2(625, 185), Vector2(625, 200), Vector2(625, 215)],
 	"t_1": [Vector2(625, 428), Vector2(625, 453), Vector2(625, 478)],
@@ -60,14 +64,14 @@ var coordinate_key = {
 var cmd_count = {
 	"dd_left": 0, "dd_right": 0, "ms_left": 0, "ms_right": 0,
 	"fs_1": 0, "fs_2": 0, "s_left": 0, "s_right": 0,
-	"ts_1": 0, "ts_2": 0, "ts_3": 0, "f_1": 0, "f_2": 0,
+	"ts_1": 0, "ts_2": 0, "ts_3": 0, "trash": 0, "f_1": 0, "f_2": 0,
 	"t_1": 0, "t_2": 0, "bob": 0, "o_1": 0, "o_2": 0, "o_3": 0, "o_4": 0
 }
 
 var cmd_count_max = {
 	"dd_left": 2, "dd_right": 2, "ms_left": 2, "ms_right": 2,
 	"fs_1": 2, "fs_2": 2, "s_left": 2, "s_right": 2,
-	"ts_1": 2, "ts_2": 2, "ts_3": 2, "f_1": 2, "f_2": 2,
+	"ts_1": 2, "ts_2": 2, "ts_3": 2, "trash": 1, "f_1": 2, "f_2": 2,
 	"t_1": 2, "t_2": 2, "bob": 2, "o_1": 1, "o_2": 1, "o_3": 1, "o_4": 1
 }
 #endregion
@@ -94,9 +98,9 @@ var obj_burnt_patty_1 = "res://Sprites/Levels/01_Burgers/Food/burnt_patty_1.png"
 var obj_burnt_patty_2 = "res://Sprites/Levels/01_Burgers/Food/burnt_patty_2.png"
 var obj_top_bun = "res://Sprites/Levels/01_Burgers/Food/top_bun.png"
 var obj_bot_bun = "res://Sprites/Levels/01_Burgers/Food/bot_bun.png"
-var obj_cheese_1 = "res://Sprites/Levels/01_Burgers/Food/oj_full.png"
-var obj_bacon_1 = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
-var obj_lettuce_1 = "res://Sprites/Levels/01_Burgers/Food/cup_empty.png"
+var obj_cheese_1 = "res://Sprites/Levels/01_Burgers/Food/cheese_slice.png"
+var obj_bacon_1 = "res://Sprites/Levels/01_Burgers/Food/bacon_slice.png"
+var obj_lettuce_1 = "res://Sprites/Levels/01_Burgers/Food/lettuce_slice.png"
 var obj_frozen_fries_1 = ""
 var obj_frozen_fries_2 = ""
 var obj_frozen_rings_1 = ""
@@ -188,7 +192,7 @@ func _ready():
 	[obj_cooked_patty_2, obj_cheese_1, obj_lettuce_1],  # Patty 2 with cheese and lettuce
 	[obj_cooked_patty_2, obj_bacon_1, obj_lettuce_1],  # Patty 2 with bacon and lettuce
 	[obj_cooked_patty_2, obj_cheese_1, obj_bacon_1, obj_lettuce_1]  # Patty 2 with cheese, bacon, and lettuce
-]
+	]
 	
 	interactables_accepts["o_1"] = order_1
 	interactables_accepts["o_2"] = order_2
@@ -239,6 +243,7 @@ func _ready():
 	
 	stored_objects["player_ph"] = []
 	stored_objects["player_oh"] = []
+
 
 func _input(_event):
 	pass
@@ -878,6 +883,60 @@ func bob_state_decision(cname, targ_reached):
 		state_change("player", player_state)
 		state_change(cname, interactable_state[cname])
 	return action	
+
+func trash_state_decision(cname, targ_reached):
+	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
+	var p_state = player_state
+	var i_state = interactable_state[cname]
+	var state = p_state+i_state
+	var p_skip = false
+	var i_skip = false
+	print("-----------------------------------------")
+	print("COMMAND: ",cname)
+	print("b: ",state)
+						##########################################################
+						# player  | player | player || object  | object | object #
+	if state:			# enabled | PH     | OH     || enabled | active | laden  #
+			###########################################################################
+		if state ==	 	 [1,       1,       1,         1,        0,       0]: # laden
+			if targ_reached:
+				print("p:full i:laden-> same")
+				action = "ph_down"
+				p_state = [1,0,1]
+				i_skip = true
+			
+		elif state ==	 [1,       0,       1,         1,        0,       0]:
+			if targ_reached:
+				print("p:full i:laden-> same")
+				action = "oh_down"
+				p_state = [1,0,0]
+				i_skip = true
+			
+		elif state == 	 [1,       1,       0,         1,        0,       0]:
+			if targ_reached:
+				action = "ph_down"
+				p_state = [1,0,0]
+				i_skip = true
+				
+				
+		elif state == 	 [1,       0,       0,         1,        0,       0]:
+			if targ_reached:
+				p_skip = true
+				i_skip = true
+		###########################################################################		
+		else:																 # edge cases
+			print("decision tree edge case")
+			
+	if (p_skip == false):
+		player_state = p_state
+	if (i_skip == false):
+		interactable_state[cname] = i_state
+	if p_skip==true and i_skip==true:
+		pass
+	else:
+		state_change("player", player_state)
+		state_change(cname, interactable_state[cname])
+	return action	
 	
 func update_states(cname, targ_reached):
 	var action
@@ -1049,6 +1108,21 @@ func update_states(cname, targ_reached):
 				stored_objects[cname] = insert_topping(stored_objects[cname], topping)
 		obj_change(cname, stored_objects[cname], action)
 		
+##### trash
+	elif (cname == "trash"):
+		action = trash_state_decision(cname, targ_reached)
+		
+		print("action is ", action)
+		
+		# pick up
+		match action:
+			"ph_down":
+				stored_objects["player_ph"] = []
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_down":
+				stored_objects["player_oh"] = []
+				obj_change("player", stored_objects["player_oh"], action)
+	
 	else:
 		print("cname not found: ", cname)
 
@@ -1088,8 +1162,6 @@ func insert_topping(input_array: Array, topping: String) -> Array:
 		
 	return input_array
 
-
-
 func bunify(input_array):
 	input_array.insert(0, obj_bot_bun)
 	input_array.append(obj_top_bun)
@@ -1107,6 +1179,7 @@ func patty_reference(input):
 
 # stored objects
 func update_i_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
+	print("update_i_sprites: ", target_node, item_texture_paths)
 	# Remove all existing Sprite2D children from target_node
 	for child in target_node.get_children():
 		if child is Sprite2D:
@@ -1121,6 +1194,8 @@ func update_i_sprites(target_node: Node, item_texture_paths: Array, start_positi
 
 	# Iterate through texture paths and create new sprites
 	for texture_path in item_texture_paths:
+		print("TEXTURE PATH IS: ", texture_path)
+		var toppings_list = [obj_cheese_1, obj_bacon_1, obj_lettuce_1]
 		var item_sprite = Sprite2D.new()
 		item_sprite.texture = load(texture_path)
 		
@@ -1131,11 +1206,20 @@ func update_i_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		item_sprite.z_index = target_node.z_index + 1
 		base_z_index += 1
 		
-		item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
+		if texture_path in toppings_list:
+			if texture_path == toppings_list[0]:
+				y_offset -= 2
+				item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
+			else:
+				item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
+		elif texture_path == item_texture_paths[0]:
+			item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
+		else:
+			y_offset -= 4
+			item_sprite.position = start_position + Vector2(0, y_offset)  # Set position with offset
 		target_node.add_child(item_sprite)  # Add sprite to parent
 
-		# Update y-offset to stack the next sprite on top of the previous one
-		y_offset -= item_sprite.texture.get_size().y / 2 * item_sprite.scale.y  # Adjust scaled height
+		y_offset -= 3  # Adjust scaled height
 
 func obj_change(sname, obj_array, action):
 	if sname != "player":

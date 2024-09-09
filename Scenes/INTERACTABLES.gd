@@ -14,6 +14,7 @@ signal s_right
 signal ts_1
 signal ts_2
 signal ts_3
+signal trash
 signal f_1
 signal f_2
 signal fs_1
@@ -37,9 +38,10 @@ func _ready():
 	states["ms_right"] = [1,0,1]
 	states["s_left"] = [0,0,0]
 	states["s_right"] = [0,0,0]
-	states["ts_1"] = [1,0,0] # enabled for testing
-	states["ts_2"] = [1,0,0] # disabled for testing
-	states["ts_3"] = [1,0,0] # disabled for testing
+	states["ts_1"] = [1,0,0]
+	states["ts_2"] = [1,0,0]
+	states["ts_3"] = [1,0,0]
+	states["trash"] = [1,0,0]
 	states["f_1"] = [1,0,0]
 	states["f_2"] = [1,0,0]
 	states["fs_1"] = [1,0,0]
