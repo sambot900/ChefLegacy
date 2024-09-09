@@ -1283,6 +1283,8 @@ func update_i_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		item_sprite.z_index = target_node.z_index + 1
 		base_z_index += 1
 		
+		if texture_path == obj_cooked_patty_2:
+			y_offset -= 2
 		if texture_path in toppings_list:
 			if texture_path == toppings_list[0]:
 				y_offset -= 2
