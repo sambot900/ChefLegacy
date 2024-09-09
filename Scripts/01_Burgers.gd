@@ -1218,7 +1218,7 @@ func insert_topping(input_array: Array, topping: String) -> Array:
 		# If the array has cheese then we always append the new topping
 		if obj_cheese_1 in input_array:
 			input_array.append(topping)
-		if obj_lettuce_1 in input_array:
+		elif obj_lettuce_1 in input_array:
 			input_array.insert(1, topping)
 		# If we are adding cheese we know it must be in slot 1
 		elif topping == obj_cheese_1:
