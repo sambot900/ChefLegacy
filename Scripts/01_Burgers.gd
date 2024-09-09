@@ -101,9 +101,9 @@ var obj_bot_bun = "res://Sprites/Levels/01_Burgers/Food/bot_bun.png"
 var obj_cheese_1 = "res://Sprites/Levels/01_Burgers/Food/cheese_slice.png"
 var obj_bacon_1 = "res://Sprites/Levels/01_Burgers/Food/bacon_slice.png"
 var obj_lettuce_1 = "res://Sprites/Levels/01_Burgers/Food/lettuce_slice.png"
-var obj_frozen_fries_1 = ""
+var obj_frozen_fries_1 = "res://Sprites/Levels/01_Burgers/Food/frozen_fries.png"
 var obj_frozen_fries_2 = ""
-var obj_frozen_rings_1 = ""
+var obj_frozen_rings_1 = "res://Sprites/Levels/01_Burgers/Food/frozen_rings.png"
 var obj_frozen_rings_2 = ""
 var obj_orange_drink = "res://Sprites/Levels/01_Burgers/Food/oj_full.png"
 var obj_cola_drink = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
@@ -679,6 +679,60 @@ func ms_state_decision(cname, targ_reached):
 		state_change(cname, interactable_state[cname])
 	return action	
 		
+func fs_state_decision(cname, targ_reached):
+	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
+	var p_state = player_state
+	var i_state = interactable_state[cname]
+	var state = p_state+i_state
+	var p_skip = false
+	var i_skip = false
+	print("-----------------------------------------")
+	print("COMMAND: ",cname)
+	print("b: ",state)
+						##########################################################
+						# player  | player | player || object  | object | object #
+	if state:			# enabled | PH     | OH     || enabled | active | laden  #
+			###########################################################################
+		if state ==	 	 [1,       1,       1,         1,        0,       1]: # laden
+			if targ_reached:
+				print("p:full i:laden-> same")
+				p_skip = true
+				i_skip = true
+			
+		elif state ==	 [1,       0,       1,         1,        0,       1]:
+			if targ_reached:
+				print("p:oh i:laden -> p:full")
+				p_state = [1,1,1]
+				i_skip = true
+				action = "ph_up"
+			
+		elif state == 	 [1,       1,       0,         1,        0,       1]:
+			if targ_reached:
+				print("p:ph i:laden -> p:full")
+				p_state = [1,1,1]
+				i_skip = true
+				action = "oh_up"
+		elif state == 	 [1,       0,       0,         1,        0,       1]:
+			if targ_reached:
+				print("p:empty i:laden -> p:ph")
+				p_state = [1,1,0]
+				i_skip = true
+				action = "ph_up"
+		###########################################################################		
+		else:																 # edge cases
+			print("decision tree edge case")
+	
+	if (p_skip == false):
+		player_state = p_state
+	if (i_skip == false):
+		interactable_state[cname] = i_state
+	if p_skip==true and i_skip==true:
+		pass
+	else:
+		state_change("player", player_state)
+		state_change(cname, interactable_state[cname])
+	return action	
+
 func ts_state_decision(cname, targ_reached):
 	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap", "activate"
 	var p_state = player_state
@@ -992,6 +1046,29 @@ func update_states(cname, targ_reached):
 			"oh_up":
 				_hand_sounds()
 				stored_objects["player_oh"] = [raw_patty]
+				obj_change("player", stored_objects["player_oh"], action)
+		obj_change(cname, stored_objects[cname], action)
+
+##### fs	
+	elif (cname == "fs_1") or (cname == "fs_2"):
+		action = fs_state_decision(cname, targ_reached)
+		var frozen_stuff
+		if cname == "fs_1":
+			frozen_stuff = obj_frozen_fries_1
+		else:
+			frozen_stuff = obj_frozen_rings_1
+
+		print("action is ",action)
+	
+		# pick up
+		match action:
+			"ph_up":
+				_hand_sounds()
+				stored_objects["player_ph"] = [frozen_stuff]
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_up":
+				_hand_sounds()
+				stored_objects["player_oh"] = [frozen_stuff]
 				obj_change("player", stored_objects["player_oh"], action)
 		obj_change(cname, stored_objects[cname], action)
 
