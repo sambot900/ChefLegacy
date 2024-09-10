@@ -88,6 +88,8 @@ var order_1 = []
 var order_2 = []
 var order_3 = []
 var order_4 = []
+var cheese
+var previous_sprite
 
 
 var obj_raw_patty_1 = "res://Sprites/Levels/01_Burgers/Food/raw_patty_1.png"
@@ -733,6 +735,83 @@ func fs_state_decision(cname, targ_reached):
 		state_change(cname, interactable_state[cname])
 	return action	
 
+func t_state_decision(cname, targ_reached):
+	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap"
+	var p_state = player_state
+	var i_state = interactable_state[cname]
+	var state = p_state+i_state
+	var p_skip = false
+	var i_skip = false
+	print("-----------------------------------------")
+	print("COMMAND: ",cname)
+	print("b: ",state)
+						##########################################################
+						# player  | player | player || object  | object | object #
+	if state:			# enabled | PH     | OH     || enabled | active | laden  #
+			###########################################################################
+		if state ==	 	 [1,       1,       1,         1,        0,       1]: # laden
+			if targ_reached:
+				action = "ph_swap"
+				p_state = [1,1,1]
+				i_state = [1,0,1]
+			
+		elif state ==	 [1,       0,       1,         1,        0,       1]:
+			if targ_reached:
+				action = "ph_up"
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+			
+		elif state == 	 [1,       1,       0,         1,        0,       1]:
+			if targ_reached:
+				action = "oh_up"
+				p_state = [1,1,1]
+				i_state = [1,0,0]
+				
+		elif state == 	 [1,       0,       0,         1,        0,       1]:
+			if targ_reached:
+				action = "ph_up"
+				p_state = [1,1,0]
+				i_state = [1,0,0]
+		###########################################################################		
+		elif state ==	 	 [1,       1,       1,         1,        0,       0]: # unladen
+			if targ_reached:
+				action = "ph_down"
+				p_state = [1,0,1]
+				i_state = [1,0,1]
+			
+		elif state ==	 [1,       0,       1,         1,        0,       0]:
+			if targ_reached:
+				action = "oh_down"
+				p_state = [1,0,0]
+				i_state = [1,0,1]
+			
+		elif state == 	 [1,       1,       0,         1,        0,       0]:
+			if targ_reached:
+				action = "ph_down"
+				p_state = [1,0,0]
+				i_state = [1,0,1]
+				
+		elif state == 	 [1,       0,       0,         1,        0,       0]:
+			if targ_reached:
+				action = "ph_up"
+				p_skip = true
+				i_skip = true
+		
+		###########################################################################		
+		else:																 # edge cases
+			print("decision tree edge case")
+	
+	if (p_skip == false):
+		player_state = p_state
+	if (i_skip == false):
+		interactable_state[cname] = i_state
+	if p_skip==true and i_skip==true:
+		pass
+	else:
+		state_change("player", player_state)
+		state_change(cname, interactable_state[cname])
+	return action	
+
 func ts_state_decision(cname, targ_reached):
 	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap", "activate"
 	var p_state = player_state
@@ -1072,6 +1151,39 @@ func update_states(cname, targ_reached):
 				obj_change("player", stored_objects["player_oh"], action)
 		obj_change(cname, stored_objects[cname], action)
 
+##### t	
+	elif (cname == "t_1") or (cname == "t_2"):
+		action = t_state_decision(cname, targ_reached)
+
+		print("action is ",action)
+	
+		# pick up
+		match action:
+			"ph_up":
+				_hand_sounds()
+				stored_objects["player_ph"] = stored_objects[cname]
+				stored_objects[cname] = []
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_up":
+				_hand_sounds()
+				stored_objects["player_oh"] = stored_objects[cname]
+				stored_objects[cname] = []
+				obj_change("player", stored_objects["player_oh"], action)
+			"ph_down":
+				stored_objects[cname] = stored_objects["player_ph"]
+				stored_objects["player_ph"] = []
+				obj_change("player", stored_objects["player_ph"], action)
+			"oh_down":
+				stored_objects[cname] = stored_objects["player_oh"]
+				stored_objects["player_oh"] = []
+				obj_change("player", stored_objects["player_oh"], action)
+			"ph_swap":
+				var temp_array = stored_objects[cname]
+				stored_objects[cname] = stored_objects["player_ph"]
+				stored_objects["player_ph"] = temp_array
+				obj_change("player", stored_objects["player_ph"], action)
+		obj_change(cname, stored_objects[cname], action)
+
 ##### s
 	elif (cname == "s_left") or (cname == "s_right"):
 		action = s_state_decision(cname, targ_reached)
@@ -1148,7 +1260,7 @@ func update_states(cname, targ_reached):
 				obj_change("player", stored_objects["player_oh"], action)
 	
 ##### ts	
-	if (cname == "ts_1") or (cname == "ts_2") or (cname == "ts_3"):
+	elif (cname == "ts_1") or (cname == "ts_2") or (cname == "ts_3"):
 		action = ts_state_decision(cname, targ_reached)
 		var topping
 		if cname == "ts_1":
@@ -1257,6 +1369,7 @@ func patty_reference(input):
 # stored objects
 func update_i_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
 	print("update_i_sprites: ", target_node, item_texture_paths)
+	previous_sprite = null
 	# Remove all existing Sprite2D children from target_node
 	for child in target_node.get_children():
 		if child is Sprite2D:
@@ -1283,6 +1396,14 @@ func update_i_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		item_sprite.z_index = target_node.z_index + 1
 		base_z_index += 1
 		
+		if texture_path == obj_lettuce_1 and previous_sprite == obj_bacon_1:
+			y_offset += 3
+		if texture_path == obj_cheese_1:
+			y_offset += 4
+			cheese = true
+		if ((texture_path == obj_lettuce_1) or (texture_path == obj_top_bun)) and cheese == true:
+			y_offset -= 4
+			cheese = false
 		if texture_path == obj_cooked_patty_2:
 			y_offset -= 2
 		if texture_path in toppings_list:
@@ -1299,6 +1420,7 @@ func update_i_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		target_node.add_child(item_sprite)  # Add sprite to parent
 
 		y_offset -= 3  # Adjust scaled height
+		previous_sprite = texture_path
 
 func obj_change(sname, obj_array, action):
 	if sname != "player":

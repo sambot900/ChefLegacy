@@ -18,6 +18,8 @@ var orientation_edge_case_r = false
 var orientation_edge_case_l = false
 var orientation_lock = false
 var char_facing_left = true
+var cheese
+var previous_sprite
 
 var enabled
 var ph_laden
@@ -35,9 +37,9 @@ var obj_bot_bun = "res://Sprites/Levels/01_Burgers/Food/bot_bun.png"
 var obj_cheese_1 = "res://Sprites/Levels/01_Burgers/Food/cheese_slice.png"
 var obj_bacon_1 = "res://Sprites/Levels/01_Burgers/Food/bacon_slice.png"
 var obj_lettuce_1 = "res://Sprites/Levels/01_Burgers/Food/lettuce_slice.png"
-var obj_frozen_fries_1 = ""
+var obj_frozen_fries_1 = "res://Sprites/Levels/01_Burgers/Food/frozen_fries.png"
 var obj_frozen_fries_2 = ""
-var obj_frozen_rings_1 = ""
+var obj_frozen_rings_1 = "res://Sprites/Levels/01_Burgers/Food/frozen_rings.png"
 var obj_frozen_rings_2 = ""
 var obj_orange_drink = "res://Sprites/Levels/01_Burgers/Food/oj_full.png"
 var obj_cola_drink = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
@@ -393,6 +395,7 @@ func _on__burgers_obj_changed(cmd, obj_array, action):
 # stored objects
 func update_p_sprites(target_node: Node, item_texture_paths: Array, start_position: Vector2):
 	print("update_p_sprites: ", target_node, item_texture_paths)
+	previous_sprite = null
 	# Remove all existing Sprite2D children from target_node
 	for child in target_node.get_children():
 		if child is Sprite2D:
@@ -419,6 +422,15 @@ func update_p_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		item_sprite.z_index = 100
 		base_z_index += 1
 		
+		
+		if texture_path == obj_lettuce_1 and previous_sprite == obj_bacon_1:
+			y_offset += 3
+		if texture_path == obj_cheese_1:
+			y_offset += 4
+			cheese = true
+		if ((texture_path == obj_lettuce_1) or (texture_path == obj_top_bun)) and cheese == true:
+			y_offset -= 4
+			cheese = false
 		if texture_path == obj_cooked_patty_2:
 			y_offset -= 2
 		if texture_path in toppings_list:
