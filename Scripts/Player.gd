@@ -229,12 +229,9 @@ func _physics_process(delta):
 		orientation_edge_case()
 		if current_command in max_distance_exception_list:
 			agent.set_target_desired_distance(10)
-			print("max_distance_exception_list exception ", agent.get_target_desired_distance())
 		else:
 			agent.set_target_desired_distance(68)
-			print("max_distance_exception_list common ", agent.get_target_desired_distance())
 			
-		print("COORDS!!!! ",current_command)
 		agent.target_position = current_command
 		finished = false
 		

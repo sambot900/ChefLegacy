@@ -21,8 +21,8 @@ func initialize_timers():
 	initial_durations["ts_1"] = 6.0
 	initial_durations["ts_2"] = 6.0
 	initial_durations["ts_3"] = 6.0
-	initial_durations["f_1"] = 2.0
-	initial_durations["f_2"] = 2.0
+	initial_durations["f_1"] = 4.1
+	initial_durations["f_2"] = 4.1
 	
 	for key in initial_durations.keys():
 		timers[key] = {"remaining_time": initial_durations[key], "active": false}
