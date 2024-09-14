@@ -34,7 +34,8 @@ signal obj_changed(cmd, state_array: Array)
 #region Dictionary Init: coordinate_key
 var area_2d_cmd_key = {}
 
-var y_ts = 103
+var y_ts = 130
+var y_ts2 = 210
 var coordinate_key = {
 	"dd_left": [Vector2(307, 423), Vector2(337, 423), Vector2(367, 423)],
 	"dd_right": [Vector2(379, 423), Vector2(409, 423), Vector2(439, 423)],
@@ -44,10 +45,10 @@ var coordinate_key = {
 	"fs_2": [Vector2(625, 329), Vector2(625, 359), Vector2(625, 389)],
 	"s_left": [Vector2(318, -9), Vector2(348, -9), Vector2(378, -9)],
 	"s_right": [Vector2(444, -9), Vector2(474, -9), Vector2(504, -9)],
-	"ts_1": [Vector2(320, y_ts), Vector2(350, y_ts), Vector2(380, y_ts), Vector2(238, y_ts), Vector2(238, 140), Vector2(238, 170), Vector2(320, 180), Vector2(350, 180), Vector2(380, 180)],
-	"ts_2": [Vector2(407, y_ts), Vector2(437, y_ts), Vector2(467, y_ts), Vector2(407, 180), Vector2(437, 180), Vector2(467, 180)],
-	"ts_3": [Vector2(495, y_ts), Vector2(525, y_ts), Vector2(555, y_ts), Vector2(612, 108), Vector2(612, 138), Vector2(612, 144), Vector2(495, 180), Vector2(525, 180), Vector2(555, 180)],
-	"trash": [Vector2(245, y_ts), Vector2(245, 180)],
+	"ts_1": [Vector2(320, y_ts), Vector2(350, y_ts), Vector2(380, y_ts), Vector2(238, y_ts), Vector2(238, 140), Vector2(238, 170), Vector2(320, y_ts2), Vector2(350, y_ts2), Vector2(380, y_ts2)],
+	"ts_2": [Vector2(407, y_ts), Vector2(437, y_ts), Vector2(467, y_ts), Vector2(407, y_ts2), Vector2(437, y_ts2), Vector2(467, y_ts2)],
+	"ts_3": [Vector2(495, y_ts), Vector2(525, y_ts), Vector2(555, y_ts), Vector2(612, 108), Vector2(612, 138), Vector2(612, 144), Vector2(495, y_ts2), Vector2(525, y_ts2), Vector2(555, y_ts2)],
+	"trash": [Vector2(245, y_ts), Vector2(245, y_ts2)],
 	"f_1": [Vector2(625, 133), Vector2(625, 148), Vector2(625, 163)],
 	"f_2": [Vector2(625, 185), Vector2(625, 200), Vector2(625, 215)],
 	"t_1": [Vector2(625, 428), Vector2(625, 453), Vector2(625, 478)],
@@ -78,6 +79,12 @@ var cmd_count_max = {
 
 #region Declarations
 
+# Constants
+const BASE_WIDTH = 648
+const BASE_HEIGHT = 1152
+const MAX_WIDTH = 666
+
+# Variables
 var player_state = []
 var i_node = {}
 var interactable_state = {}
@@ -105,10 +112,12 @@ var obj_bacon_1 = "res://Sprites/Levels/01_Burgers/Food/bacon_slice.png"
 var obj_lettuce_1 = "res://Sprites/Levels/01_Burgers/Food/lettuce_slice.png"
 var obj_frozen_fries_1 = "res://Sprites/Levels/01_Burgers/Food/frozen_fries.png"
 var obj_cooked_fries_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_fries.png"
+var obj_cooked_fries_pile_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_fries_pile.png"
 var obj_burnt_fries_1 = "res://Sprites/Levels/01_Burgers/Food/burnt_fries.png"
 var obj_frozen_fries_2 = ""
 var obj_frozen_rings_1 = "res://Sprites/Levels/01_Burgers/Food/frozen_rings.png"
 var obj_cooked_rings_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_rings.png"
+var obj_cooked_rings_pile_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_rings_pile.png"
 var obj_burnt_rings_1 = "res://Sprites/Levels/01_Burgers/Food/burnt_rings.png"
 var obj_frozen_rings_2 = ""
 var obj_orange_drink = "res://Sprites/Levels/01_Burgers/Food/oj_full.png"
@@ -118,17 +127,22 @@ var obj_empty_drink = "res://Sprites/Levels/01_Burgers/Food/cup_empty.png"
 
 
 #region onready Declarations
+@onready var background = $"MISCELLANEOUS/Main BG"
 @onready var timer_manager = $Timer
 @onready var cook_avatar = $Player
 @onready var cmds_node = $CMDs
-@onready var round_camera = $RoundCamera
+@onready var round_camera = $MISCELLANEOUS/Camera2D
 @onready var camera_animation_player = $CameraAnimationPlayer
 @onready var dd = $INTERACTABLES/DrinkDispenser
 @onready var freezer = $INTERACTABLES/Freezer
 @onready var player = $Player
+
+
 #endregion
 
 func _ready():
+	adjust_background()
+	get_viewport().connect("size_changed", Callable(self, "_on_size_changed"))
 	timer_manager.connect("timer_expired", Callable(self, "_on_timer_expired"))
 	
 	interactables_accepts["dd_left"] = []
@@ -253,11 +267,35 @@ func _ready():
 func _input(_event):
 	pass
 
+func _on_size_changed():
+	adjust_background()
+
 func start_camera_pan():
 	if round_camera and camera_animation_player:
 		camera_animation_player.play("PanCamera")
 	else:
 		print("Camera and AnimationPlayer not found")
+
+func adjust_background():
+	var screen_width = get_viewport_rect().size.x
+	var screen_height = get_viewport_rect().size.y
+	
+	var base_width = 648
+	var background_width = 678  # Width of your background image
+	var background_height = 1100  # Width of your background image
+	
+	# Horizontal Scaling
+	if screen_width >= background_width:
+		$MISCELLANEOUS/Camera2D.offset.x = (-(screen_width - background_width)/2)
+		print("offset: ", $MISCELLANEOUS/Camera2D.offset.x)
+	elif screen_height >= background_height:
+		pass
+	else:
+		print("scaling-horiz exception")
+		
+	
+
+	
 
 func s_state_decision(cname, targ_reached):
 	var action = "none" # "none", "ph_up", "ph_down", "ph_swap", "oh_up", "oh_down", "oh_swap", "timer"
@@ -1349,7 +1387,6 @@ func update_states(cname, targ_reached):
 				_hand_sounds()
 				stored_objects["player_oh"] = [raw_patty]
 				obj_change("player", stored_objects["player_oh"], action)
-		obj_change(cname, stored_objects[cname], action)
 
 ##### f
 	elif (cname == "f_1") or (cname == "f_2"):
@@ -1362,13 +1399,23 @@ func update_states(cname, targ_reached):
 			"ph_up":
 				_f_stop_sounds()
 				_hand_sounds()
-				stored_objects["player_ph"] = stored_objects[cname]
+				if stored_objects[cname] == [obj_cooked_rings_pile_1]:
+					stored_objects["player_ph"] = [obj_cooked_rings_1]
+				elif stored_objects[cname] == [obj_cooked_fries_pile_1]:
+					stored_objects["player_ph"] = [obj_cooked_fries_1]
+				else:
+					stored_objects["player_ph"] = stored_objects[cname]
 				stored_objects[cname] = []
 				obj_change("player", stored_objects["player_ph"], action)
 			"oh_up":
 				_f_stop_sounds()
 				_hand_sounds()
-				stored_objects["player_oh"] = stored_objects[cname]
+				if stored_objects[cname] == [obj_cooked_rings_pile_1]:
+					stored_objects["player_oh"] = [obj_cooked_rings_1]
+				elif stored_objects[cname] == [obj_cooked_fries_pile_1]:
+					stored_objects["player_oh"] = [obj_cooked_fries_1]
+				else:
+					stored_objects["player_oh"] = stored_objects[cname]
 				stored_objects[cname] = []
 				obj_change("player", stored_objects["player_oh"], action)
 			"ph_down":
@@ -1402,13 +1449,13 @@ func update_states(cname, targ_reached):
 			"timer":
 				_f_inactive_sounds()
 				if stored_objects[cname][0] == obj_frozen_fries_1:
-					stored_objects[cname] = [obj_cooked_fries_1]
+					stored_objects[cname] = [obj_cooked_fries_pile_1]
 				elif stored_objects[cname][0] == obj_frozen_rings_1:
-					stored_objects[cname] = [obj_cooked_rings_1]
+					stored_objects[cname] = [obj_cooked_rings_pile_1]
 			"timer2":
-				if stored_objects[cname][0] == obj_cooked_fries_1:
+				if stored_objects[cname][0] == obj_cooked_fries_pile_1:
 					stored_objects[cname] = [obj_burnt_fries_1]
-				elif stored_objects[cname][0] == obj_cooked_rings_1:
+				elif stored_objects[cname][0] == obj_cooked_rings_pile_1:
 					stored_objects[cname] = [obj_burnt_rings_1]
 				
 		obj_change(cname, stored_objects[cname], action)
@@ -1681,15 +1728,20 @@ func update_i_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		item_sprite.z_index = target_node.z_index + 1
 		base_z_index += 1
 		
+		if texture_path in [obj_cooked_fries_1, obj_cooked_rings_1]:
+			y_offset -= 4
+		if texture_path in [obj_frozen_fries_1, obj_cooked_fries_pile_1, obj_burnt_fries_1, obj_frozen_rings_1, obj_cooked_rings_pile_1, obj_burnt_rings_1]:
+			item_sprite.scale = Vector2(0.45, 0.45)
+			y_offset += 1
 		if texture_path == obj_lettuce_1 and previous_sprite == obj_bacon_1:
-			y_offset += 3
+			y_offset += 0
 		if texture_path == obj_cheese_1:
 			y_offset += 4
 			cheese = true
 		if ((texture_path == obj_lettuce_1) or (texture_path == obj_top_bun)) and cheese == true:
 			y_offset -= 4
 			cheese = false
-		if texture_path == obj_cooked_patty_2:
+		if texture_path == obj_cooked_patty_2 and previous_sprite == obj_bot_bun:
 			y_offset -= 2
 		if texture_path in toppings_list:
 			if texture_path == toppings_list[0]:

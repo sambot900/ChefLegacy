@@ -63,20 +63,6 @@ func emit_state(cname):
 	var state = get_state(cname)
 	state_changed.emit(cname, state)
 
-func _on__burgers_state_changed(cname: String, state_array: Array):
-	if state_array != [9,9,9]:
-		if cname == "player":
-			return
-		# Store the state in the dictionary
-		states[cname] = state_array
-		
-		# Emit the signal if it exists
-		if has_signal(cname):
-			emit_signal(cname, state_array)
-			#print(cname, ":i:", get_state(cname))
-		else:
-			print("Signal not found for:", cname)
-
 func get_state(cname: String) -> Array:
 	# Return the state of the specified interactable
 	if states.has(cname):

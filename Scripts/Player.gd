@@ -38,16 +38,22 @@ var obj_cheese_1 = "res://Sprites/Levels/01_Burgers/Food/cheese_slice.png"
 var obj_bacon_1 = "res://Sprites/Levels/01_Burgers/Food/bacon_slice.png"
 var obj_lettuce_1 = "res://Sprites/Levels/01_Burgers/Food/lettuce_slice.png"
 var obj_frozen_fries_1 = "res://Sprites/Levels/01_Burgers/Food/frozen_fries.png"
+var obj_cooked_fries_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_fries.png"
+var obj_cooked_fries_pile_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_fries_pile.png"
+var obj_burnt_fries_1 = "res://Sprites/Levels/01_Burgers/Food/burnt_fries.png"
 var obj_frozen_fries_2 = ""
 var obj_frozen_rings_1 = "res://Sprites/Levels/01_Burgers/Food/frozen_rings.png"
+var obj_cooked_rings_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_rings.png"
+var obj_cooked_rings_pile_1 = "res://Sprites/Levels/01_Burgers/Food/cooked_rings_pile.png"
+var obj_burnt_rings_1 = "res://Sprites/Levels/01_Burgers/Food/burnt_rings.png"
 var obj_frozen_rings_2 = ""
 var obj_orange_drink = "res://Sprites/Levels/01_Burgers/Food/oj_full.png"
 var obj_cola_drink = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
 var obj_empty_drink = "res://Sprites/Levels/01_Burgers/Food/cup_empty.png"
 
 
-var y_exception = 103
-var max_distance_exception_list = [Vector2(320, y_exception), Vector2(350, y_exception), Vector2(380, y_exception), Vector2(238, y_exception), Vector2(407, y_exception), Vector2(437, y_exception), Vector2(467, y_exception), Vector2(495, y_exception), Vector2(525, y_exception), Vector2(555, y_exception)]
+var y_ts = 130
+var leahs_exception_list = [Vector2(626, 46), Vector2(626, 71), Vector2(320, y_ts), Vector2(350, y_ts), Vector2(380, y_ts), Vector2(238, y_ts), Vector2(407, y_ts), Vector2(437, y_ts), Vector2(467, y_ts), Vector2(495, y_ts), Vector2(525, y_ts), Vector2(555, y_ts)]
 #endregion
 
 #region *Onready Declarations
@@ -123,7 +129,10 @@ func get_state() -> Array:
 	return [enabled_state, ph_state, oh_state]
 
 func enqueue_command(target: Vector2):
+	if target == Vector2(245, y_ts):
+		command_queue.append(Vector2(240, y_ts-120))
 	command_queue.append(target)
+	print(command_queue)
 
 #region *OnPress Movement Command Functions
 # returns:
@@ -227,10 +236,11 @@ func _physics_process(delta):
 			reached_interactable.emit(current_command)
 		current_command = command_queue.pop_front()
 		orientation_edge_case()
-		if current_command in max_distance_exception_list:
-			agent.set_target_desired_distance(10)
+		if current_command in leahs_exception_list:
+			print("target desired distance exception")
+			agent.set_target_desired_distance(20)
 		else:
-			agent.set_target_desired_distance(68)
+			agent.set_target_desired_distance(65)
 			
 		agent.target_position = current_command
 		finished = false
@@ -272,11 +282,11 @@ func z_sort():
 		anim_torso.z_index = 20
 		anim_legs.z_index = 14
 	elif global_position.y > 168 and global_position.y < 384:
-		anim_torso.z_index = 14
-		anim_legs.z_index = 12
+		anim_torso.z_index = 13
+		anim_legs.z_index = 11
 	elif global_position.y < 160:
-		anim_torso.z_index = 7
-		anim_legs.z_index = 7
+		anim_torso.z_index = 6
+		anim_legs.z_index = 6
 
 	anim_left_arm_idle.z_index = anim_torso.z_index + 1
 	anim_right_arm_idle.z_index = anim_torso.z_index + 1
@@ -407,7 +417,6 @@ func update_p_sprites(target_node: Node, item_texture_paths: Array, start_positi
 
 	# Iterate through texture paths and create new sprites
 	for texture_path in item_texture_paths:
-		print("TEXTURE PATH IS: ", texture_path)
 		var toppings_list = [obj_cheese_1, obj_bacon_1, obj_lettuce_1]
 		var item_sprite = Sprite2D.new()
 		item_sprite.texture = load(texture_path)
@@ -419,16 +428,17 @@ func update_p_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		item_sprite.z_index = 100
 		base_z_index += 1
 		
-		
+		if texture_path in [obj_cooked_fries_1, obj_cooked_rings_1]:
+			y_offset -= 4
 		if texture_path == obj_lettuce_1 and previous_sprite == obj_bacon_1:
-			y_offset += 3
+			y_offset -= 0
 		if texture_path == obj_cheese_1:
 			y_offset += 4
 			cheese = true
 		if ((texture_path == obj_lettuce_1) or (texture_path == obj_top_bun)) and cheese == true:
 			y_offset -= 4
 			cheese = false
-		if texture_path == obj_cooked_patty_2:
+		if texture_path == obj_cooked_patty_2 and previous_sprite == obj_bot_bun:
 			y_offset -= 2
 		if texture_path in toppings_list:
 			if texture_path == toppings_list[0]:
@@ -444,6 +454,7 @@ func update_p_sprites(target_node: Node, item_texture_paths: Array, start_positi
 		target_node.add_child(item_sprite)  # Add sprite to parent
 
 		y_offset -= 3  # Adjust scaled height
+		previous_sprite = texture_path
 
 func _avatar_unladen():
 	anim_left_arm_idle.visible = true
