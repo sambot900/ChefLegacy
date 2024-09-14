@@ -125,7 +125,6 @@ var obj_cola_drink = "res://Sprites/Levels/01_Burgers/Food/cola_full.png"
 var obj_empty_drink = "res://Sprites/Levels/01_Burgers/Food/cup_empty.png"
 #endregion
 
-
 #region onready Declarations
 @onready var background = $"MISCELLANEOUS/Main BG"
 @onready var timer_manager = $Timer
@@ -289,7 +288,7 @@ func adjust_background():
 		$MISCELLANEOUS/Camera2D.offset.x = (-(screen_width - background_width)/2)
 		print("offset: ", $MISCELLANEOUS/Camera2D.offset.x)
 	elif screen_height >= background_height:
-		pass
+		$MISCELLANEOUS/Camera2D.offset.y = (-(screen_height - background_height)/2)
 	else:
 		print("scaling-horiz exception")
 		
